@@ -28,6 +28,10 @@ function Phone() {
 
       await sendOTP(nationalNumber, countryCode);
 
+      // set the phone number in the cookie
+      document.cookie = `phoneNumber=${nationalNumber};max-age=86400;path=/`;
+      document.cookie = `countryCode=${countryCode};max-age=86400;path=/`;
+
       // Handle success (maybe show a message)
       router.push("/verify");
     } catch (error) {

@@ -22,7 +22,7 @@ import {
 
 function Loader() {
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[30rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none">
+    <Card className="h-[calc(100vh-2rem)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none">
       <div className="mt-[50%] flex items-center justify-center gap-4 p-4">
         <Spinner className="h-12 w-12" />
       </div>

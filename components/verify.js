@@ -13,20 +13,38 @@ import {
   Typography,
   CardHeader,
 } from "@material-tailwind/react";
-import { useState } from "react";
-import { sendOTP } from "@/pages/api/hello";
+import { useEffect, useState } from "react";
+import { verifyMobileOTP } from "@/pages/api/hello";
 import { useRouter } from "next/router";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { parsePhoneNumber } from "libphonenumber-js";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 function Phone() {
   const router = useRouter();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  // const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(Array(4).fill(""));
-  console.log(phoneNumber);
+
+  const [error, setError] = useState(null); // State to manage error
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [countryCode, setCountryCode] = useState(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const phone = Cookies.get("phoneNumber");
+      const code = Cookies.get("countryCode");
+      setPhoneNumber(phone);
+      setCountryCode(code);
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleChange = (element, index) => {
+    // Clear error state when user starts entering a new OTP
+    setError(null);
+
     if (isNaN(element.value)) return;
     otp[index] = element.value;
     setOtp([...otp]);
@@ -37,26 +55,52 @@ function Phone() {
     }
   };
 
-  const verifyOTP = (otp) => {
+  const verifyOTP = async (otp) => {
     // Call your verify API here
-    console.log("OTP:", otp);
-  };
+    const phoneNumber = Cookies.get("phoneNumber");
+    const address = Cookies.get("saveAddress");
 
-  const handleSendOTP = async () => {
     try {
-      const parsedPhoneNumber = parsePhoneNumber(phoneNumber);
-      const countryCode = parsedPhoneNumber.countryCallingCode;
-      const nationalNumber = parsedPhoneNumber.nationalNumber;
-      console.log(countryCode, "nationalNumber");
-      console.log("countryCode", nationalNumber);
+      const response = await axios.post(
+        "http://localhost:9956/api/auth/verify-mobile-otp",
+        {
+          mobile: phoneNumber,
+          mobile_country_code: "+" + countryCode,
+          otp,
+          type: "consumer",
+          request_type: "mobile",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      await sendOTP(nationalNumber, countryCode);
+      document.cookie = `isVerify=${response.data.payload.is_verify};max-age=86400;path=/`;
+      document.cookie = `consumerId=${response.data.payload.consumer_id};max-age=86400;path=/`;
 
-      // Handle success (maybe show a message)
-      router.push("/verify");
+      if (
+        response.data.payload.consumer_id &&
+        response.data.payload.consumer_id !== null &&
+        response.data.payload.consumer_id !== "" &&
+        response.data.payload.consumer_id !== undefined
+      ) {
+        router.push("/");
+      }
+      // Assuming you're returning the response data
+      return response.data.payload;
     } catch (error) {
-      console.error("Error sending OTP:", error);
-      // Handle error (maybe show an error message)
+      if (error.response && error.response.status === 503) {
+        // Handle 503 error specifically
+        setError("The OTP entered is incorrect.");
+        document.cookie = `isVerify=false;max-age=86400;path=/`;
+      } else {
+        console.error("Error verifying OTP:", error);
+        document.cookie = `isVerify=false;max-age=86400;path=/`;
+        // Rethrow the error or handle it as per your requirement
+        throw error;
+      }
     }
   };
 
@@ -71,8 +115,12 @@ function Phone() {
         <div className="mb-10 h-40 p-6 text-white">
           <ChatBubbleLeftIcon className="h-40 w-40 text-white" />
         </div>
+
         <Typography variant="paragraph" color="white">
-          Check WhatsApp for the code sent to
+          Check your phone for the verification code.
+        </Typography>
+        <Typography variant="paragraph" color="white">
+          +{countryCode} {phoneNumber}
         </Typography>
       </CardHeader>
       <Typography variant="h4" color="blue-gray">
@@ -108,6 +156,13 @@ function Phone() {
           })}
         </div>
       </form>
+      <div className="mb-5 flex flex-row gap-6 justify-center">
+        {error && ( // Conditionally render error message
+          <Typography variant="paragraph" color="red">
+            {error}
+          </Typography>
+        )}
+      </div>
     </Card>
   );
 }

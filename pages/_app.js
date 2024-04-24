@@ -13,6 +13,48 @@ function App({ Component, pageProps, restaurantDetails }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
+
+  const [heroShown, setHeroShown] = useState(true);
+
+  // set the user's location to the cookies when the location state changes
+  Cookies.set("location", JSON.stringify(location));
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  // Function to detect full address using lat and long
+  const detectAddress = async () => {
+    try {
+      if (!location.lat || !location.lng) return;
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco`
+      );
+      const data = await response.json();
+      if (data.results.length > 0) {
+        const area = data.results[0].formatted_address;
+        setAddress({ ...address, area });
+        Cookies.set("address", area);
+      }
+    } catch (error) {
+      console.error("Error detecting address:", error);
+    }
+  };
+
+  useEffect(() => {
+    detectAddress();
+  }, []);
+
   useEffect(() => {
     const handleStart = () => {
       setLoading(true);
@@ -32,7 +74,15 @@ function App({ Component, pageProps, restaurantDetails }) {
     };
   }, [router]);
 
-  const routesWithHero = ["/", "/product", "/cart"]; // replace with your actual routes
+  const routesWithHero = [
+    "/",
+    "/product",
+    "/cart",
+    "/address",
+    "/checkout",
+    "/order",
+    "/orders",
+  ]; // replace with your actual routes
 
   const showHero = routesWithHero.includes(router.pathname);
 
@@ -48,11 +98,31 @@ function App({ Component, pageProps, restaurantDetails }) {
     generateFingerprint();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1042) {
+        setHeroShown(true);
+      } else {
+        setHeroShown(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Initial check
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <ThemeProvider>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         {loading ? <Loader /> : <Component {...pageProps} />}
-        {showHero && <Hero restaurantDetails={restaurantDetails} />}
+
+        {showHero && !heroShown && (
+          <Hero restaurantDetails={restaurantDetails} />
+        )}
       </div>
     </ThemeProvider>
   );
@@ -62,7 +132,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
   // Fetch data server-side using Axios
   try {
     const response = await axios.post(
-      "https://api.talabatsweets.com/backend/restaurant/get-restaurant-details-backend",
+      "http://localhost:9956/backend/restaurant/get-restaurant-details-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },

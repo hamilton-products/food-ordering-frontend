@@ -1,18 +1,29 @@
 import axios from "axios";
 import Products from "@/components/products";
 
-const MainPage = ({ menu }) => {
+const MainPage = ({ menu, cartDetails }) => {
   return (
     <>
-      <Products menu={menu} />
+      <Products menu={menu} cartDetails={cartDetails} />
     </>
   );
 };
 
-MainPage.getInitialProps = async () => {
+export async function getServerSideProps(context) {
   try {
+    const consumerId = context.req.cookies.consumerId;
+    let cartDetails = [];
+
+    if (consumerId) {
+      const cartDetailsResponse = await axios.get(
+        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      );
+
+      cartDetails = cartDetailsResponse.data.payload.cartItems || [];
+    }
+
     const response = await axios.post(
-      "https://api.talabatsweets.com/backend/restaurant/get-restaurant-menu-backend",
+      "http://localhost:9956/backend/restaurant/get-restaurant-menu-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -35,7 +46,7 @@ MainPage.getInitialProps = async () => {
           const itemDetailsWithItemData = await Promise.all(
             category.itemDetails.map(async (item) => {
               const itemResponse = await axios.post(
-                "https://api.talabatsweets.com/backend/item/get-items",
+                "http://localhost:9956/backend/item/get-items",
                 {
                   item_id: item.item_id,
                 },
@@ -45,7 +56,6 @@ MainPage.getInitialProps = async () => {
                   },
                 }
               );
-              // console.log(itemResponse.data.payload, "itemResponse");
 
               return {
                 ...item,
@@ -62,7 +72,10 @@ MainPage.getInitialProps = async () => {
       );
 
       return {
-        menu: menuWithItemDetails,
+        props: {
+          menu: menuWithItemDetails,
+          cartDetails: cartDetails, // Include cartDetails in the return object
+        },
       };
     } else {
       throw new Error("No data received from API");
@@ -70,9 +83,11 @@ MainPage.getInitialProps = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
-      error: [],
+      props: {
+        error: [],
+      },
     };
   }
-};
+}
 
 export default MainPage;

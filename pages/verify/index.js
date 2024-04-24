@@ -18,3 +18,19 @@ export default function PhonePage() {
     </>
   );
 }
+
+export async function getServerSideProps(context) {
+  const phoneNumber = context.req.cookies.phoneNumber;
+  if (!phoneNumber) {
+    return {
+      redirect: {
+        destination: "/phone",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, // will be passed to the page component as props
+  };
+}

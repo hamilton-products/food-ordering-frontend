@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import Products from "@/components/cart";
 
 export default function CartPage({ cartDetails }) {
@@ -13,10 +12,21 @@ export default function CartPage({ cartDetails }) {
 export async function getServerSideProps(context) {
   try {
     // Retrieve device_id from cookies in the server-side context
-    const device_id = context.req.cookies.fingerprint;
+    const consumerId = context.req.cookies.consumerId;
+
+    if (!consumerId) {
+      return {
+        redirect: {
+          destination: "/phone",
+          permanent: false,
+        },
+      };
+    }
+
+    console.log(consumerId, "consumerId");
 
     const response = await axios.get(
-      `https://api.talabatsweets.com/api/cart/list-cart-items/${device_id}/guest/EN`
+      `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
     // Check if data exists and is not empty
     if (

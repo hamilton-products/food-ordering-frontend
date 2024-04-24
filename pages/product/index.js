@@ -1,20 +1,20 @@
 import axios from "axios";
 import Product from "@/components/product";
 
-export default function ProductPage({ itemDetails }) {
-  console.log(itemDetails);
+export default function ProductPage({ itemDetails, consumerId }) {
   return (
     <>
-      <Product itemDetails={itemDetails} />
+      <Product itemDetails={itemDetails} consumerId={consumerId} />
     </>
   );
 }
 
 export async function getServerSideProps(context) {
   const { itemId } = context.query;
+  const consumerId = context.req.cookies.consumerId || "";
   try {
     const response = await axios.post(
-      "https://api.talabatsweets.com/backend/item/get-items",
+      "http://localhost:9956/backend/item/get-items",
       {
         item_id: itemId,
       },
@@ -27,6 +27,7 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
+        consumerId: consumerId,
         itemDetails: response.data.payload, // Corrected here
       },
     };

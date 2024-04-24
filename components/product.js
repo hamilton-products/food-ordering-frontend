@@ -15,6 +15,8 @@ import {
   ButtonGroup,
   Button,
   Input,
+  Checkbox,
+  Radio,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
@@ -28,16 +30,32 @@ import {
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { addToCart } from "@/pages/api/hello";
+import { addToCart, checkCart } from "@/pages/api/hello";
+import Cookies from "js-cookie";
 
-function Product({ itemDetails }) {
+function Product({ itemDetails, consumerId }) {
   const img = itemDetails.cover_photo;
   const title = itemDetails.title && itemDetails.title.EN;
   const description = itemDetails.description && itemDetails.description.EN;
   const price = itemDetails.price;
   const [open, setOpen] = React.useState(0);
   const [qty, setQty] = React.useState(1);
+  const [cartExits, setCartExists] = React.useState(false);
   const router = useRouter();
+
+  const [selectedOption, setSelectedOption] = React.useState(null);
+
+  const [selectedItemOptions, setSelectedItemOptions] = React.useState([]);
+
+  console.log(selectedItemOptions, "selectedItemOptions");
+
+  const itemOption = itemDetails.item_options;
+
+  const handleRadioClick = (value) => {
+    setSelectedOption(value);
+  };
+
+  console.log(itemDetails, "itemDetails");
 
   const incrementQty = () => {
     setQty(qty + 1);
@@ -59,20 +77,122 @@ function Product({ itemDetails }) {
 
   const productId = itemDetails.item_id;
 
-  const redirectToCart = () => {
-    router.push("/cart"); // Redirect to /cart route
-  };
+  React.useEffect(() => {
+    const checkCartExists = async () => {
+      try {
+        const response = await checkCart(productId);
+        console.log(response.exists, "response.exists");
+        if (response.exists === true) {
+          setCartExists(true);
+        }
+      } catch (error) {
+        console.error("Error checking cart:", error);
+      }
+    };
+    checkCartExists();
+  }, []);
 
-  const handleAddToCart = () => {
+  // in handleAddToCart first Item is already added to cart or not
+  const handleAddToCart = async () => {
     try {
-      addToCart(productId, qty, redirectToCart);
+      const response = await checkCart(productId);
+      if (response.exists === true) {
+        redirectToCart();
+      } else {
+        addToCart(productId, qty, transformedData, redirectToCart);
+        setCartExists(true);
+      }
     } catch (error) {
       console.error("Error adding item to cart:", error);
     }
   };
 
+  const redirectToCart = () => {
+    router.push("/cart"); // Redirect to cart route
+  };
+
+  const handleStartOrder = () => {
+    router.push("/phone");
+  };
+
+  // const handleAddToCart = () => {
+  //   try {
+  //     addToCart(productId, qty, redirectToCart);
+  //   } catch (error) {
+  //     console.error("Error adding item to cart:", error);
+  //   }
+  // };
+
+  // create a function to handle the selected item options
+  const handleSelectedItemOptions = (optionId, itemId) => {
+    const optionIndex = selectedItemOptions.findIndex(
+      (option) => option.optionId === optionId
+    );
+
+    if (optionIndex !== -1) {
+      setSelectedItemOptions((prevOptions) => {
+        const updatedOptions = [...prevOptions];
+        const itemIndex = updatedOptions[optionIndex].items.indexOf(itemId);
+
+        // If item is already selected, deselect it
+        if (itemIndex !== -1) {
+          updatedOptions[optionIndex].items.splice(itemIndex, 1);
+        } else {
+          // If item is not selected, select it
+          if (!itemOption[optionIndex].is_multi) {
+            updatedOptions[optionIndex].items = [itemId];
+          } else {
+            updatedOptions[optionIndex].items.push(itemId);
+          }
+        }
+        return updatedOptions;
+      });
+    } else {
+      setSelectedItemOptions((prevOptions) => [
+        ...prevOptions,
+        { optionId: optionId, items: [itemId] },
+      ]);
+    }
+  };
+
+  const isSelected = (optionId, itemId) => {
+    return selectedItemOptions.some(
+      (option) => option.optionId === optionId && option.items.includes(itemId)
+    );
+  };
+
+  // Function to transform selected options
+  const transformSelectedOptions = () => {
+    const transformedOptions = selectedItemOptions.map((option) => {
+      const optionData = itemOption.find(
+        (item) => item.item_option_category_id === option.optionId
+      );
+      const transformedItems = optionData.item_option_list.filter((item) =>
+        option.items.includes(item.item_option_id)
+      );
+
+      return {
+        title_cat: optionData.title_cat,
+        status: optionData.status,
+        is_multi: optionData.is_multi,
+        item_option_category_id: option.optionId,
+        item_option_list: transformedItems.map((item) => ({
+          item_option_id: item.item_option_id,
+          price: item.price,
+          status: item.status,
+          title: item.title,
+        })),
+      };
+    });
+
+    return transformedOptions;
+  };
+
+  const transformedData = transformSelectedOptions();
+  console.log(transformedData);
+
   return (
-    <Card className="h-[calc(100vh-8rem)] w-full max-w-[30rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto">
+    <Card className="h-[calc(100vh-8rem)] w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto">
       <div className="absolute z-10">
         <Button onClick={() => goToItems()} color="white" variant="text">
           <ArrowLeftIcon className="h-10 w-10" />
@@ -89,23 +209,92 @@ function Product({ itemDetails }) {
       </div>
       <div className="flex-1 mr-6 mt-6">
         <CardBody className="py-2">
-          <a
-            href="#"
-            className="text-blue-gray-900 transition-colors hover:text-gray-800"
-          >
-            <Typography variant="h6" className="mb-2">
-              {title}
-            </Typography>
-          </a>
+          <Typography variant="h6" className="mb-2">
+            {title}
+          </Typography>
+
           <Typography className="mb-6 font-normal !text-gray-500 ">
             {description}
           </Typography>
 
           <Typography variant="paragraph" className="mb-2">
-            KWD {price}
+            KD {price}
           </Typography>
         </CardBody>
+
+        <div className="mb-6 mx-5 flex flex-col gap-6">
+          {itemOption.length > 0 &&
+            itemOption.map((option, index) => (
+              <div key={index}>
+                {/* Replace this with the actual JSX you want to render for each option */}
+
+                <Typography variant="h6" color="blue-gray">
+                  {option.title_cat.EN}
+                  <div className="mb-3 flex flex-col gap-6 mt-3">
+                    <Card>
+                      {option.item_option_list.length > 0 &&
+                        option.item_option_list.map((items, index1) => (
+                          <div key={index1}>
+                            <CardBody className="flex items-center p-2">
+                              {option.is_multi === false ? (
+                                <Checkbox
+                                  icon={<Radio className="p-1" />}
+                                  checked={isSelected(
+                                    option.item_option_category_id,
+                                    items.item_option_id
+                                  )}
+                                  onChange={() =>
+                                    handleSelectedItemOptions(
+                                      option.item_option_category_id,
+                                      items.item_option_id
+                                    )
+                                  }
+                                  // I want style checkbox like radio button and remove right tick mark from checkbox
+                                  style={{
+                                    borderRadius: "50%",
+                                    border: "1px solid #6B7280",
+                                    // hide the default checkbox tick mark
+                                  }}
+                                />
+                              ) : (
+                                <Checkbox
+                                  checked={isSelected(
+                                    option.item_option_category_id,
+                                    items.item_option_id
+                                  )}
+                                  onChange={() =>
+                                    handleSelectedItemOptions(
+                                      option.item_option_category_id,
+                                      items.item_option_id
+                                    )
+                                  }
+                                />
+                              )}
+                              <Typography variant="body1" color="blue-gray">
+                                {items.title.EN}
+                              </Typography>
+
+                              <Typography
+                                variant="body1"
+                                color="blue-gray"
+                                className="flex items-end ml-auto p-2"
+                              >
+                                {items.price} KD
+                              </Typography>
+                            </CardBody>
+
+                            {/* Replace this with the actual JSX you want to render for each option */}
+                          </div>
+                        ))}
+                    </Card>
+                  </div>
+                </Typography>
+              </div>
+            ))}
+        </div>
+
         <hr className="my-2 border-blue-gray-200" />
+
         <div className="mb-6 mx-5 flex flex-col gap-6">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Special instructions
@@ -119,7 +308,8 @@ function Product({ itemDetails }) {
             }}
           />
         </div>
-        <div className="mb-6 fixed bottom-14 z-50 flex items-center justify-center gap-4 mx-36">
+
+        <div className="mb-6 fixed bottom-14 z-50 flex items-center justify-center gap-4 mx-44">
           <Button
             variant="outlined"
             disabled={qty === 1}
@@ -164,15 +354,39 @@ function Product({ itemDetails }) {
       </div>
 
       <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
-        <Button
-          size="lg"
-          variant="gradient"
-          className="flex justify-between items-center gap-48 rounded-full"
-          onClick={handleAddToCart}
-        >
-          <span>Add to Cart</span>
-          <span className="flex items-center">KWD {price * qty}</span>
-        </Button>
+        {consumerId ? (
+          cartExits ? (
+            <Button
+              size="lg"
+              variant="gradient"
+              className="flex justify-center items-center gap-48 rounded-full px-44"
+              fullWidth
+              onClick={handleAddToCart}
+            >
+              <span>Go to the Cart</span>
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              variant="gradient"
+              className="flex justify-between items-center gap-48 rounded-full px-14"
+              onClick={handleAddToCart}
+            >
+              <span>Add to Cart</span>
+              <span className="flex items-center">{price * qty} KD</span>
+            </Button>
+          )
+        ) : (
+          <Button
+            size="lg"
+            variant="gradient"
+            className="flex justify-center items-center gap-48 rounded-full px-36"
+            fullWidth
+            onClick={handleStartOrder}
+          >
+            <span>Start Order</span>
+          </Button>
+        )}
       </div>
     </Card>
   );
