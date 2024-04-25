@@ -38,7 +38,7 @@ function App({ Component, pageProps, restaurantDetails }) {
     try {
       if (!location.lat || !location.lng) return;
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=GoogleAPI`
       );
       const data = await response.json();
       if (data.results.length > 0) {
