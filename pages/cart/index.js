@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
     console.log(consumerId, "consumerId");
 
     const response = await axios.get(
-      `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
     // Check if data exists and is not empty
     if (

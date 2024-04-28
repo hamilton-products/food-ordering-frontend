@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
     console.log(addressId, "addressId1", addressType, "addressType");
 
     const response = await axios.get(
-      `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
 
     let cartDetails = [];
@@ -77,7 +77,7 @@ export async function getServerSideProps(context) {
     console.log(cartDetails, "cartDetails");
 
     const restaurantResponse = await axios.post(
-      "http://localhost:9956/backend/restaurant/get-restaurant-details-backend",
+      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-details-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -93,7 +93,7 @@ export async function getServerSideProps(context) {
     console.log(restaurantDetails, "restaurantDetails");
 
     const paymentMethodResponse = await axios.get(
-      "http://localhost:9956/api/payment/payment-method-list",
+      "https://apitasweek.hamiltonkw.co.in/api/payment/payment-method-list",
       {
         params: {
           currency: "kwd",
@@ -112,7 +112,7 @@ export async function getServerSideProps(context) {
 
     if (paymentId) {
       const paymentStatusResponse = await axios.post(
-        "http://localhost:9956/api/payment/payment-status",
+        "https://apitasweek.hamiltonkw.co.in/api/payment/payment-status",
         {
           paymentId: paymentId,
         }
@@ -125,7 +125,7 @@ export async function getServerSideProps(context) {
     console.log(transactionDetails, "transactionDetails Altamash");
 
     const adressResponse = await axios.post(
-      `http://localhost:9956/api/consumer/manage-delivery-address`,
+      `https://apitasweek.hamiltonkw.co.in/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "get",

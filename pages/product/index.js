@@ -14,7 +14,7 @@ export async function getServerSideProps(context) {
   const consumerId = context.req.cookies.consumerId || "";
   try {
     const response = await axios.post(
-      "http://localhost:9956/backend/item/get-items",
+      "https://apitasweek.hamiltonkw.co.in/backend/item/get-items",
       {
         item_id: itemId,
       },

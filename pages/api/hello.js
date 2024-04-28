@@ -6,7 +6,7 @@ import { useRouter } from "next/router"; // Import the useRouter hook
 export const sendOTP = async (phoneNumber, countryCode) => {
   try {
     const response = await axios.post(
-      "http://localhost:9956/api/auth/send-otp",
+      "https://apitasweek.hamiltonkw.co.in/api/auth/send-otp",
       {
         mobile: phoneNumber, // Assuming phoneNumber is passed in the request body
         request_type: "signUp",
@@ -33,7 +33,7 @@ export const verifyMobileOTP = async (countryCode, otp) => {
   const phoneNumber = Cookies.get("phoneNumber");
   try {
     const response = await axios.post(
-      "http://localhost:9956/api/auth/verify-mobile-otp",
+      "https://apitasweek.hamiltonkw.co.in/api/auth/verify-mobile-otp",
       {
         mobile: phoneNumber,
         mobile_country_code: "+" + countryCode,
@@ -70,7 +70,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
   transformedData = JSON.stringify(transformedData);
   try {
     const response = await axios.post(
-      "http://localhost:9956/api/cart/add-to-cart/consumer",
+      "https://apitasweek.hamiltonkw.co.in/api/cart/add-to-cart/consumer",
       {
         item_id: productId,
         qty: quantity,
@@ -106,7 +106,7 @@ export const deleteCart = async (cartId) => {
 
   try {
     const response = await axios.delete(
-      `http://localhost:9956/api/cart/remove-from-cart/consumer/${consumerId}/${cartId}`,
+      `https://apitasweek.hamiltonkw.co.in/api/cart/remove-from-cart/consumer/${consumerId}/${cartId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export const deleteCart = async (cartId) => {
 export const updateCart = async (cartId, quantity) => {
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/cart/update-cart/${cartId}`,
+      `https://apitasweek.hamiltonkw.co.in/api/cart/update-cart/${cartId}`,
       {
         qty: quantity,
         item_options: "[]", // send as a string
@@ -146,7 +146,7 @@ export const checkCart = async (itemId) => {
 
   try {
     const response = await axios.get(
-      `http://localhost:9956/api/cart/check-item-exists-in-cart/${consumerId}/consumer/${itemId}`,
+      `https://apitasweek.hamiltonkw.co.in/api/cart/check-item-exists-in-cart/${consumerId}/consumer/${itemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +169,7 @@ export const addAddress = async (address) => {
   const area = address.area;
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/consumer/manage-delivery-address`,
+      `https://apitasweek.hamiltonkw.co.in/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "add",
@@ -202,7 +202,7 @@ export const placeOrder = async (order) => {
 
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/order/place-order`,
+      `https://apitasweek.hamiltonkw.co.in/api/order/place-order`,
       {
         place_order_json: JSON.stringify({
           // transaction_id: "",
@@ -265,7 +265,7 @@ export const getAddressDetails = async () => {
 
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/consumer/manage-delivery-address`,
+      `https://apitasweek.hamiltonkw.co.in/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "get",
@@ -291,7 +291,7 @@ export const getAddressDetails = async () => {
 export const paymentMethod = async (data) => {
   try {
     const response = await axios.get(
-      `http://localhost:9956/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=RES1708493724LCA58967`,
+      `https://apitasweek.hamiltonkw.co.in/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=RES1708493724LCA58967`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -308,7 +308,7 @@ export const paymentMethod = async (data) => {
 export const cancelOrder = async (orderId) => {
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/consumer/cancel-order-counsumer`,
+      `https://apitasweek.hamiltonkw.co.in/api/consumer/cancel-order-counsumer`,
       {
         order_id: orderId,
       },
@@ -334,7 +334,7 @@ export const executePayment = async (paymentMethodId, discountedTotal) => {
 
   try {
     const response = await axios.post(
-      `http://localhost:9956/api/payment/execute-payment`,
+      `https://apitasweek.hamiltonkw.co.in/api/payment/execute-payment`,
       {
         currency: 1,
         code: "EN",

@@ -22,14 +22,14 @@ export async function getServerSideProps(context) {
 
     if (consumerId) {
       const cartDetailsResponse = await axios.get(
-        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
+        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
       );
 
       cartDetails = cartDetailsResponse.data.payload.cartItems || [];
     }
 
     const response = await axios.post(
-      "http://localhost:9956/backend/restaurant/get-restaurant-menu-backend",
+      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-menu-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
           const itemDetailsWithItemData = await Promise.all(
             category.itemDetails.map(async (item) => {
               const itemResponse = await axios.post(
-                "http://localhost:9956/backend/item/get-items",
+                "https://apitasweek.hamiltonkw.co.in/backend/item/get-items",
                 {
                   item_id: item.item_id,
                 },

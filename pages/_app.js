@@ -140,7 +140,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
   // Fetch data server-side using Axios
   try {
     const response = await axios.post(
-      "http://localhost:9956/backend/restaurant/get-restaurant-details-backend",
+      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-details-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },

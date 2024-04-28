@@ -27,13 +27,13 @@ export async function getServerSideProps(context) {
     }
 
     const currentResponse = await axios.get(
-      `http://localhost:9956/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
+      `https://apitasweek.hamiltonkw.co.in/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
     );
     const currentOrderList =
       currentResponse.data && currentResponse.data.payload;
 
     const pastResponse = await axios.get(
-      `http://localhost:9956/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
+      `https://apitasweek.hamiltonkw.co.in/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
     );
     const pastOrderList = pastResponse.data && pastResponse.data.payload;
 
