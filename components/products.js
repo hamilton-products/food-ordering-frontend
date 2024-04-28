@@ -15,6 +15,7 @@ import {
   CardBody,
   Button,
   CardHeader,
+  Rating,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
@@ -37,8 +38,11 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 
 import { deleteCart, updateCart, addToCart } from "@/pages/api/hello";
+import { useTranslation } from "next-i18next";
 
 function SidebarWithSearch({ menu, cartDetails }) {
+  const [searchQuery, setSearchQuery] = React.useState("");
+
   console.log(cartDetails, "cartDetails");
   const consumerId = Cookies.get("consumerId");
   console.log(menu, "menushsg");
@@ -54,12 +58,23 @@ function SidebarWithSearch({ menu, cartDetails }) {
   const [cartExits, setCartExists] = React.useState(true);
   const [mobileResponse, setMobileResponse] = React.useState(true);
 
+  const [mobileXtraSmallResponse, setMobileXtraSmallResponse] =
+    React.useState(true);
+
+  const { locale } = router;
+
+  console.log(locale, "sad");
+
+  const { t, i18n } = useTranslation("common");
+  console.log("Current locale:", i18n.language);
+  console.log("Translated string for 'ReviewOrder':", t("ReviewOrder"));
+
   // create a function for screen size for mobile and set in a useState hook
 
   // create a function for screen size for mobile and set in a useState hook
   React.useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
+      if (window.innerWidth < 960) {
         setMobileResponse(false);
       } else {
         setMobileResponse(true);
@@ -69,6 +84,32 @@ function SidebarWithSearch({ menu, cartDetails }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  React.useEffect(() => {
+    const handleResizeXtraSmall = () => {
+      if (window.innerWidth < 460) {
+        setMobileXtraSmallResponse(false);
+      } else {
+        setMobileXtraSmallResponse(true);
+      }
+    };
+    handleResizeXtraSmall();
+    window.addEventListener("resize", handleResizeXtraSmall);
+    return () => window.removeEventListener("resize", handleResizeXtraSmall);
+  }, []);
+
+  // Function to filter menu items based on search query
+  const filteredMenu = menu.map((category) => ({
+    ...category,
+    itemDetails: category.itemDetails.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+  }));
+
+  // Function to handle search input change
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const fetchCartItems = async () => {
     try {
@@ -155,7 +196,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
     <Card
       className={`h-[calc(100vh${
         checkCartExists ? "-5rem" : ""
-      })] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+      })] w-full lg:max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
     >
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         {/* <img
@@ -164,17 +205,20 @@ function SidebarWithSearch({ menu, cartDetails }) {
           className="h-8 w-8"
         /> */}
         <Typography variant="h5" color="blue-gray">
-          Delivery
+          {t("ReviewOrder")}
         </Typography>
       </div>
       <div className="p-2">
         <Input
           icon={<MagnifyingGlassIcon className="h-5 w-5" />}
           label="Search"
+          value={searchQuery}
+          onChange={handleSearchInputChange}
         />
       </div>
+
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
-        {menu.map((category, categoryIndex) => (
+        {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
             {category.itemDetails.map((item, itemIndex) => (
               <Card
@@ -189,54 +233,72 @@ function SidebarWithSearch({ menu, cartDetails }) {
                     key={itemIndex}
                   >
                     <CardBody className="p-3">
-                      <Typography variant="paragraph" className="mb-2">
+                      <Typography
+                        variant="h6"
+                        className="mb-2"
+                        color="blue-gray"
+                      >
                         {item.title}
                       </Typography>
 
-                      <Typography className="mb-6 font-normal !text-gray-500 ">
-                        {item.description.length > 40
-                          ? item.description.substring(0, 40) + "..."
+                      <Typography
+                        variant="small"
+                        className="mb-3 font-normal !text-gray-500 "
+                      >
+                        {item.description.length > 50
+                          ? item.description.substring(0, 50) + "..."
                           : item.description}
                       </Typography>
+                      <Rating readonly value={item.item_data.avg_rating} />
                       {/* <Button
-                      onClick={() => goToItemDetails(item.item_id)}
-                      color="gray"
-                      variant="gradient"
-                      size="lg"
-                      className="rounded-full"
-                    >
-                      {item.price} KD
-                    </Button> */}
+                     onClick={() => goToItemDetails(item.item_id)}
+                     color="gray"
+                     variant="gradient"
+                     size="lg"
+                     className="rounded-full"
+                   >
+                     {item.price} KD
+                   </Button> */}
                     </CardBody>
                   </Link>
 
-                  <div className="mb-3 flex flex-row gap-3 mx-2 sm:w-48">
+                  <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48">
                     <Button
                       onClick={() => goToItemDetails(item.item_id)}
-                      size="lg"
+                      size={mobileXtraSmallResponse ? "lg" : "sm"}
                       variant="gradient"
                       className="group relative flex items-center gap-3 overflow-hidden pr-[72px] rounded-full"
                     >
-                      {item.price} KD
-                      <span className="absolute right-0 grid h-full w-12 place-items-center">
+                      <span className="text-[18px]"> {item.price} KD</span>
+
+                      <span className="absolute right-0 grid h-full w-12 place-items-center mb-1">
                         <ShoppingBagIcon className="absolute left-0 h-6 w-6 text-white" />
                       </span>
                     </Button>
                   </div>
                 </div>
-                <div className="flex-1 mr-3 mt-6 ">
-                  <CardHeader floated={true} className="mx-0 mt-0 mb-6 h-48 ">
+                <div className="flex-1  mt-6 lg:px-12 md:px-5 sm:px-5 px-5 ">
+                  <CardHeader
+                    floated={true}
+                    className="mx-0 mt-0 mb-6 lg:h-44 lg:w-44 md:h-44  "
+                  >
                     <img
                       src={item.item_data.cover_photo}
                       alt={item.title}
-                      className="h-full w-full object-cover "
+                      className="h-full w-full object-cover"
                     />
                   </CardHeader>
                 </div>
                 {checkCartExists && (
-                  <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
+                  <div
+                    className={
+                      mobileResponse
+                        ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto"
+                        : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto"
+                    }
+                  >
                     <Button
-                      size={mobileResponse ? "lg" : "md"}
+                      size={mobileXtraSmallResponse ? "lg" : "sm"}
                       variant="gradient"
                       className="flex justify-center items-center gap-24 rounded-full  shadow-none"
                       fullWidth

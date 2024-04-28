@@ -1,5 +1,6 @@
 import axios from "axios";
 import Products from "@/components/products";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const MainPage = ({ menu, cartDetails }) => {
   return (
@@ -12,11 +13,16 @@ const MainPage = ({ menu, cartDetails }) => {
 export async function getServerSideProps(context) {
   try {
     const consumerId = context.req.cookies.consumerId;
+    // const locale = context.locale || "en"; // Fallback to "en" if locale is not available
+
+    const locale = context.locale === "ar" ? "AR" : "EN" || "EN";
+
+    console.log(locale, "locale");
     let cartDetails = [];
 
     if (consumerId) {
       const cartDetailsResponse = await axios.get(
-        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
+        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
       );
 
       cartDetails = cartDetailsResponse.data.payload.cartItems || [];
@@ -75,6 +81,7 @@ export async function getServerSideProps(context) {
         props: {
           menu: menuWithItemDetails,
           cartDetails: cartDetails, // Include cartDetails in the return object
+          ...(await serverSideTranslations(locale, ["common"])),
         },
       };
     } else {

@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-
 import { ThemeProvider } from "@material-tailwind/react";
 import Hero from "@/components/hero";
 import Loader from "@/components/loader";
@@ -8,10 +7,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Fingerprint2 from "fingerprintjs2";
 import Cookies from "js-cookie";
+import Head from "next/head";
+import { appWithTranslation } from "next-i18next";
 
 function App({ Component, pageProps, restaurantDetails }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const { locale } = router;
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
 
@@ -38,7 +41,7 @@ function App({ Component, pageProps, restaurantDetails }) {
     try {
       if (!location.lat || !location.lng) return;
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=GoogleAPI`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&${process.env.GOOGLE_API_KEY}`
       );
       const data = await response.json();
       if (data.results.length > 0) {
@@ -100,7 +103,7 @@ function App({ Component, pageProps, restaurantDetails }) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1042) {
+      if (window.innerWidth < 960) {
         setHeroShown(true);
       } else {
         setHeroShown(false);
@@ -116,15 +119,20 @@ function App({ Component, pageProps, restaurantDetails }) {
   }, []);
 
   return (
-    <ThemeProvider>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {loading ? <Loader /> : <Component {...pageProps} />}
+    <>
+      <Head>
+        <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
+      </Head>
+      <ThemeProvider>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {loading ? <Loader /> : <Component {...pageProps} />}
 
-        {showHero && !heroShown && (
-          <Hero restaurantDetails={restaurantDetails} />
-        )}
-      </div>
-    </ThemeProvider>
+          {showHero && !heroShown && (
+            <Hero restaurantDetails={restaurantDetails} />
+          )}
+        </div>
+      </ThemeProvider>
+    </>
   );
 }
 
@@ -156,4 +164,4 @@ App.getInitialProps = async ({ Component, ctx }) => {
   }
 };
 
-export default App;
+export default appWithTranslation(App);

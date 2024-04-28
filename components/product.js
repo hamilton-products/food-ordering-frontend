@@ -17,6 +17,7 @@ import {
   Input,
   Checkbox,
   Radio,
+  Rating,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
@@ -38,6 +39,8 @@ function Product({ itemDetails, consumerId }) {
   const title = itemDetails.title && itemDetails.title.EN;
   const description = itemDetails.description && itemDetails.description.EN;
   const price = itemDetails.price;
+
+  const avg_rating = itemDetails.avg_rating;
   const [open, setOpen] = React.useState(0);
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
@@ -216,10 +219,12 @@ function Product({ itemDetails, consumerId }) {
           <Typography className="mb-6 font-normal !text-gray-500 ">
             {description}
           </Typography>
-
-          <Typography variant="paragraph" className="mb-2">
-            KD {price}
-          </Typography>
+          <div className="flex justify-between items-center mb-5">
+            <Typography variant="h5" color="blue-gray">
+              KD {price}
+            </Typography>
+            <Rating value={avg_rating} readonly />
+          </div>
         </CardBody>
 
         <div className="mb-6 mx-5 flex flex-col gap-6">
@@ -270,12 +275,12 @@ function Product({ itemDetails, consumerId }) {
                                   }
                                 />
                               )}
-                              <Typography variant="body1" color="blue-gray">
+                              <Typography variant="small" color="blue-gray">
                                 {items.title.EN}
                               </Typography>
 
                               <Typography
-                                variant="body1"
+                                variant="small"
                                 color="blue-gray"
                                 className="flex items-end ml-auto p-2"
                               >
