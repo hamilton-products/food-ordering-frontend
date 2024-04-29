@@ -10,6 +10,7 @@ export default function CartPage({ cartDetails }) {
 }
 
 export async function getServerSideProps(context) {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   try {
     // Retrieve device_id from cookies in the server-side context
     const consumerId = context.req.cookies.consumerId;
@@ -26,7 +27,7 @@ export async function getServerSideProps(context) {
     console.log(consumerId, "consumerId");
 
     const response = await axios.get(
-      `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
     // Check if data exists and is not empty
     if (

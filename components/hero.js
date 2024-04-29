@@ -3,6 +3,7 @@
 import { Avatar, Button, Typography } from "@material-tailwind/react";
 
 function Hero({ restaurantDetails }) {
+  console.log(restaurantDetails, "restaurantDetails");
   const cover_photo = restaurantDetails?.cover_photo || "";
   const logo = restaurantDetails.logo || "";
   const description =

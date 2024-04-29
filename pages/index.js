@@ -11,6 +11,7 @@ const MainPage = ({ menu, cartDetails }) => {
 };
 
 export async function getServerSideProps(context) {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   try {
     const consumerId = context.req.cookies.consumerId;
     // const locale = context.locale || "en"; // Fallback to "en" if locale is not available
@@ -22,14 +23,14 @@ export async function getServerSideProps(context) {
 
     if (consumerId) {
       const cartDetailsResponse = await axios.get(
-        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
+        `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
       );
 
       cartDetails = cartDetailsResponse.data.payload.cartItems || [];
     }
 
     const response = await axios.post(
-      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-menu-backend",
+      `${baseUrl}/backend/restaurant/get-restaurant-menu-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -52,7 +53,7 @@ export async function getServerSideProps(context) {
           const itemDetailsWithItemData = await Promise.all(
             category.itemDetails.map(async (item) => {
               const itemResponse = await axios.post(
-                "https://apitasweek.hamiltonkw.co.in/backend/item/get-items",
+                `${baseUrl}/backend/item/get-items`,
                 {
                   item_id: item.item_id,
                 },

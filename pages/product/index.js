@@ -10,11 +10,12 @@ export default function ProductPage({ itemDetails, consumerId }) {
 }
 
 export async function getServerSideProps(context) {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   const { itemId } = context.query;
   const consumerId = context.req.cookies.consumerId || "";
   try {
     const response = await axios.post(
-      "https://apitasweek.hamiltonkw.co.in/backend/item/get-items",
+      `${baseUrl}/backend/item/get-items`,
       {
         item_id: itemId,
       },

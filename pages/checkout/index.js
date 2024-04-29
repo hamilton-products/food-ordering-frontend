@@ -22,6 +22,7 @@ export default function AddressPage({
 }
 
 export async function getServerSideProps(context) {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   let transactionDetails = {}; // Declare transactionDetails here
 
   try {
@@ -52,7 +53,7 @@ export async function getServerSideProps(context) {
     console.log(addressId, "addressId1", addressType, "addressType");
 
     const response = await axios.get(
-      `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
 
     let cartDetails = [];
@@ -77,7 +78,7 @@ export async function getServerSideProps(context) {
     console.log(cartDetails, "cartDetails");
 
     const restaurantResponse = await axios.post(
-      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-details-backend",
+      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -93,12 +94,13 @@ export async function getServerSideProps(context) {
     console.log(restaurantDetails, "restaurantDetails");
 
     const paymentMethodResponse = await axios.get(
-      "https://apitasweek.hamiltonkw.co.in/api/payment/payment-method-list",
+      `${baseUrl}/api/payment/payment-method-list`,
       {
         params: {
           currency: "kwd",
           type_id: "PYT1572591869XMA79487",
           code: "EN",
+          amount: 100,
           restaurant_id: "RES1708493724LCA58967",
         },
       }
@@ -112,7 +114,7 @@ export async function getServerSideProps(context) {
 
     if (paymentId) {
       const paymentStatusResponse = await axios.post(
-        "https://apitasweek.hamiltonkw.co.in/api/payment/payment-status",
+        `${baseUrl}/api/payment/payment-status`,
         {
           paymentId: paymentId,
         }
@@ -125,7 +127,7 @@ export async function getServerSideProps(context) {
     console.log(transactionDetails, "transactionDetails Altamash");
 
     const adressResponse = await axios.post(
-      `https://apitasweek.hamiltonkw.co.in/api/consumer/manage-delivery-address`,
+      `${baseUrl}/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "get",

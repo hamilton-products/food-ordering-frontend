@@ -14,6 +14,8 @@ function App({ Component, pageProps, restaurantDetails }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  console.log(restaurantDetails, "restaurantDetails");
+
   const { locale } = router;
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
@@ -137,10 +139,11 @@ function App({ Component, pageProps, restaurantDetails }) {
 }
 
 App.getInitialProps = async ({ Component, ctx }) => {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   // Fetch data server-side using Axios
   try {
     const response = await axios.post(
-      "https://apitasweek.hamiltonkw.co.in/backend/restaurant/get-restaurant-details-backend",
+      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -150,6 +153,8 @@ App.getInitialProps = async ({ Component, ctx }) => {
         },
       }
     );
+
+    console.log(response, "response");
     const restaurantDetails = response.data && response.data.payload;
 
     let pageProps = {};

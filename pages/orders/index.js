@@ -13,6 +13,7 @@ export default function CartPage({ pastOrderList, currentOrderList }) {
 }
 
 export async function getServerSideProps(context) {
+  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   try {
     // Retrieve device_id from cookies in the server-side context
     const consumerId = context.req.cookies.consumerId;
@@ -27,13 +28,13 @@ export async function getServerSideProps(context) {
     }
 
     const currentResponse = await axios.get(
-      `https://apitasweek.hamiltonkw.co.in/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
+      `${baseUrl}/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
     );
     const currentOrderList =
       currentResponse.data && currentResponse.data.payload;
 
     const pastResponse = await axios.get(
-      `https://apitasweek.hamiltonkw.co.in/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
+      `${baseUrl}/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
     );
     const pastOrderList = pastResponse.data && pastResponse.data.payload;
 
