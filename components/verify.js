@@ -62,7 +62,7 @@ function Phone() {
 
     try {
       const response = await axios.post(
-        "http://localhost:9956/api/auth/verify-mobile-otp",
+        "https://apitasweek.hamiltonkw.co.in/api/auth/verify-mobile-otp",
         {
           mobile: phoneNumber,
           mobile_country_code: "+" + countryCode,
