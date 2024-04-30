@@ -217,7 +217,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
         />
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
+      <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-4">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
             {category.itemDetails.map((item, itemIndex) => (
