@@ -135,6 +135,7 @@ function SidebarWithSearch({ cartDetails }) {
       await updateCart(cartId, qty);
       fetchCartItems(); // refresh cart items after updating quantity
     } catch (error) {
+      //eror
       console.error("Error updating item from cart:", error);
     }
   };
