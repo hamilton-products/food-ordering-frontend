@@ -217,7 +217,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
         />
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-4">
+      <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
             {category.itemDetails.map((item, itemIndex) => (
@@ -225,7 +225,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                 key={itemIndex}
                 color="transparent"
                 shadow={true}
-                className="flex flex-row items-center"
+                className="flex flex-row items-center "
               >
                 <div className="flex-1">
                   <Link
@@ -249,7 +249,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                           ? item.description.substring(0, 50) + "..."
                           : item.description}
                       </Typography>
-                      <Rating readonly value={item.item_data.avg_rating} />
+                      {/* <Rating readonly value={item.item_data.avg_rating} /> */}
                       {/* <Button
                      onClick={() => goToItemDetails(item.item_id)}
                      color="gray"
@@ -262,17 +262,32 @@ function SidebarWithSearch({ menu, cartDetails }) {
                     </CardBody>
                   </Link>
 
-                  <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48">
+                  <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48 px-1">
                     <Button
                       onClick={() => goToItemDetails(item.item_id)}
                       size={mobileXtraSmallResponse ? "lg" : "sm"}
                       variant="gradient"
                       className="group relative flex items-center gap-3 overflow-hidden pr-[72px] rounded-full"
                     >
-                      <span className="text-[18px]"> {item.price} KD</span>
+                      <span
+                        className={
+                          mobileXtraSmallResponse
+                            ? "text-[18px]"
+                            : "text-[13px]"
+                        }
+                      >
+                        {" "}
+                        {item.price} KD
+                      </span>
 
                       <span className="absolute right-0 grid h-full w-12 place-items-center mb-1">
-                        <ShoppingBagIcon className="absolute left-0 h-6 w-6 text-white" />
+                        <ShoppingBagIcon
+                          className={
+                            mobileXtraSmallResponse
+                              ? "absolute left-0 h-5 w-5 text-dark"
+                              : "absolute left-0 h-4 w-4 text-dark"
+                          }
+                        />
                       </span>
                     </Button>
                   </div>
@@ -280,7 +295,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                 <div className="flex-1  mt-6 lg:px-12 md:px-5 sm:px-5 px-5 ">
                   <CardHeader
                     floated={true}
-                    className="mx-0 mt-0 mb-6 lg:h-44 lg:w-44 md:h-44  "
+                    className="mx-0 mt-0 mb-6 lg:h-44 lg:w-44 md:h-44 h-32 "
                   >
                     <img
                       src={item.item_data.cover_photo}
