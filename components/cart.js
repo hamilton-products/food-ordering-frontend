@@ -59,11 +59,19 @@ function SidebarWithSearch({ cartDetails }) {
   };
 
   const consumerId = Cookies.get("consumerId");
+  const deviceId = Cookies.get("fingerprint");
+  let consumerType = "consumer";
+
+  if (!consumerId) {
+    consumerType = "guest";
+  }
+
+  const idToUse = consumerId ? consumerId : deviceId;
 
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
+        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
       );
       if (
         response.data &&

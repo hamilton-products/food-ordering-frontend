@@ -14,22 +14,21 @@ export async function getServerSideProps(context) {
   try {
     // Retrieve device_id from cookies in the server-side context
     const consumerId = context.req.cookies.consumerId;
+    const deviceId = context.req.cookies.fingerprint;
+
+    let consumerType = "consumer";
 
     if (!consumerId) {
-      return {
-        redirect: {
-          destination: "/phone",
-          permanent: false,
-        },
-      };
+      consumerType = "guest";
     }
 
-    console.log(consumerId, "consumerId");
+    const idToUse = consumerId ? consumerId : deviceId;
 
     const response = await axios.get(
-      `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
+      `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
     );
     // Check if data exists and is not empty
+    console.log(response, "cart re");
     if (
       response.data &&
       response.data.payload &&

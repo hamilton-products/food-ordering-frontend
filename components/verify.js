@@ -60,12 +60,15 @@ function Phone() {
     const phoneNumber = Cookies.get("phoneNumber");
     const address = Cookies.get("saveAddress");
 
+    const device_id = Cookies.get("fingerprint");
+
     try {
       const response = await axios.post(
         "https://apitasweek.hamiltonkw.co.in/api/auth/verify-mobile-otp",
         {
           mobile: phoneNumber,
           mobile_country_code: "+" + countryCode,
+
           otp,
           type: "consumer",
           request_type: "mobile",
@@ -86,7 +89,15 @@ function Phone() {
         response.data.payload.consumer_id !== "" &&
         response.data.payload.consumer_id !== undefined
       ) {
-        router.push("/");
+        await axios.put(
+          `https://apitasweek.hamiltonkw.co.in/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
+        );
+
+        // Call remove-all-from-cart API
+        await axios.delete(
+          `https://apitasweek.hamiltonkw.co.in/api/cart/remove-all-from-cart/guest/${device_id}`
+        );
+        router.push("/checkout");
       }
       // Assuming you're returning the response data
       return response.data.payload;

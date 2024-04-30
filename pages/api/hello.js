@@ -64,17 +64,25 @@ export const verifyMobileOTP = async (countryCode, otp) => {
 
 export const addToCart = async (productId, quantity, transformedData) => {
   const consumerId = Cookies.get("consumerId");
+  const deviceId = Cookies.get("fingerprint");
+  let consumerType = "consumer";
   console.log(consumerId, "consumerIdssss");
+
+  if (!consumerId) {
+    consumerType = "guest";
+  }
+
+  const idToUse = consumerId ? consumerId : deviceId;
 
   // I want transformedData in a stringfy format
   transformedData = JSON.stringify(transformedData);
   try {
     const response = await axios.post(
-      "https://apitasweek.hamiltonkw.co.in/api/cart/add-to-cart/consumer",
+      `https://apitasweek.hamiltonkw.co.in/api/cart/add-to-cart/${consumerType}`,
       {
         item_id: productId,
         qty: quantity,
-        consumer_id: consumerId,
+        consumer_id: idToUse,
         restaurant_id: "RES1708493724LCA58967",
         code: "EN",
         item_options: transformedData, // send as a string
@@ -103,10 +111,18 @@ export const addToCart = async (productId, quantity, transformedData) => {
 
 export const deleteCart = async (cartId) => {
   const consumerId = Cookies.get("consumerId");
+  const deviceId = Cookies.get("fingerprint");
+  let consumerType = "consumer";
+
+  if (!consumerId) {
+    consumerType = "guest";
+  }
+
+  const idToUse = consumerId ? consumerId : deviceId;
 
   try {
     const response = await axios.delete(
-      `https://apitasweek.hamiltonkw.co.in/api/cart/remove-from-cart/consumer/${consumerId}/${cartId}`,
+      `https://apitasweek.hamiltonkw.co.in/api/cart/remove-from-cart/${consumerType}/${idToUse}/${cartId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -143,10 +159,18 @@ export const updateCart = async (cartId, quantity) => {
 
 export const checkCart = async (itemId) => {
   const consumerId = Cookies.get("consumerId");
+  const deviceId = Cookies.get("fingerprint");
+  let consumerType = "consumer";
+
+  if (!consumerId) {
+    consumerType = "guest";
+  }
+
+  const idToUse = consumerId ? consumerId : deviceId;
 
   try {
     const response = await axios.get(
-      `https://apitasweek.hamiltonkw.co.in/api/cart/check-item-exists-in-cart/${consumerId}/consumer/${itemId}`,
+      `https://apitasweek.hamiltonkw.co.in/api/cart/check-item-exists-in-cart/${idToUse}/${consumerType}/${itemId}`,
       {
         headers: {
           "Content-Type": "application/json",

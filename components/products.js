@@ -196,7 +196,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
     <Card
       className={`h-[calc(100vh${
         checkCartExists ? "-5rem" : ""
-      })] w-full lg:max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+      })] w-full lg:max-w-[32rem] shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
     >
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         {/* <img
@@ -293,7 +293,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                   <div
                     className={
                       mobileResponse
-                        ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto"
+                        ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto px-5"
                         : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto"
                     }
                   >

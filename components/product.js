@@ -99,6 +99,8 @@ function Product({ itemDetails, consumerId }) {
   const handleAddToCart = async () => {
     try {
       const response = await checkCart(productId);
+
+      console.log(response, "altamash");
       if (response.exists === true) {
         redirectToCart();
       } else {
@@ -359,37 +361,25 @@ function Product({ itemDetails, consumerId }) {
       </div>
 
       <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
-        {consumerId ? (
-          cartExits ? (
-            <Button
-              size="lg"
-              variant="gradient"
-              className="flex justify-center items-center gap-48 rounded-full px-44"
-              fullWidth
-              onClick={handleAddToCart}
-            >
-              <span>Go to the Cart</span>
-            </Button>
-          ) : (
-            <Button
-              size="lg"
-              variant="gradient"
-              className="flex justify-between items-center gap-48 rounded-full px-14"
-              onClick={handleAddToCart}
-            >
-              <span>Add to Cart</span>
-              <span className="flex items-center">{price * qty} KD</span>
-            </Button>
-          )
+        {cartExits ? (
+          <Button
+            size="lg"
+            variant="gradient"
+            className="flex justify-center items-center gap-48 rounded-full px-44"
+            fullWidth
+            onClick={handleAddToCart}
+          >
+            <span>Go to the Cart</span>
+          </Button>
         ) : (
           <Button
             size="lg"
             variant="gradient"
-            className="flex justify-center items-center gap-48 rounded-full px-36"
-            fullWidth
-            onClick={handleStartOrder}
+            className="flex justify-between items-center gap-48 rounded-full px-14"
+            onClick={handleAddToCart}
           >
-            <span>Start Order</span>
+            <span>Add to Cart</span>
+            <span className="flex items-center">{price * qty} KD</span>
           </Button>
         )}
       </div>
