@@ -206,9 +206,9 @@ function SidebarWithSearch({ menu, cartDetails }) {
 
   return (
     <Card
-      className={`h-[calc(100vh${
-        checkCartExists ? "-5rem" : ""
-      })] w-full lg:max-w-[32rem] shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+      className={`${
+        checkCartExists ? "h-[calc(100vh-5rem)]" : ""
+      } w-full lg:max-w-[32rem] shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
     >
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         {/* <img

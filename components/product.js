@@ -44,6 +44,7 @@ function Product({ itemDetails, consumerId }) {
   const [open, setOpen] = React.useState(0);
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
+
   const router = useRouter();
 
   const [selectedOption, setSelectedOption] = React.useState(null);
