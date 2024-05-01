@@ -114,7 +114,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
+        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
       );
       if (
         response.data &&
