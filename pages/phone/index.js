@@ -22,7 +22,7 @@ export default function PhonePage() {
 // export async function getServerSideProps() {
 //   try {
 //     const response = await axios.post(
-//       "https://apitasweek.hamiltonkw.co.in/api/auth/send-otp",
+//       "https://apitasweeq.hamiltonkw.com/api/auth/send-otp",
 //       {
 //         mobile: phoneNumber,
 //         request_type: "signUp",
