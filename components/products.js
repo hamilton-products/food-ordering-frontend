@@ -44,7 +44,6 @@ function SidebarWithSearch({ menu, cartDetails }) {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   console.log(cartDetails, "cartDetails");
-  const consumerId = Cookies.get("consumerId");
   console.log(menu, "menushsg");
   const router = useRouter();
   const [open, setOpen] = React.useState(0);
@@ -111,10 +110,21 @@ function SidebarWithSearch({ menu, cartDetails }) {
     setSearchQuery(e.target.value);
   };
 
+  const consumerId = Cookies.get("consumerId");
+  const deviceId = Cookies.get("fingerprint");
+  let consumerType = "consumer";
+  console.log(consumerId, "consumerIdssss");
+
+  if (!consumerId) {
+    consumerType = "guest";
+  }
+
+  const idToUse = consumerId ? consumerId : deviceId;
+
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `https://apitasweeq.hamiltonkw.com/api/cart/list-cart-items/${consumerId}/consumer/EN`
+        `http://localhost:9956/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
       );
       if (
         response.data &&
@@ -192,6 +202,8 @@ function SidebarWithSearch({ menu, cartDetails }) {
 
   const checkCartExists = cartDetails.length > 0 ? true : false;
 
+  console.log(checkCartExists, "checkCartExists");
+
   return (
     <Card
       className={`h-[calc(100vh${
@@ -265,7 +277,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                   <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48 px-1">
                     <Button
                       onClick={() => goToItemDetails(item.item_id)}
-                      size={mobileXtraSmallResponse ? "lg" : "md"}
+                      size="md"
                       variant="gradient"
                       className="group relative flex items-center gap-3 overflow-hidden pr-[72px] rounded-full"
                     >
@@ -273,8 +285,8 @@ function SidebarWithSearch({ menu, cartDetails }) {
 
                       <span className="text-lg">KD</span>
 
-                      <span className="absolute right-0 grid h-full w-12 place-items-center mb-1">
-                        <ShoppingBagIcon className="absolute left-0 h-5 w-5 text-dark" />
+                      <span className="absolute right-0 grid h-full w-12 place-items-center mb-1 ">
+                        <ShoppingBagIcon className="absolute left-0 h-5 w-5 text-dark mr-3" />
                       </span>
                     </Button>
                   </div>

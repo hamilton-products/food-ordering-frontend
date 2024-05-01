@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
     }
 
     const restaurantResponse = await axios.post(
-      "https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend",
+      "http://localhost:9956/backend/restaurant/get-restaurant-details-backend",
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
       },
@@ -44,7 +44,7 @@ export async function getServerSideProps(context) {
     console.log(consumerId, "consumerId");
 
     const response = await axios.get(
-      `https://apitasweeq.hamiltonkw.com/api/order/get-order-details?order_id=${orderId}&code=EN`
+      `http://localhost:9956/api/order/get-order-details?order_id=${orderId}&code=EN`
     );
     // Check if data exists and is not empty
     if (response.data && response.data.payload) {

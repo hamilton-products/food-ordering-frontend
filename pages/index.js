@@ -14,16 +14,23 @@ export async function getServerSideProps(context) {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   try {
     const consumerId = context.req.cookies.consumerId;
-    // const locale = context.locale || "en"; // Fallback to "en" if locale is not available
+    const deviceId = context.req.cookies.fingerprint;
 
+    let consumerType = "consumer";
+
+    if (!consumerId) {
+      consumerType = "guest";
+    }
+
+    const idToUse = consumerId ? consumerId : deviceId;
     const locale = context.locale === "ar" ? "AR" : "EN" || "EN";
 
     console.log(locale, "locale");
     let cartDetails = [];
 
-    if (consumerId) {
+    if (idToUse) {
       const cartDetailsResponse = await axios.get(
-        `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/${locale}`
+        `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/${locale}`
       );
 
       cartDetails = cartDetailsResponse.data.payload.cartItems || [];

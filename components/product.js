@@ -197,7 +197,11 @@ function Product({ itemDetails, consumerId }) {
   console.log(transformedData);
 
   return (
-    <Card className="h-[calc(100vh-8rem)] w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto">
+    <Card
+      className={`${
+        cartExits ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh-8rem)]"
+      } w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
+    >
       <div className="absolute z-10">
         <Button onClick={() => goToItems()} color="white" variant="text">
           <ArrowLeftIcon className="h-10 w-10" />
@@ -315,7 +319,8 @@ function Product({ itemDetails, consumerId }) {
             }}
           />
         </div>
-
+      </div>
+      {!cartExits && (
         <div className="mb-6 fixed bottom-14 z-50 flex items-center justify-center gap-4 mx-44">
           <Button
             variant="outlined"
@@ -358,7 +363,7 @@ function Product({ itemDetails, consumerId }) {
             </svg>
           </Button>
         </div>
-      </div>
+      )}
 
       <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
         {cartExits ? (
