@@ -245,7 +245,7 @@ function Product({
   useEffect(() => {
     const timer = setTimeout(() => {
       setTransactionStatus(null);
-    }, 3000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [transactionStatus]);
 

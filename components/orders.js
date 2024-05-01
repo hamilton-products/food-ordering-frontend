@@ -105,7 +105,10 @@ function SidebarWithSearch({ pastOrderList, currentOrderList }) {
                   {desc.map((item, itemIndex) => (
                     <Card
                       key={itemIndex}
-                      className="w-full max-w-[48rem] flex-row mb-4 p-5"
+                      className="w-full max-w-[48rem] flex-row mb-4 p-5 cursor-pointer hover:shadow-xl transition duration-300 ease-in-out"
+                      onClick={() => {
+                        router.push(`/order?orderId=${item.order_id}`);
+                      }}
                     >
                       <CardHeader
                         shadow={true}

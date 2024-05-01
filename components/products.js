@@ -114,7 +114,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `https://apitasweek.hamiltonkw.co.in/api/cart/list-cart-items/${consumerId}/consumer/EN`
+        `http://localhost:9956/api/cart/list-cart-items/${consumerId}/consumer/EN`
       );
       if (
         response.data &&
@@ -232,7 +232,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                     href={`/product?itemId=${item.item_id}`}
                     key={itemIndex}
                   >
-                    <CardBody className="p-3">
+                    <CardBody className="p-3 mx-3">
                       <Typography
                         variant="h6"
                         className="mb-2"
@@ -265,29 +265,16 @@ function SidebarWithSearch({ menu, cartDetails }) {
                   <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48 px-1">
                     <Button
                       onClick={() => goToItemDetails(item.item_id)}
-                      size={mobileXtraSmallResponse ? "lg" : "sm"}
+                      size={mobileXtraSmallResponse ? "lg" : "md"}
                       variant="gradient"
                       className="group relative flex items-center gap-3 overflow-hidden pr-[72px] rounded-full"
                     >
-                      <span
-                        className={
-                          mobileXtraSmallResponse
-                            ? "text-[18px]"
-                            : "text-[13px]"
-                        }
-                      >
-                        {" "}
-                        {item.price} KD
-                      </span>
+                      <span className="text-lg mr-auto">{item.price}</span>
+
+                      <span className="text-lg">KD</span>
 
                       <span className="absolute right-0 grid h-full w-12 place-items-center mb-1">
-                        <ShoppingBagIcon
-                          className={
-                            mobileXtraSmallResponse
-                              ? "absolute left-0 h-5 w-5 text-dark"
-                              : "absolute left-0 h-4 w-4 text-dark"
-                          }
-                        />
+                        <ShoppingBagIcon className="absolute left-0 h-5 w-5 text-dark" />
                       </span>
                     </Button>
                   </div>
@@ -309,11 +296,11 @@ function SidebarWithSearch({ menu, cartDetails }) {
                     className={
                       mobileResponse
                         ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto px-5"
-                        : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto"
+                        : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto "
                     }
                   >
                     <Button
-                      size={mobileXtraSmallResponse ? "lg" : "sm"}
+                      size={mobileXtraSmallResponse ? "lg" : "md"}
                       variant="gradient"
                       className="flex justify-center items-center gap-24 rounded-full  shadow-none"
                       fullWidth

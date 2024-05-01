@@ -131,7 +131,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
     }
   }, [errorMessage]);
 
-  console.log(orderDetails, "sajhdsjahd");
+  console.log(orderDetails.status, "sajhdsjahd");
   return (
     <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none">
       <div className="flex items-left justify-left gap-4 ">
@@ -280,17 +280,19 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
           <div className="border-t-2 border-blue-gray-50"></div>
         </React.Fragment>
 
-        <div className="flex items-center justify-center">
-          <Button
-            onClick={handleCancelOrder}
-            size="lg"
-            variant="gradient"
-            className="rounded-full px-48"
-            loading={loading}
-          >
-            Cancel
-          </Button>
-        </div>
+        {orderDetails.status === "new" && (
+          <div className="flex items-center justify-center">
+            <Button
+              onClick={handleCancelOrder}
+              size="lg"
+              variant="gradient"
+              className="rounded-full px-48"
+              loading={loading}
+            >
+              Cancel
+            </Button>
+          </div>
+        )}
         {/* ))} */}
       </div>
       {errorMessage && (
