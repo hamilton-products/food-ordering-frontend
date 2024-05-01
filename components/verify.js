@@ -64,7 +64,7 @@ function Phone() {
 
     try {
       const response = await axios.post(
-        "http://localhost:9956/api/auth/verify-mobile-otp",
+        "https://apitasweeq.hamiltonkw.com/api/auth/verify-mobile-otp",
         {
           mobile: phoneNumber,
           mobile_country_code: "+" + countryCode,
@@ -90,12 +90,12 @@ function Phone() {
         response.data.payload.consumer_id !== undefined
       ) {
         await axios.put(
-          `http://localhost:9956/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
+          `https://apitasweeq.hamiltonkw.com/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
         );
 
         // Call remove-all-from-cart API
         await axios.delete(
-          `http://localhost:9956/api/cart/remove-all-from-cart/guest/${device_id}`
+          `https://apitasweeq.hamiltonkw.com/api/cart/remove-all-from-cart/guest/${device_id}`
         );
         router.push("/checkout");
       }
