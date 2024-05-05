@@ -123,6 +123,7 @@ function App({ Component, pageProps, restaurantDetails }) {
   return (
     <>
       <Head>
+        <title>Tasweek</title>
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>

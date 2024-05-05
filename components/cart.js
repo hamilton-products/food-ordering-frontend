@@ -50,9 +50,24 @@ function SidebarWithSearch({ cartDetails }) {
 
   const [cartExits, setCartExists] = React.useState(true);
 
+  const [mobileResponse, setMobileResponse] = React.useState(true);
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 488) {
+        setMobileResponse(false);
+      } else {
+        setMobileResponse(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const goToItemDetails = (itemId) => {
     router.push(`/product?itemId=${itemId}`);
@@ -153,10 +168,17 @@ function SidebarWithSearch({ cartDetails }) {
     router.push("/");
   };
 
+  const hanldeBackButton = () => {
+    router.back();
+  };
   return (
-    <Card className="h-[calc(100vh-5rem)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none">
+    <Card
+      className={`${
+        mobileResponse ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh-10rem)]"
+      } w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+    >
       <div className="absolute z-10 mt-1">
-        <Button color="dark" variant="text">
+        <Button color="dark" variant="text" onClick={hanldeBackButton}>
           <ArrowLeftIcon className="h-8 w-8" />
         </Button>
       </div>
@@ -304,18 +326,26 @@ function SidebarWithSearch({ cartDetails }) {
 
                 <div className="group fixed bottom-5 z-50 overflow-hidden mx-5 flex justify-between">
                   <Button
-                    size="lg"
+                    size={mobileResponse ? "lg" : "md"}
                     variant="outlined"
                     color="blue-gray"
-                    className="flex justify-center items-center gap-48 rounded-full px-16"
+                    className={
+                      mobileResponse
+                        ? "flex justify-center items-center gap-48 rounded-full px-16"
+                        : "flex justify-center items-center gap-48 rounded-full px-10"
+                    }
                     onClick={addMoreItemHandler}
                   >
                     <span>Add Items</span>
                   </Button>
                   <Button
-                    size="lg"
+                    size={mobileResponse ? "lg" : "md"}
                     variant="gradient"
-                    className="flex justify-center items-center gap-48 rounded-full px-16 mx-2"
+                    className={
+                      mobileResponse
+                        ? "flex justify-center items-center gap-48 rounded-full px-16 mx-2"
+                        : "flex justify-center items-center gap-48 rounded-full px-12 mx-2"
+                    }
                     onClick={placeOrderHandler}
                   >
                     <span>Checkout</span>

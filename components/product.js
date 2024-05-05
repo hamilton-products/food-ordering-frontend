@@ -45,6 +45,8 @@ function Product({ itemDetails, consumerId }) {
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(true);
+
   const router = useRouter();
 
   const [selectedOption, setSelectedOption] = React.useState(null);
@@ -52,6 +54,8 @@ function Product({ itemDetails, consumerId }) {
   const [selectedItemOptions, setSelectedItemOptions] = React.useState([]);
 
   console.log(selectedItemOptions, "selectedItemOptions");
+
+  const [mobileResponse, setMobileResponse] = React.useState(true);
 
   const itemOption = itemDetails.item_options;
 
@@ -76,7 +80,7 @@ function Product({ itemDetails, consumerId }) {
   };
 
   const goToItems = () => {
-    router.push("/");
+    router.back();
   };
 
   const productId = itemDetails.item_id;
@@ -96,20 +100,37 @@ function Product({ itemDetails, consumerId }) {
     checkCartExists();
   }, []);
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 960) {
+        setMobileResponse(false);
+      } else {
+        setMobileResponse(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // in handleAddToCart first Item is already added to cart or not
   const handleAddToCart = async () => {
     try {
+      setLoading(true);
       const response = await checkCart(productId);
 
       console.log(response, "altamash");
       if (response.exists === true) {
         redirectToCart();
+        setLoading(false);
       } else {
         addToCart(productId, qty, transformedData, redirectToCart);
         setCartExists(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error adding item to cart:", error);
+      setLoading(false);
     }
   };
 
@@ -200,7 +221,13 @@ function Product({ itemDetails, consumerId }) {
   return (
     <Card
       className={`${
-        cartExits ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh-8rem)]"
+        mobileResponse && cartExits
+          ? "h-[calc(100vh-5rem)]"
+          : cartExits
+          ? "h-[calc(100vh-10rem)]"
+          : mobileResponse
+          ? "h-[calc(100vh-8rem)]"
+          : "h-[calc(100vh-13rem)]"
       } w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
     >
       <div className="absolute z-10">
@@ -322,7 +349,13 @@ function Product({ itemDetails, consumerId }) {
         </div>
       </div>
       {!cartExits && (
-        <div className="mb-6 fixed bottom-14 z-50 flex items-center justify-center gap-4 mx-44">
+        <div
+          className={
+            mobileResponse
+              ? "mb-8 fixed bottom-12 z-50 flex items-center justify-center gap-4 mx-48"
+              : "mb-8 fixed bottom-12 z-50 flex items-center justify-center gap-4 mx-32"
+          }
+        >
           <Button
             variant="outlined"
             disabled={qty === 1}
@@ -366,26 +399,55 @@ function Product({ itemDetails, consumerId }) {
         </div>
       )}
 
-      <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
+      <div
+        className={
+          mobileResponse
+            ? "group fixed bottom-2 z-50 overflow-hidden mx-5  m-auto px-5"
+            : "group fixed bottom-2 z-50 overflow-hidden mx-5 left-0 right-0 m-auto "
+        }
+      >
         {cartExits ? (
           <Button
             size="lg"
             variant="gradient"
-            className="flex justify-center items-center gap-48 rounded-full px-44"
+            className={
+              mobileResponse
+                ? "flex justify-center items-center gap-48 rounded-full px-40"
+                : "flex justify-center items-center gap-32 rounded-full px-10"
+            }
             fullWidth
             onClick={handleAddToCart}
           >
             <span>Go to the Cart</span>
           </Button>
         ) : (
+          // <Button
+          //   // loading={loading ? true : false}
+          //   size="lg"
+          //   variant="gradient"
+          //   className={
+          //     mobileResponse
+          //       ? "flex justify-between items-center gap-48 rounded-full px-12"
+          //       : "flex justify-between items-center gap-24 rounded-full px-12"
+          //   }
+          //   onClick={handleAddToCart}
+          // >
+          //   <span className="text-sm">Add to Cart</span>
+          //   <span className="flex items-center text-lg">{price * qty} KD</span>
+          // </Button>
           <Button
             size="lg"
             variant="gradient"
-            className="flex justify-between items-center gap-48 rounded-full px-14"
+            className={
+              mobileResponse
+                ? "flex justify-center items-center gap-48 rounded-full px-12"
+                : "flex justify-center items-center gap-20 rounded-full px-10"
+            }
+            fullWidth
             onClick={handleAddToCart}
           >
-            <span>Add to Cart</span>
-            <span className="flex items-center">{price * qty} KD</span>
+            <span className="text-sm">Add to Cart</span>
+            <span className="flex items-center text-lg">{price * qty} KD</span>
           </Button>
         )}
       </div>
