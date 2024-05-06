@@ -4,7 +4,11 @@ const { i18n } = pkg;
 
 const nextConfig = {
   images: {
-    domains: ["res.cloudinary.com", "demo.myfatoorah.com"],
+    domains: [
+      "res.cloudinary.com",
+      "demo.myfatoorah.com",
+      "https://hamilton-talabat.s3.me-south-1.amazonaws.com",
+    ],
   },
   i18n,
 };

@@ -277,15 +277,27 @@ function SidebarWithSearch({ menu, cartDetails }) {
                   <div className="mb-3 flex flex-row gap-3 mx-3 sm:w-48 px-1">
                     <Button
                       onClick={() => goToItemDetails(item.item_id)}
-                      size="md"
+                      size={mobileXtraSmallResponse ? "md" : "sm"}
                       variant="gradient"
                       className="group relative flex items-center gap-3 overflow-hidden pr-[72px] rounded-full"
                     >
-                      <span className="text-lg mr-auto">{item.price}</span>
+                      <span
+                        className={`${
+                          mobileXtraSmallResponse ? "text-lg" : "text-sm"
+                        } mr-auto`}
+                      >
+                        {item.price}
+                      </span>
 
-                      <span className="text-lg">KD</span>
+                      <span
+                        className={`${
+                          mobileXtraSmallResponse ? "text-lg" : "text-sm"
+                        } mr-auto`}
+                      >
+                        KD
+                      </span>
 
-                      <span className="absolute right-0 grid h-full w-12 place-items-center mb-1 ">
+                      <span className="absolute right-0 grid h-full w-10 place-items-center mb-1 ">
                         <ShoppingBagIcon className="absolute left-0 h-5 w-5 text-dark mr-3" />
                       </span>
                     </Button>
@@ -294,7 +306,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                 <div className="flex-1  mt-6 lg:px-12 md:px-5 sm:px-5 px-5 ">
                   <CardHeader
                     floated={true}
-                    className="mx-0 mt-0 mb-6 lg:h-44 lg:w-44 md:h-44 h-32 "
+                    className="mx-0 mt-0 mb-6 lg:h-32 lg:w-auto md:h-auto h-auto w-auto sm:h-auto sm:w-auto"
                   >
                     <img
                       src={item.item_data.cover_photo}
@@ -307,7 +319,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                   <div
                     className={
                       mobileResponse
-                        ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto px-5"
+                        ? "group fixed bottom-5 z-50 overflow-hidden mx-5  m-auto px-3"
                         : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto "
                     }
                   >

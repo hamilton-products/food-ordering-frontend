@@ -22,6 +22,9 @@ function Product({ itemDetails }) {
   // get lat and lng from the cookies and set it to the location state
   const location = Cookies.get("location");
   const router = useRouter();
+
+  const [mobileXtraSmallResponse, setMobileXtraSmallResponse] =
+    React.useState(true);
   //   console.log(location, "location");
   const center = {
     lat: location ? JSON.parse(location).lat : 19.076,
@@ -36,26 +39,26 @@ function Product({ itemDetails }) {
     type: "home",
   });
 
-  // Function to detect full address using lat and long
-  const detectAddress = async () => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${center.lat},${center.lng}&key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco`
-      );
-      const data = await response.json();
-      if (data.results.length > 0) {
-        const area = data.results[0].formatted_address;
-        setAddress({ ...address, area });
-        Cookies.set("address", area);
+  React.useEffect(() => {
+    const handleResizeXtraSmall = () => {
+      if (window.innerWidth < 460) {
+        setMobileXtraSmallResponse(false);
+      } else {
+        setMobileXtraSmallResponse(true);
       }
-    } catch (error) {
-      console.error("Error detecting address:", error);
-    }
-  };
-
-  useEffect(() => {
-    detectAddress();
+    };
+    handleResizeXtraSmall();
+    window.addEventListener("resize", handleResizeXtraSmall);
+    return () => window.removeEventListener("resize", handleResizeXtraSmall);
   }, []);
+
+  // Function to filter menu items based on search query
+  const filteredMenu = menu.map((category) => ({
+    ...category,
+    itemDetails: category.itemDetails.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+  }));
 
   // Function to handle form submission
   const handleSubmit = async (e) => {

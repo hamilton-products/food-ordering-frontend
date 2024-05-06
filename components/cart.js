@@ -179,7 +179,7 @@ function SidebarWithSearch({ cartDetails }) {
     >
       <div className="absolute z-10 mt-1">
         <Button color="dark" variant="text" onClick={hanldeBackButton}>
-          <ArrowLeftIcon className="h-8 w-8" />
+          <ArrowLeftIcon className="h-8 w-8 " />
         </Button>
       </div>
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
