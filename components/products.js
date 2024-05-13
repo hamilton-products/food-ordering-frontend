@@ -306,7 +306,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                 <div className="flex-1  mt-6 lg:px-12 md:px-5 sm:px-5 px-5 ">
                   <CardHeader
                     floated={true}
-                    className="mx-0 mt-0 mb-6 lg:h-32 lg:w-auto md:h-auto h-auto w-auto sm:h-auto sm:w-auto"
+                    className="mx-0 mt-0 mb-6 lg:h-36 lg:w-auto h-36  w-auto  sm:w-auto"
                   >
                     <img
                       src={item.item_data.cover_photo}

@@ -45,7 +45,7 @@ function Product({ itemDetails, consumerId }) {
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
 
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   const router = useRouter();
 
@@ -235,13 +235,13 @@ function Product({ itemDetails, consumerId }) {
           <ArrowLeftIcon className="h-10 w-10" />
         </Button>
       </div>
-      <div className="h-92 w-full relative">
+      <div className="w-full relative">
         <Image
           width={768}
           height={768}
           src={img}
           alt={title}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover max-h-[25rem]"
         />
       </div>
       <div className="flex-1 mr-6 mt-6">
@@ -436,6 +436,7 @@ function Product({ itemDetails, consumerId }) {
           //   <span className="flex items-center text-lg">{price * qty} KD</span>
           // </Button>
           <Button
+            loading={loading === true ? true : false}
             size="lg"
             variant="gradient"
             className={
@@ -446,8 +447,22 @@ function Product({ itemDetails, consumerId }) {
             fullWidth
             onClick={handleAddToCart}
           >
-            <span className="text-sm">Add to Cart</span>
-            <span className="flex items-center text-lg">{price * qty} KD</span>
+            {loading === true ? (
+              "Add to Cart"
+            ) : (
+              <div
+                className={
+                  mobileResponse
+                    ? "flex items-center justify-between gap-48"
+                    : "flex items-center justify-between gap-28"
+                }
+              >
+                <span className="text-sm">Add to Cart</span>
+                <span className="flex items-center text-lg">
+                  {price * qty} KD
+                </span>
+              </div>
+            )}
           </Button>
         )}
       </div>
