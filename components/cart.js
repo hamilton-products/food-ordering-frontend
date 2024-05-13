@@ -37,8 +37,9 @@ import { useRouter } from "next/router";
 import { deleteCart, updateCart } from "@/pages/api/hello";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { debounce } from "lodash";
 
-function SidebarWithSearch({ cartDetails }) {
+function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   console.log(cartDetails, "menushsg");
   const router = useRouter();
   const [open, setOpen] = React.useState(0);
@@ -47,6 +48,28 @@ function SidebarWithSearch({ cartDetails }) {
   console.log(cartItems, "cartItems");
 
   console.log(cartItems, "cartItems");
+
+  const currency = restaurantDetails.currency;
+  const delivery = restaurantDetails.delivery_charge;
+
+  const discountType = restaurantDetails.discount_type;
+  const discountAmount = restaurantDetails.discount_value;
+
+  const subTotal = cartDetails.reduce(
+    (total, item) => total + item.total_price,
+    0
+  );
+
+  const total = subTotal + delivery;
+
+  const discountValue =
+    discountType === "amount" ? discountAmount : (total * discountAmount) / 100;
+
+  const discountedTotal =
+    total -
+    (discountType === "amount"
+      ? discountAmount
+      : (total * discountAmount) / 100);
 
   const [cartExits, setCartExists] = React.useState(true);
 
@@ -127,11 +150,21 @@ function SidebarWithSearch({ cartDetails }) {
     setQtyMap(initialQtyMap);
   }, [cartDetails]);
 
+  const debouncedUpdateCartDetails = React.useRef(
+    debounce(async (cartId, qty) => {
+      try {
+        await updateCart(cartId, qty);
+      } catch (error) {
+        console.error("Error updating item from cart:", error);
+      }
+    }, 500) // Adjust the debounce delay as needed
+  ).current;
+
   const incrementQty = (cartId) => {
     const updatedQtyMap = { ...qtyMap };
     updatedQtyMap[cartId] = (updatedQtyMap[cartId] || 0) + 1;
     setQtyMap(updatedQtyMap);
-    updateCartDetails(cartId, updatedQtyMap[cartId]);
+    debouncedUpdateCartDetails(cartId, updatedQtyMap[cartId]);
   };
 
   const decrementQty = (cartId) => {
@@ -139,7 +172,7 @@ function SidebarWithSearch({ cartDetails }) {
     if (updatedQtyMap[cartId] > 1) {
       updatedQtyMap[cartId] -= 1;
       setQtyMap(updatedQtyMap);
-      updateCartDetails(cartId, updatedQtyMap[cartId]);
+      debouncedUpdateCartDetails(cartId, updatedQtyMap[cartId]);
     } else if (updatedQtyMap[cartId] === 1) {
       handleDeleteCart(cartId);
     }
@@ -264,7 +297,7 @@ function SidebarWithSearch({ cartDetails }) {
                       color="blue-gray"
                       className="mb-3"
                     >
-                      KD {item.price}
+                      {currency} {item.price}
                     </Typography>
                   </CardBody>
                 </div>
@@ -349,7 +382,7 @@ function SidebarWithSearch({ cartDetails }) {
                     onClick={placeOrderHandler}
                   >
                     <span>Checkout</span>
-                    {/* <span className="flex items-center">KD {price * qty}</span> */}
+                    {/* <span className="flex items-center">{currency} {price * qty}</span> */}
                   </Button>
                 </div>
               </Card>
@@ -362,11 +395,7 @@ function SidebarWithSearch({ cartDetails }) {
               </Typography>
 
               <span className="flex items-center">
-                KD{" "}
-                {cartItems.reduce(
-                  (total, item) => total + item.price * qtyMap[item.cart_id],
-                  0
-                )}
+                {currency} {subTotal}
               </span>
             </div>
 
@@ -377,15 +406,22 @@ function SidebarWithSearch({ cartDetails }) {
               </Typography>
 
               <span className="flex items-center">
-                KD{" "}
-                {cartItems.reduce(
-                  (total, item) => total + item.price * qtyMap[item.cart_id],
-                  0
-                )}
+                {delivery} {currency}
               </span>
             </div>
+            {discountValue > 0 && (
+              <div className="flex flex-row justify-between items-center">
+                <Typography variant="small" color="blue-gray">
+                  Restaurant Discount:
+                </Typography>
+
+                <span className="flex items-center">
+                  - {discountValue} {currency}
+                </span>
+              </div>
+            )}
             <div className="border-t-2 border-blue-gray-50"></div>
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center mb-2">
               <Typography variant="h6" color="blue-gray">
                 Total:
               </Typography>
@@ -395,11 +431,7 @@ function SidebarWithSearch({ cartDetails }) {
                 color="blue-gray"
                 className="flex items-center"
               >
-                KD{" "}
-                {cartItems.reduce(
-                  (total, item) => total + item.price * qtyMap[item.cart_id],
-                  0
-                )}
+                {discountedTotal} {currency}
               </Typography>
             </div>
 

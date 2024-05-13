@@ -1,10 +1,13 @@
 import axios from "axios";
 import Products from "@/components/cart";
 
-export default function CartPage({ cartDetails }) {
+export default function CartPage({ cartDetails, restaurantDetails }) {
   return (
     <>
-      <Products cartDetails={cartDetails} />
+      <Products
+        cartDetails={cartDetails}
+        restaurantDetails={restaurantDetails}
+      />
     </>
   );
 }
@@ -21,6 +24,19 @@ export async function getServerSideProps(context) {
     if (!consumerId) {
       consumerType = "guest";
     }
+    const restaurantResponse = await axios.post(
+      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
+      {
+        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const restaurantDetails =
+      restaurantResponse.data && restaurantResponse.data.payload;
 
     const idToUse = consumerId ? consumerId : deviceId;
 
@@ -37,6 +53,7 @@ export async function getServerSideProps(context) {
     ) {
       return {
         props: {
+          restaurantDetails: restaurantDetails,
           cartDetails: response.data.payload.cartItems,
         },
       };

@@ -31,6 +31,11 @@ function Product({ itemDetails }) {
     lng: location ? JSON.parse(location).lng : 72.8777,
   };
 
+  console.log(center, "center");
+
+  const Altamash = Cookies.get("saveAddress");
+  console.log(location, "location");
+
   // State to store address details
   const [address, setAddress] = useState({
     area: "",
