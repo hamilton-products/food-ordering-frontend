@@ -52,13 +52,13 @@ function Product({ itemDetails }) {
     return () => window.removeEventListener("resize", handleResizeXtraSmall);
   }, []);
 
-  // Function to filter menu items based on search query
-  const filteredMenu = menu.map((category) => ({
-    ...category,
-    itemDetails: category.itemDetails.filter((item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-  }));
+  // // Function to filter menu items based on search query
+  // const filteredMenu = menu.map((category) => ({
+  //   ...category,
+  //   itemDetails: category.itemDetails.filter((item) =>
+  //     item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  //   ),
+  // }));
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
