@@ -49,9 +49,14 @@ function Phone() {
     if (isNaN(element.value)) return;
     otp[index] = element.value;
     setOtp([...otp]);
-    if (element.nextSibling) {
+    if (element.nextSibling && element.value) {
       element.nextSibling.focus();
-    } else {
+    } else if (!element.value && element.previousSibling) {
+      element.previousSibling.focus();
+    }
+
+    // Check if all OTP fields are filled
+    if (otp.every((digit) => digit !== "")) {
       verifyOTP(otp.join(""));
     }
   };
