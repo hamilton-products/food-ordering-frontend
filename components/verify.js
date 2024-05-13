@@ -30,6 +30,7 @@ function Phone() {
   const [error, setError] = useState(null); // State to manage error
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [countryCode, setCountryCode] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchUserData = async () => {
       const phone = Cookies.get("phoneNumber");
@@ -56,6 +57,7 @@ function Phone() {
   };
 
   const verifyOTP = async (otp) => {
+    setLoading(true);
     // Call your verify API here
     const phoneNumber = Cookies.get("phoneNumber");
     const address = Cookies.get("saveAddress");
@@ -97,6 +99,8 @@ function Phone() {
         await axios.delete(
           `https://apitasweeq.hamiltonkw.com/api/cart/remove-all-from-cart/guest/${device_id}`
         );
+
+        setLoading(false);
         router.push("/checkout");
       }
       // Assuming you're returning the response data
@@ -106,9 +110,11 @@ function Phone() {
         // Handle 503 error specifically
         setError("The OTP entered is incorrect.");
         document.cookie = `isVerify=false;max-age=86400;path=/`;
+        setLoading(false);
       } else {
         console.error("Error verifying OTP:", error);
         document.cookie = `isVerify=false;max-age=86400;path=/`;
+        setLoading(false);
         // Rethrow the error or handle it as per your requirement
         throw error;
       }
@@ -140,12 +146,18 @@ function Phone() {
       <Typography color="gray" className="mt-1 font-normal">
         Resend (SMS) in 00:00
       </Typography>
+
       <form className="mt-8 mb-10 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-1 flex flex-row gap-6 justify-center">
+        <div
+          className={`mb-1 flex flex-row gap-6 justify-center  ${
+            loading === true ? "animate-pulse" : ""
+          }`}
+        >
           {otp.map((data, index) => {
             return (
               <input
-                className="otp-field"
+                disabled={loading ? true : false}
+                className={`otp-field ${loading ? "bg-gray-500" : ""}`}
                 type="text"
                 name="otp"
                 maxLength="1"

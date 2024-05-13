@@ -247,7 +247,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                     <CardBody className="p-3 mx-3">
                       <Typography
                         variant="h6"
-                        className="mb-2"
+                        className="mb-2 "
                         color="blue-gray"
                       >
                         {item.title}
