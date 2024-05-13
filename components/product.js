@@ -44,6 +44,7 @@ function Product({ itemDetails, consumerId }) {
   const [open, setOpen] = React.useState(0);
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
+  console.log(cartExits, "cartExits");
 
   const [loading, setLoading] = React.useState(false);
 
@@ -119,18 +120,17 @@ function Product({ itemDetails, consumerId }) {
       setLoading(true);
       const response = await checkCart(productId);
 
-      console.log(response, "altamash");
       if (response.exists === true) {
         redirectToCart();
-        setLoading(false);
       } else {
-        addToCart(productId, qty, transformedData, redirectToCart);
+        // Only add to cart if the item doesn't exist in the cart
+        await addToCart(productId, qty, transformedData);
         setCartExists(true);
-        setLoading(false);
       }
     } catch (error) {
       console.error("Error adding item to cart:", error);
-      setLoading(false);
+    } finally {
+      setLoading(false); // Set loading to false regardless of success or failure
     }
   };
 
