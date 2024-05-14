@@ -155,7 +155,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       }
     );
 
-    console.log(response, "response");
+    console.log(response, "responsessss");
     const restaurantDetails = response.data && response.data.payload;
 
     let pageProps = {};

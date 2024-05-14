@@ -39,6 +39,25 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { debounce } from "lodash";
 
+function Icon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+      />
+    </svg>
+  );
+}
+
 function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   console.log(cartDetails, "menushsg");
   const router = useRouter();
@@ -51,6 +70,9 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
 
   const currency = restaurantDetails.currency;
   const delivery = restaurantDetails.delivery_charge;
+
+  const restStatus = restaurantDetails.availability_status;
+  console.log(restStatus, "restStatus");
 
   const discountType = restaurantDetails.discount_type;
   const discountAmount = restaurantDetails.discount_value;
@@ -227,6 +249,13 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
         </Typography>
       </div>
       <div className="border-t-2 border-blue-gray-200 mb-3"></div>
+      <div>
+        {restStatus === "offline" && (
+          <Alert icon={<Icon />} color="red" className="mb-3 ">
+            Restaurant is currently not accepting orders
+          </Alert>
+        )}
+      </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
         {/* {cartDetails.map((category, categoryIndex) => ( */}
         {cartItems.length > 0 ? (
@@ -374,6 +403,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
                   <Button
                     size={mobileResponse ? "lg" : "md"}
                     variant="gradient"
+                    disabled={restStatus === "offline" ? true : false}
                     className={
                       mobileResponse
                         ? "flex justify-center items-center gap-48 rounded-full px-16 mx-2"

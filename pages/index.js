@@ -48,6 +48,8 @@ export async function getServerSideProps(context) {
       }
     );
 
+    console.log(response, "response.data.payload");
+
     // Check if data exists and is not empty
     if (
       response.data &&
