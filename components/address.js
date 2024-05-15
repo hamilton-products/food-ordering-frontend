@@ -5,6 +5,7 @@ import {
   Input,
   CardBody,
   Button,
+  Alert,
 } from "@material-tailwind/react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Cookies from "js-cookie";
@@ -19,33 +20,52 @@ import {
 } from "@heroicons/react/24/solid";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
-function Product({ itemDetails }) {
-  // get lat and lng from the cookies and set it to the location state
+function Icon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+      />
+    </svg>
+  );
+}
+
+function Product({ restaurantDetails }) {
   const location = Cookies.get("location");
   const router = useRouter();
 
-  const [mobileXtraSmallResponse, setMobileXtraSmallResponse] =
-    React.useState(true);
-  //   console.log(location, "location");
+  const deliveryAreaCoordinates =
+    restaurantDetails.restaraunt_delivery_areas &&
+    restaurantDetails.restaraunt_delivery_areas.coordinates[0];
+
+  const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
+  const [message, setMessage] = useState(null);
+  const [locationSelected, setLocationSelected] = useState(false); // Track if location is selected
+
   const center = {
     lat: location ? JSON.parse(location).lat : 19.076,
     lng: location ? JSON.parse(location).lng : 72.8777,
   };
 
-  console.log(center, "center");
-
-  const Altamash = Cookies.get("saveAddress");
-  console.log(location, "location");
-
-  // State to store address details
   const [address, setAddress] = useState({
     area: "",
     houseFlatNo: "",
     landmark: "",
     type: "home",
+    lat: center.lat,
+    lng: center.lng,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResizeXtraSmall = () => {
       if (window.innerWidth < 460) {
         setMobileXtraSmallResponse(false);
@@ -58,33 +78,83 @@ function Product({ itemDetails }) {
     return () => window.removeEventListener("resize", handleResizeXtraSmall);
   }, []);
 
-  // // Function to filter menu items based on search query
-  // const filteredMenu = menu.map((category) => ({
-  //   ...category,
-  //   itemDetails: category.itemDetails.filter((item) =>
-  //     item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  //   ),
-  // }));
-
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if location is selected
+    if (!locationSelected) {
+      setMessage("Please select a location");
+      return;
+    }
+
     const data = await addAddress(address);
 
-    // Here you can use the 'address' state to send the address details to your backend or perform any other action
-    console.log("Address submitted:", data[0]);
-    // save the address to the cookies in the json format to use it in the checkout page to show the address
     Cookies.set("saveAddress", JSON.stringify(data[0]));
     Cookies.set("address_id", data[0].address_id);
     Cookies.set("address_type", data[0].type);
 
-    // Cookies.set("saveAddress", data[0]);
     router.push("/checkout");
+  };
+
+  const checkWithinDeliveryArea = (lat, lng, areaCoordinates) => {
+    if (!areaCoordinates || areaCoordinates.length === 0) return true;
+    let isWithin = false;
+    for (let i = 0; i < areaCoordinates.length; i++) {
+      const [areaLat, areaLng] = areaCoordinates[i];
+      if (lat === areaLat && lng === areaLng) {
+        isWithin = true;
+        break;
+      }
+    }
+    return isWithin;
   };
 
   const hanldeBackButton = () => {
     router.back();
   };
+
+  let autocomplete;
+  function initAutocomplete() {
+    const google = window.google;
+    autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById("autocomplete"),
+      { types: ["geocode"] }
+    );
+    autocomplete.addListener("place_changed", fillInAddress);
+  }
+
+  function fillInAddress() {
+    const place = autocomplete.getPlace();
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    const isWithinDeliveryArea = checkWithinDeliveryArea(
+      lat,
+      lng,
+      deliveryAreaCoordinates
+    );
+    if (!isWithinDeliveryArea) {
+      setMessage("Delivery not available in this area");
+      return;
+    }
+
+    setAddress({
+      ...address,
+      area: place.formatted_address,
+      lat: lat,
+      lng: lng,
+    });
+    setLocationSelected(true); // Mark location as selected
+  }
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   return (
     <Card className="h-[calc(100vh-5rem)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
@@ -99,6 +169,7 @@ function Product({ itemDetails }) {
           Address
         </Typography>
       </div>
+
       <div className="flex flex-wrap">
         <div className="w-full mb-3">
           <div style={{ height: "400px" }}>
@@ -176,11 +247,17 @@ function Product({ itemDetails }) {
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
         <form className="" onSubmit={handleSubmit}>
+          {message && message.length > 0 && (
+            <Alert icon={<Icon />} color="red" className="mb-3 ">
+              {message}
+            </Alert>
+          )}
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Address
             </Typography>
             <Input
+              id="autocomplete"
               size="lg"
               required
               placeholder="Area"
@@ -190,6 +267,7 @@ function Product({ itemDetails }) {
               }}
               value={address.area}
               onChange={(e) => setAddress({ ...address, area: e.target.value })}
+              onFocus={initAutocomplete}
             />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               House/Flat No.
@@ -230,10 +308,8 @@ function Product({ itemDetails }) {
               className="flex justify-center items-center gap-48 rounded-full px-36 "
               fullWidth
               type="submit"
-              //   onClick={handleAddToCart}
             >
               <span>Add new address</span>
-              {/* <span className="flex items-center">KWD {price * qty}</span> */}
             </Button>
           </div>
         </form>

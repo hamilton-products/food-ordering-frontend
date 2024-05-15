@@ -123,8 +123,9 @@ function App({ Component, pageProps, restaurantDetails }) {
   return (
     <>
       <Head>
-        <title>Tasweek</title>
+        <title>Tasweeq</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco&libraries=places"></script>
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
