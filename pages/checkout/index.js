@@ -93,6 +93,19 @@ export async function getServerSideProps(context) {
 
     console.log(restaurantDetails, "restaurantDetails");
 
+    const restStatus = restaurantDetails.availability_status;
+
+    console.log(restStatus, "restStatus");
+
+    if (restStatus === "offline") {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
     const paymentMethodResponse = await axios.get(
       `${baseUrl}/api/payment/payment-method-list`,
       {

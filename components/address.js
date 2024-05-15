@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { addAddress } from "@/pages/api/hello";
 import { useRouter } from "next/router";
 import {
+  ArrowLeftIcon,
   BuildingLibraryIcon,
   BuildingOffice2Icon,
   BuildingOfficeIcon,
@@ -81,8 +82,18 @@ function Product({ itemDetails }) {
     router.push("/checkout");
   };
 
+  const hanldeBackButton = () => {
+    router.back();
+  };
+
   return (
     <Card className="h-[calc(100vh-5rem)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
+      <div className="absolute z-10 mt-1">
+        <Button color="black" variant="text" onClick={hanldeBackButton}>
+          <ArrowLeftIcon className="h-8 w-8 " />
+        </Button>
+      </div>
+
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         <Typography variant="h5" color="blue-gray">
           Address

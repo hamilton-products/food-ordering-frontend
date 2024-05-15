@@ -12,10 +12,12 @@ import {
   Radio,
   Spinner,
   Alert,
+  Avatar,
 } from "@material-tailwind/react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Cookies from "js-cookie";
 import {
+  ArrowLeftIcon,
   ArrowPathIcon,
   BanknotesIcon,
   BuildingLibraryIcon,
@@ -40,6 +42,7 @@ import { useRouter } from "next/router";
 
 import Loader from "@/components/loader";
 import Image from "next/image";
+import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
 
 function Icon() {
   return (
@@ -249,6 +252,10 @@ function Product({
     return () => clearTimeout(timer);
   }, [transactionStatus]);
 
+  const hanldeBackButton = () => {
+    router.back();
+  };
+
   return (
     <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
       {loading && (
@@ -258,6 +265,12 @@ function Product({
           </div>
         </div>
       )}
+
+      <div className="absolute z-10 mt-1">
+        <Button color="black" variant="text" onClick={hanldeBackButton}>
+          <ArrowLeftIcon className="h-8 w-8 " />
+        </Button>
+      </div>
 
       {transactionStatus === "Succss" && (
         <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
@@ -444,9 +457,12 @@ function Product({
         <div className="border-t-2 border-blue-gray-50"></div>
         <div className="flex flex-wrap gap-2 mt-3 mb-3 items-center justify-center">
           {paymentMethodList &&
-            paymentMethodList.map(
-              (value) =>
-                selectedPaymentMethod === "online" && (
+            paymentMethodList.map((value) => {
+              if (
+                [1, 2, 3, 6].includes(value.PaymentMethodId) &&
+                selectedPaymentMethod === "online"
+              ) {
+                return (
                   <Card
                     onClick={() => handleExecutePayment(value.PaymentMethodId)}
                     key={value.PaymentMethodId}
@@ -454,22 +470,28 @@ function Product({
                   >
                     <List className="flex-row">
                       <ListItem className="p-0">
-                        <label
-                          htmlFor="horizontal-list-react"
-                          className="flex w-full cursor-pointer items-center px-3 py-2"
-                        >
-                          <Typography
-                            color="blue-gray"
-                            className="font-medium text-black"
-                          >
+                        <ListItemPrefix>
+                          <Avatar
+                            variant="circular"
+                            alt="candice"
+                            src={value.ImageUrl}
+                            withBorder={true}
+                            size="xxl"
+                            className="p-1 h-10 w-full object-cover"
+                          />
+                        </ListItemPrefix>
+
+                        <div>
+                          <Typography variant="h6" color="blue-gray">
                             {value.PaymentMethodEn}
                           </Typography>
-                        </label>
+                        </div>
                       </ListItem>
                     </List>
                   </Card>
-                )
-            )}
+                );
+              }
+            })}
         </div>
         <div className="group  bottom-5  overflow-hidden mx-5 mt-5">
           <Button

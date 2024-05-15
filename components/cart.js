@@ -233,7 +233,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
       } w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
     >
       <div className="absolute z-10 mt-1">
-        <Button color="dark" variant="text" onClick={hanldeBackButton}>
+        <Button color="black" variant="text" onClick={hanldeBackButton}>
           <ArrowLeftIcon className="h-8 w-8 " />
         </Button>
       </div>

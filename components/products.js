@@ -40,9 +40,29 @@ import Cookies from "js-cookie";
 import { deleteCart, updateCart, addToCart } from "@/pages/api/hello";
 import { useTranslation } from "next-i18next";
 
-function SidebarWithSearch({ menu, cartDetails }) {
-  const [searchQuery, setSearchQuery] = React.useState("");
+function Icon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+      />
+    </svg>
+  );
+}
 
+function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const restStatus = restaurantDetails.availability_status;
+  const currency = restaurantDetails.currency;
   console.log(cartDetails, "cartDetails");
   console.log(menu, "menushsg");
   const router = useRouter();
@@ -228,6 +248,13 @@ function SidebarWithSearch({ menu, cartDetails }) {
           onChange={handleSearchInputChange}
         />
       </div>
+      <div className="p-2">
+        {restStatus === "offline" && (
+          <Alert icon={<Icon />} color="red" className="mb-3">
+            Restaurant is currently not accepting orders
+          </Alert>
+        )}
+      </div>
 
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (
@@ -294,7 +321,7 @@ function SidebarWithSearch({ menu, cartDetails }) {
                           mobileXtraSmallResponse ? "text-lg" : "text-sm"
                         } mr-auto`}
                       >
-                        KD
+                        {currency}
                       </span>
 
                       <span className="absolute right-0 grid h-full w-10 place-items-center mb-1 ">

@@ -2,10 +2,14 @@ import axios from "axios";
 import Products from "@/components/products";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-const MainPage = ({ menu, cartDetails }) => {
+const MainPage = ({ menu, cartDetails, restaurantDetails }) => {
   return (
     <>
-      <Products menu={menu} cartDetails={cartDetails} />
+      <Products
+        menu={menu}
+        cartDetails={cartDetails}
+        restaurantDetails={restaurantDetails}
+      />
     </>
   );
 };
@@ -50,6 +54,20 @@ export async function getServerSideProps(context) {
 
     console.log(response, "response.data.payload");
 
+    const restaurantResponse = await axios.post(
+      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
+      {
+        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const restaurantDetails =
+      restaurantResponse.data && restaurantResponse.data.payload;
+
     // Check if data exists and is not empty
     if (
       response.data &&
@@ -89,6 +107,7 @@ export async function getServerSideProps(context) {
 
       return {
         props: {
+          restaurantDetails: restaurantDetails,
           menu: menuWithItemDetails,
           cartDetails: cartDetails, // Include cartDetails in the return object
           ...(await serverSideTranslations(locale, ["common"])),
