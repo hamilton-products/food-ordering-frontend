@@ -124,6 +124,7 @@ function App({ Component, pageProps, restaurantDetails }) {
     <>
       <Head>
         <title>Tasweek</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
