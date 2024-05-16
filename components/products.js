@@ -255,7 +255,23 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         )}
       </div>
-
+      <div className="flex flex-wrap">
+        {menu.map((category, categoryIndex) => (
+          <Card
+            shadow={true}
+            key={categoryIndex}
+            className="p-5 mx-5 cursor-pointer"
+          >
+            <Typography
+              variant="small"
+              color="black"
+              className="font-normal uppercase"
+            >
+              {category.title}
+            </Typography>
+          </Card>
+        ))}
+      </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>

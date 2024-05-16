@@ -97,6 +97,7 @@ function Product({ restaurantDetails }) {
   };
 
   const checkWithinDeliveryArea = (lat, lng, areaCoordinates) => {
+    console.log(lat, lng);
     if (!areaCoordinates || areaCoordinates.length === 0) return true;
     let isWithin = false;
     for (let i = 0; i < areaCoordinates.length; i++) {
