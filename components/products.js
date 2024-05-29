@@ -39,7 +39,7 @@ import Cookies from "js-cookie";
 
 import { deleteCart, updateCart, addToCart } from "@/pages/api/hello";
 import { useTranslation } from "next-i18next";
-
+// react slick library
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -303,17 +303,15 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
       <Slider {...settings}>
         {menu.map((category, categoryIndex) => (
-          <div>
+          <div key={categoryIndex} className="px-2">
             <Card
               shadow={true}
-              key={categoryIndex}
               className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
             >
               <Typography
-                key={categoryIndex}
                 variant="small"
                 color="black"
-                className="font-normal uppercase text-center"
+                className="font-normal uppercase"
               >
                 {category.title}
               </Typography>
