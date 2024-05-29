@@ -40,6 +40,10 @@ import Cookies from "js-cookie";
 import { deleteCart, updateCart, addToCart } from "@/pages/api/hello";
 import { useTranslation } from "next-i18next";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 function Icon() {
   return (
     <svg
@@ -58,6 +62,42 @@ function Icon() {
     </svg>
   );
 }
+
+const settings = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  initialSlide: 0,
+
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
 
 function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -225,10 +265,15 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   console.log(checkCartExists, "checkCartExists");
 
   return (
+    // <Card
+    //   className={`${
+    //     checkCartExists ? "h-[calc(100vh-5rem)] " : ""
+    //   } w-full lg:max-w-[32rem] shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+    // >
     <Card
       className={`${
-        checkCartExists ? "h-[calc(100vh-5rem)]" : ""
-      } w-full lg:max-w-[32rem] shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+        checkCartExists ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
+      } w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
     >
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         {/* <img
@@ -255,23 +300,28 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         )}
       </div>
-      <div className="flex flex-wrap">
+
+      <Slider {...settings}>
         {menu.map((category, categoryIndex) => (
-          <Card
-            shadow={true}
-            key={categoryIndex}
-            className="p-5 mx-5 cursor-pointer"
-          >
-            <Typography
-              variant="small"
-              color="black"
-              className="font-normal uppercase"
+          <div>
+            <Card
+              shadow={true}
+              key={categoryIndex}
+              className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
             >
-              {category.title}
-            </Typography>
-          </Card>
+              <Typography
+                key={categoryIndex}
+                variant="small"
+                color="black"
+                className="font-normal uppercase text-center"
+              >
+                {category.title}
+              </Typography>
+            </Card>
+          </div>
         ))}
-      </div>
+      </Slider>
+
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
