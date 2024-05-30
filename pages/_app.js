@@ -143,9 +143,10 @@ function App({ Component, pageProps, restaurantDetails }) {
 
 App.getInitialProps = async ({ Component, ctx }) => {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
-  // Fetch data server-side using Axios
+
   try {
-    const response = await axios.post(
+    // Define the promise for fetching restaurant details
+    const restaurantDetailsPromise = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
@@ -157,13 +158,21 @@ App.getInitialProps = async ({ Component, ctx }) => {
       }
     );
 
-    console.log(response, "responsessss");
-    const restaurantDetails = response.data && response.data.payload;
-
-    let pageProps = {};
+    // Define the promise for fetching page props if Component.getInitialProps exists
+    let pagePropsPromise = Promise.resolve({});
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      pagePropsPromise = Component.getInitialProps(ctx);
     }
+
+    // Use Promise.all to fetch both restaurant details and page props concurrently
+    const [restaurantResponse, pageProps] = await Promise.all([
+      restaurantDetailsPromise,
+      pagePropsPromise,
+    ]);
+
+    console.log(restaurantResponse, "responsessss");
+    const restaurantDetails =
+      restaurantResponse.data && restaurantResponse.data.payload;
 
     return { pageProps, restaurantDetails };
   } catch (error) {

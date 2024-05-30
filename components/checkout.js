@@ -88,7 +88,7 @@ function Product({
 }) {
   const [loading, setLoading] = useState(false);
 
-  console.log(transactionDetails, "transactionDetails mms");
+  console.log(restaurantDetails, "restaurantDetails mms");
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
 
   useEffect(() => {
@@ -150,8 +150,8 @@ function Product({
 
   const location = Cookies.get("location");
   const center = {
-    lat: location ? JSON.parse(location).lat : 19.076,
-    lng: location ? JSON.parse(location).lng : 72.8777,
+    lat: restaurantDetails.latitude,
+    lng: restaurantDetails.longitude,
   };
 
   useEffect(() => {

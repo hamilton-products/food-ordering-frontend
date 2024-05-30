@@ -21,7 +21,6 @@ export async function getServerSideProps(context) {
     const deviceId = context.req.cookies.fingerprint;
 
     let consumerType = "consumer";
-
     if (!consumerId) {
       consumerType = "guest";
     }
@@ -36,47 +35,39 @@ export async function getServerSideProps(context) {
       const cartDetailsResponse = await axios.get(
         `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/${locale}`
       );
-
       cartDetails = cartDetailsResponse.data.payload.cartItems || [];
     }
 
-    const response = await axios.post(
-      `${baseUrl}/backend/restaurant/get-restaurant-menu-backend`,
-      {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    const [menuResponse, restaurantResponse] = await Promise.all([
+      axios.post(
+        `${baseUrl}/backend/restaurant/get-restaurant-menu-backend`,
+        {
+          restaurant_id: "RES1708493724LCA58967", // replace with your actual data
         },
-      }
-    );
-
-    console.log(response, "response.data.payload");
-
-    const restaurantResponse = await axios.post(
-      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
-      {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ),
+      axios.post(
+        `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
+        {
+          restaurant_id: "RES1708493724LCA58967", // replace with your actual data
         },
-      }
-    );
-    const restaurantDetails =
-      restaurantResponse.data && restaurantResponse.data.payload;
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ),
+    ]);
 
-    // Check if data exists and is not empty
-    if (
-      response.data &&
-      response.data.payload &&
-      response.data.payload.length > 0
-    ) {
-      // Fetch item details for each item in the payload
+    const restaurantDetails = restaurantResponse.data?.payload;
+
+    if (menuResponse.data?.payload && menuResponse.data.payload.length > 0) {
       const menuWithItemDetails = await Promise.all(
-        response.data.payload.map(async (category) => {
+        menuResponse.data.payload.map(async (category) => {
           const itemDetailsWithItemData = await Promise.all(
             category.itemDetails.map(async (item) => {
               const itemResponse = await axios.post(
@@ -107,9 +98,9 @@ export async function getServerSideProps(context) {
 
       return {
         props: {
-          restaurantDetails: restaurantDetails,
+          restaurantDetails,
           menu: menuWithItemDetails,
-          cartDetails: cartDetails, // Include cartDetails in the return object
+          cartDetails,
           ...(await serverSideTranslations(locale, ["common"])),
         },
       };
@@ -120,7 +111,7 @@ export async function getServerSideProps(context) {
     console.error("Error fetching data:", error);
     return {
       props: {
-        error: [],
+        error: error.message || "Failed to fetch data",
       },
     };
   }
