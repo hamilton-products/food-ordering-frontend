@@ -75,8 +75,8 @@ const settings = {
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: 4,
+        slidesToScroll: 4,
         infinite: true,
         dots: true,
       },
@@ -84,16 +84,16 @@ const settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
+        slidesToShow: 3,
+        slidesToScroll: 3,
         initialSlide: 2,
       },
     },
     {
       breakpoint: 480,
       settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
+        slidesToShow: 2,
+        slidesToScroll: 2,
       },
     },
   ],
@@ -311,7 +311,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
               <Typography
                 variant="small"
                 color="black"
-                className="font-normal uppercase"
+                className="font-normal uppercase text-center"
               >
                 {category.title}
               </Typography>

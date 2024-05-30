@@ -96,18 +96,29 @@ function Product({ restaurantDetails }) {
     router.push("/checkout");
   };
 
-  const checkWithinDeliveryArea = (lat, lng, areaCoordinates) => {
-    console.log(lat, lng);
-    if (!areaCoordinates || areaCoordinates.length === 0) return true;
-    let isWithin = false;
-    for (let i = 0; i < areaCoordinates.length; i++) {
-      const [areaLat, areaLng] = areaCoordinates[i];
-      if (lat === areaLat && lng === areaLng) {
-        isWithin = true;
-        break;
-      }
+  const checkWithinDeliveryArea = async (lat, lng, restaurantId) => {
+    try {
+      const response = await fetch(
+        "https://apitasweeq.hamiltonkw.com/api/order/check-location",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            restaurant_id: restaurantId,
+            deliver_to_latitude: lat,
+            deliver_to_longitude: lng,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data.payload, "dat");
+      return data.payload;
+    } catch (error) {
+      console.error("Error checking delivery area:", error);
+      return false;
     }
-    return isWithin;
   };
 
   const hanldeBackButton = () => {
@@ -124,19 +135,34 @@ function Product({ restaurantDetails }) {
     autocomplete.addListener("place_changed", fillInAddress);
   }
 
-  function fillInAddress() {
+  async function fillInAddress() {
     const place = autocomplete.getPlace();
+    console.log("Place object:", place); // Log the place object to see its structure
+
+    // Check if the place object contains the necessary data
+    if (!place.geometry || !place.geometry.location) {
+      setMessage("Invalid location. Please select a valid address.");
+      return;
+    }
+
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
 
-    const isWithinDeliveryArea = checkWithinDeliveryArea(
+    const isWithinDeliveryArea = await checkWithinDeliveryArea(
       lat,
       lng,
-      deliveryAreaCoordinates
+      restaurantDetails.restaurant_id
     );
+
+    console.log(isWithinDeliveryArea);
+
     if (!isWithinDeliveryArea) {
       setMessage("Delivery not available in this area");
       return;
+    }
+
+    if (isWithinDeliveryArea) {
+      setLocationSelected(true); // Mark location as selected
     }
 
     setAddress({
@@ -145,7 +171,6 @@ function Product({ restaurantDetails }) {
       lat: lat,
       lng: lng,
     });
-    setLocationSelected(true); // Mark location as selected
   }
 
   useEffect(() => {
@@ -158,7 +183,7 @@ function Product({ restaurantDetails }) {
   }, [message]);
 
   return (
-    <Card className="h-[calc(100vh-5rem)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
+    <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
       <div className="absolute z-10 mt-1">
         <Button color="black" variant="text" onClick={hanldeBackButton}>
           <ArrowLeftIcon className="h-8 w-8 " />
@@ -301,8 +326,6 @@ function Product({ restaurantDetails }) {
                 setAddress({ ...address, landmark: e.target.value })
               }
             />
-          </div>
-          <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
             <Button
               size="lg"
               variant="gradient"
@@ -313,6 +336,17 @@ function Product({ restaurantDetails }) {
               <span>Add new address</span>
             </Button>
           </div>
+          {/* <div className="group fixed bottom-5 z-50 overflow-hidden mx-5">
+            <Button
+              size="lg"
+              variant="gradient"
+              className="flex justify-center items-center gap-48 rounded-full px-36 "
+              fullWidth
+              type="submit"
+            >
+              <span>Add new address</span>
+            </Button>
+          </div> */}
         </form>
       </div>
     </Card>

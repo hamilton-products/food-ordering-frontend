@@ -39,26 +39,26 @@ function App({ Component, pageProps, restaurantDetails }) {
   }, []);
 
   // Function to detect full address using lat and long
-  const detectAddress = async () => {
-    try {
-      if (!location.lat || !location.lng) return;
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&${process.env.GOOGLE_API_KEY}`
-      );
-      const data = await response.json();
-      if (data.results.length > 0) {
-        const area = data.results[0].formatted_address;
-        setAddress({ ...address, area });
-        Cookies.set("address", area);
-      }
-    } catch (error) {
-      console.error("Error detecting address:", error);
-    }
-  };
+  // const detectAddress = async () => {
+  //   try {
+  //     if (!location.lat || !location.lng) return;
+  //     const response = await fetch(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&${process.env.GOOGLE_API_KEY}`
+  //     );
+  //     const data = await response.json();
+  //     if (data.results.length > 0) {
+  //       const area = data.results[0].formatted_address;
+  //       setAddress({ ...address, area });
+  //       Cookies.set("address", area);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error detecting address:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    detectAddress();
-  }, []);
+  // useEffect(() => {
+  //   detectAddress();
+  // }, []);
 
   useEffect(() => {
     const handleStart = () => {
@@ -125,7 +125,7 @@ function App({ Component, pageProps, restaurantDetails }) {
       <Head>
         <title>Tasweeq</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco&libraries=places"></script>
+        {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco&libraries=places"></script> */}
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
