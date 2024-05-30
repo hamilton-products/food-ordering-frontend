@@ -89,6 +89,20 @@ function Product({
   const [loading, setLoading] = useState(false);
 
   console.log(transactionDetails, "transactionDetails mms");
+  const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
+
+  useEffect(() => {
+    const handleResizeXtraSmall = () => {
+      if (window.innerWidth < 460) {
+        setMobileXtraSmallResponse(false);
+      } else {
+        setMobileXtraSmallResponse(true);
+      }
+    };
+    handleResizeXtraSmall();
+    window.addEventListener("resize", handleResizeXtraSmall);
+    return () => window.removeEventListener("resize", handleResizeXtraSmall);
+  }, []);
 
   const transactionStatuss =
     transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
@@ -466,7 +480,7 @@ function Product({
                   <Card
                     onClick={() => handleExecutePayment(value.PaymentMethodId)}
                     key={value.PaymentMethodId}
-                    className="w-[49%] mt-3 overflow-hidden shadow-md shadow-blue-gray-900/5 rounded-none"
+                    className="w-full sm:w-[49%] mt-3 overflow-hidden shadow-md shadow-blue-gray-900/5 rounded-none"
                   >
                     <List className="flex-row">
                       <ListItem className="p-0">
@@ -477,7 +491,12 @@ function Product({
                             src={value.ImageUrl}
                             withBorder={true}
                             size="xxl"
-                            className="p-1 h-10 w-full object-cover"
+                            // className="p-1 h-12 w-full object-cover"
+                            className={
+                              mobileXtraSmallResponse
+                                ? "p-1 h-12 w-full object-cover"
+                                : "p-1 h-15 w-20 object-cover"
+                            }
                           />
                         </ListItemPrefix>
 
@@ -493,11 +512,12 @@ function Product({
               }
             })}
         </div>
+
         <div className="group  bottom-5  overflow-hidden mx-5 mt-5">
           <Button
             size="lg"
             variant="gradient"
-            className="flex justify-center items-center gap-48 rounded-full px-36 "
+            className="flex justify-center items-center gap-48 rounded-full px-12"
             fullWidth
             type="submit"
           >

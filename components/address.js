@@ -329,7 +329,7 @@ function Product({ restaurantDetails }) {
             <Button
               size="lg"
               variant="gradient"
-              className="flex justify-center items-center gap-48 rounded-full px-36 "
+              className="flex justify-center items-center gap-48 rounded-full px-12 "
               fullWidth
               type="submit"
             >
