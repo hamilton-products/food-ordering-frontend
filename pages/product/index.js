@@ -40,8 +40,9 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
-      props: {
-        error: [],
+      redirect: {
+        destination: "/",
+        permanent: false,
       },
     };
   }
