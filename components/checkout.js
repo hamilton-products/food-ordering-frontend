@@ -154,33 +154,6 @@ function Product({
     lng: location ? JSON.parse(location).lng : 72.8777,
   };
 
-  // const detectAddress = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${center.lat},${center.lng}&key=YOUR_API_KEY`
-  //     );
-  //     const data = await response.json();
-  //     if (data.results.length > 0) {
-  //       const area = data.results[0].formatted_address;
-  //       setAddressDetails({ ...addressDetails, address: area });
-  //       Cookies.set("address", area);
-  //       // Update the order state with address details
-  //       setOrder({
-  //         ...order,
-  //         address: area,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error detecting address:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   detectAddress();
-  // }, []);
-
-  // I want if transactionId and transactionStatuss is success the call placeOrder after 3 second
-
   useEffect(() => {
     if (transactionId) {
       const placeOrderAsync = async () => {
