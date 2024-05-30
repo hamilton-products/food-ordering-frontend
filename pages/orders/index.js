@@ -27,15 +27,19 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const currentResponse = await axios.get(
-      `${baseUrl}/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
-    );
+    // Fetch current order list and past order list concurrently
+    const [currentResponse, pastResponse] = await Promise.all([
+      axios.get(
+        `${baseUrl}/api/order/get-order-list?request_type=current&consumer_id=${consumerId}&code=EN`
+      ),
+      axios.get(
+        `${baseUrl}/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
+      ),
+    ]);
+
     const currentOrderList =
       currentResponse.data && currentResponse.data.payload;
 
-    const pastResponse = await axios.get(
-      `${baseUrl}/api/order/get-order-list?request_type=past&consumer_id=${consumerId}&code=EN`
-    );
     const pastOrderList = pastResponse.data && pastResponse.data.payload;
 
     return {

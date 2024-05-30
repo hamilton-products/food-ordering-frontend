@@ -49,35 +49,13 @@ export async function getServerSideProps(context) {
 
     const paymentId = context.query.paymentId;
     console.log(paymentId, "paymentId");
-
     console.log(addressId, "addressId1", addressType, "addressType");
 
-    const response = await axios.get(
+    const cartPromise = axios.get(
       `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
 
-    let cartDetails = [];
-    if (
-      response.data &&
-      response.data.payload &&
-      response.data.payload.cartItems &&
-      response.data.payload.cartItems.length > 0
-    ) {
-      cartDetails = response.data.payload.cartItems;
-    }
-
-    if (!cartDetails || cartDetails.length === 0) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    console.log(cartDetails, "cartDetails");
-
-    const restaurantResponse = await axios.post(
+    const restaurantPromise = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
@@ -88,25 +66,8 @@ export async function getServerSideProps(context) {
         },
       }
     );
-    const restaurantDetails =
-      restaurantResponse.data && restaurantResponse.data.payload;
 
-    console.log(restaurantDetails, "restaurantDetails");
-
-    const restStatus = restaurantDetails.availability_status;
-
-    console.log(restStatus, "restStatus");
-
-    if (restStatus === "offline") {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    const paymentMethodResponse = await axios.get(
+    const paymentMethodPromise = axios.get(
       `${baseUrl}/api/payment/payment-method-list`,
       {
         params: {
@@ -119,12 +80,52 @@ export async function getServerSideProps(context) {
       }
     );
 
+    // Use Promise.all to resolve all promises concurrently
+    const [cartResponse, restaurantResponse, paymentMethodResponse] =
+      await Promise.all([cartPromise, restaurantPromise, paymentMethodPromise]);
+
+    let cartDetails = [];
+    if (
+      cartResponse.data &&
+      cartResponse.data.payload &&
+      cartResponse.data.payload.cartItems &&
+      cartResponse.data.payload.cartItems.length > 0
+    ) {
+      cartDetails = cartResponse.data.payload.cartItems;
+    }
+
+    if (!cartDetails || cartDetails.length === 0) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
+    const restaurantDetails =
+      restaurantResponse.data && restaurantResponse.data.payload;
+    console.log(restaurantDetails, "restaurantDetails");
+
+    const restStatus = restaurantDetails.availability_status;
+    console.log(restStatus, "restStatus");
+
+    if (restStatus === "offline") {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
     const paymentMethodList =
       paymentMethodResponse.data &&
       paymentMethodResponse.data.payload &&
       paymentMethodResponse.data.payload.PaymentMethods;
     console.log(paymentMethodList, "paymentMethodList");
 
+    // Handle payment status if paymentId is present
     if (paymentId) {
       const paymentStatusResponse = await axios.post(
         `${baseUrl}/api/payment/payment-status`,
@@ -139,7 +140,7 @@ export async function getServerSideProps(context) {
 
     console.log(transactionDetails, "transactionDetails Altamash");
 
-    const adressResponse = await axios.post(
+    const addressResponse = await axios.post(
       `${baseUrl}/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
@@ -147,7 +148,6 @@ export async function getServerSideProps(context) {
         type: addressType,
         address_id: addressId,
       },
-
       {
         headers: {
           "Content-Type": "application/json",
@@ -155,9 +155,10 @@ export async function getServerSideProps(context) {
       }
     );
 
-    console.log(adressResponse, "adressResponse");
+    console.log(addressResponse, "addressResponse");
 
-    const addressDetailss = adressResponse.data && adressResponse.data.payload;
+    const addressDetailss =
+      addressResponse.data && addressResponse.data.payload;
 
     return {
       props: {

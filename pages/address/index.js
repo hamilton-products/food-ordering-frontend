@@ -12,6 +12,7 @@ export default function AddressPage({ restaurantDetails }) {
 export async function getServerSideProps(context) {
   const consumerId = context.req.cookies.consumerId;
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
+
   if (!consumerId) {
     return {
       redirect: {
@@ -21,7 +22,8 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const restaurantResponse = await axios.post(
+  // Create a promise for the restaurant details API call
+  const fetchRestaurantDetails = axios.post(
     `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
     {
       restaurant_id: "RES1708493724LCA58967", // replace with your actual data
@@ -32,10 +34,22 @@ export async function getServerSideProps(context) {
       },
     }
   );
-  const restaurantDetails =
-    restaurantResponse.data && restaurantResponse.data.payload;
 
-  return {
-    props: { restaurantDetails: restaurantDetails }, // will be passed to the page component as props
-  };
+  try {
+    // Await the resolution of the fetchRestaurantDetails promise
+    const restaurantResponse = await fetchRestaurantDetails;
+    const restaurantDetails =
+      restaurantResponse.data && restaurantResponse.data.payload;
+
+    return {
+      props: { restaurantDetails: restaurantDetails }, // will be passed to the page component as props
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        error: "Failed to fetch restaurant details", // Include an error message if the request fails
+      },
+    };
+  }
 }

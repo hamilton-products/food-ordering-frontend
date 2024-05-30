@@ -24,7 +24,11 @@ export async function getServerSideProps(context) {
     if (!consumerId) {
       consumerType = "guest";
     }
-    const restaurantResponse = await axios.post(
+
+    const idToUse = consumerId ? consumerId : deviceId;
+
+    // Create promises for the API calls
+    const fetchRestaurantDetails = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
         restaurant_id: "RES1708493724LCA58967", // replace with your actual data
@@ -35,40 +39,40 @@ export async function getServerSideProps(context) {
         },
       }
     );
+
+    const fetchCartDetails = axios.get(
+      `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
+    );
+
+    // Await both promises
+    const [restaurantResponse, cartResponse] = await Promise.all([
+      fetchRestaurantDetails,
+      fetchCartDetails,
+    ]);
+
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
 
-    const idToUse = consumerId ? consumerId : deviceId;
+    const cartDetails =
+      cartResponse.data &&
+      cartResponse.data.payload &&
+      cartResponse.data.payload.cartItems
+        ? cartResponse.data.payload.cartItems
+        : [];
 
-    const response = await axios.get(
-      `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
-    );
-    // Check if data exists and is not empty
-    console.log(response, "cart re");
-    if (
-      response.data &&
-      response.data.payload &&
-      response.data.payload.cartItems &&
-      response.data.payload.cartItems.length > 0
-    ) {
-      return {
-        props: {
-          restaurantDetails: restaurantDetails,
-          cartDetails: response.data.payload.cartItems,
-        },
-      };
-    } else {
-      return {
-        props: {
-          cartDetails: [],
-        },
-      };
-    }
+    return {
+      props: {
+        restaurantDetails: restaurantDetails,
+        cartDetails: cartDetails,
+      },
+    };
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
       props: {
-        error: [],
+        error: "Failed to fetch data",
+        restaurantDetails: null,
+        cartDetails: [],
       },
     };
   }
