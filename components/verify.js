@@ -106,9 +106,9 @@ function Phone() {
         );
 
         setLoading(false);
-        router.push("/checkout");
       }
       // Assuming you're returning the response data
+      router.push("/checkout");
       return response.data.payload;
     } catch (error) {
       if (error.response && error.response.status === 503) {

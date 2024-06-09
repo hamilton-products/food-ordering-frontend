@@ -25,6 +25,7 @@ import {
   CheckCircleIcon,
   CreditCardIcon,
   CurrencyDollarIcon,
+  InformationCircleIcon,
   MapIcon,
   MapPinIcon,
   PlayCircleIcon,
@@ -163,6 +164,7 @@ function Product({
             const response = await placeOrder(order);
             const orderId = response.order_id;
 
+            Cookies.remove("tableId");
             router.push(`/order?orderId=${orderId}`);
           }
         } catch (error) {
@@ -184,6 +186,7 @@ function Product({
     if (response) {
       router.push(`/order?orderId=${orderId}`);
       Cookies.set("orderId", orderId);
+      Cookies.remove("tableId");
     } else {
       console.log("Failed to place order");
     }
@@ -218,20 +221,19 @@ function Product({
 
   const [order, setOrder] = useState({
     transaction_id: transactionId,
-    address: addressDetailss.address,
-    latitude: addressDetailss.latitude,
-    longitude: addressDetailss.longitude,
-    city: addressDetailss.city,
-    apt_name: addressDetailss.apt_name,
-    type: addressDetailss.type,
-    title: addressDetailss.title,
+    address: addressDetailss?.address || "",
+    latitude: addressDetailss?.latitude || "",
+    longitude: addressDetailss?.longitude || "",
+    city: addressDetailss?.city || "",
+    apt_name: addressDetailss?.apt_name || "",
+    type: addressDetailss?.type || "",
+    title: addressDetailss?.title || "",
     net_amount: discountedTotal,
-    addressType: addressDetailss.type,
-    houseFlatNo: addressDetailss.floor,
-    landmark: addressDetailss.landmark,
+    addressType: addressDetailss?.type || "",
+    houseFlatNo: addressDetailss?.floor || "",
+    landmark: addressDetailss?.landmark || "",
     grossAmount: subTotal,
   });
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setTransactionStatus(null);
@@ -325,67 +327,76 @@ function Product({
       </div>
 
       <form onSubmit={handleSubmit}>
-        {addressDetailss.address && (
-          <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
+        <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
+          {addressDetailss ? (
             <div className="flex flex-row  items-center">
               <MapPinIcon className="h-12 w-12 text-blue-gray-500 mr-3" />
               <Typography variant="paragraph" color="blue-gray">
                 {addressDetailss.address}
               </Typography>
             </div>
-            <div className="border-t-2 border-blue-gray-50"></div>
-
-            <div className="flex flex-row justify-between items-center">
-              <Typography variant="h6" color="blue-gray">
-                Order Summary
+          ) : (
+            <div className="flex flex-row items-center">
+              <InformationCircleIcon className="h-12 w-12 text-blue-gray-500 mr-3" />
+              <Typography variant="paragraph" color="blue-gray">
+                Please be aware, this is an offline order. Upon confirmation,
+                the order cannot be cancelled or modified.
               </Typography>
             </div>
-            <div className="border-t-2 border-blue-gray-50"></div>
-            <div className="flex flex-row justify-between items-center">
-              <Typography variant="small" color="blue-gray">
-                Subtotal:
-              </Typography>
+          )}
+          <div className="border-t-2 border-blue-gray-50"></div>
 
-              <span className="flex items-center">
-                {subTotal} {currency}
-              </span>
-            </div>
-            <div className="flex flex-row justify-between items-center">
-              <Typography variant="small" color="blue-gray">
-                Delivery Services:
-              </Typography>
-
-              <span className="flex items-center">
-                {delivery} {currency}
-              </span>
-            </div>
-            {discountValue > 0 && (
-              <div className="flex flex-row justify-between items-center">
-                <Typography variant="small" color="blue-gray">
-                  Restaurant Discount:
-                </Typography>
-
-                <span className="flex items-center">
-                  - {discountValue} {currency}
-                </span>
-              </div>
-            )}
-            <div className="border-t-2 border-blue-gray-50"></div>
-            <div className="flex flex-row justify-between items-center mb-2">
-              <Typography variant="h6" color="blue-gray">
-                Total:
-              </Typography>
-
-              <Typography
-                variant="h6"
-                color="blue-gray"
-                className="flex items-center"
-              >
-                {discountedTotal} {currency}
-              </Typography>
-            </div>
+          <div className="flex flex-row justify-between items-center">
+            <Typography variant="h6" color="blue-gray">
+              Order Summary
+            </Typography>
           </div>
-        )}
+          <div className="border-t-2 border-blue-gray-50"></div>
+          <div className="flex flex-row justify-between items-center">
+            <Typography variant="small" color="blue-gray">
+              Subtotal:
+            </Typography>
+
+            <span className="flex items-center">
+              {subTotal} {currency}
+            </span>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <Typography variant="small" color="blue-gray">
+              Delivery Services:
+            </Typography>
+
+            <span className="flex items-center">
+              {delivery} {currency}
+            </span>
+          </div>
+          {discountValue > 0 && (
+            <div className="flex flex-row justify-between items-center">
+              <Typography variant="small" color="blue-gray">
+                Restaurant Discount:
+              </Typography>
+
+              <span className="flex items-center">
+                - {discountValue} {currency}
+              </span>
+            </div>
+          )}
+          <div className="border-t-2 border-blue-gray-50"></div>
+          <div className="flex flex-row justify-between items-center mb-2">
+            <Typography variant="h6" color="blue-gray">
+              Total:
+            </Typography>
+
+            <Typography
+              variant="h6"
+              color="blue-gray"
+              className="flex items-center"
+            >
+              {discountedTotal} {currency}
+            </Typography>
+          </div>
+        </div>
+
         <div className="border-t-2 border-blue-gray-50"></div>
         <div className="flex flex-row items-center justify-between mt-3">
           <Typography variant="h6" color="blue-gray">

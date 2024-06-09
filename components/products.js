@@ -128,6 +128,26 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   console.log("Current locale:", i18n.language);
   console.log("Translated string for 'ReviewOrder':", t("ReviewOrder"));
 
+  React.useEffect(() => {
+    const tableId = router.query.tableId;
+
+    if (tableId) {
+      Cookies.set("tableId", tableId, { expires: 1 });
+    }
+  }, [router.query]);
+
+  React.useEffect(() => {
+    const handleBeforeUnload = () => {
+      Cookies.remove("tableId");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   // create a function for screen size for mobile and set in a useState hook
 
   // create a function for screen size for mobile and set in a useState hook

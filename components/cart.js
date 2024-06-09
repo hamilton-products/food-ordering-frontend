@@ -212,7 +212,8 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
 
   const placeOrderHandler = () => {
     const addressId = Cookies.get("address_id");
-    if (addressId) {
+    const tableId = Cookies.get("tableId");
+    if (tableId) {
       router.push("/checkout");
     } else {
       router.push("/address");

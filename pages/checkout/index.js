@@ -30,6 +30,7 @@ export async function getServerSideProps(context) {
     const addressId = context.req.cookies.address_id;
     const addressType = context.req.cookies.address_type;
     const consumerId = context.req.cookies.consumerId;
+    const tableId = context.req.cookies.tableId;
 
     if (!consumerId) {
       return {
@@ -38,7 +39,7 @@ export async function getServerSideProps(context) {
           permanent: false,
         },
       };
-    } else if (!addressId) {
+    } else if (!addressId && !tableId) {
       return {
         redirect: {
           destination: "/address",
@@ -140,25 +141,29 @@ export async function getServerSideProps(context) {
 
     console.log(transactionDetails, "transactionDetails Altamash");
 
-    const addressResponse = await axios.post(
-      `${baseUrl}/api/consumer/manage-delivery-address`,
-      {
-        consumer_id: consumerId,
-        request_type: "get",
-        type: addressType,
-        address_id: addressId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    let addressDetailss = null;
+
+    // Fetch address details only if tableId is not present
+    if (!tableId) {
+      const addressResponse = await axios.post(
+        `${baseUrl}/api/consumer/manage-delivery-address`,
+        {
+          consumer_id: consumerId,
+          request_type: "get",
+          type: addressType,
+          address_id: addressId,
         },
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    console.log(addressResponse, "addressResponse");
+      console.log(addressResponse, "addressResponse");
 
-    const addressDetailss =
-      addressResponse.data && addressResponse.data.payload;
+      addressDetailss = addressResponse.data && addressResponse.data.payload;
+    }
 
     return {
       props: {

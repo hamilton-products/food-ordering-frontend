@@ -224,9 +224,11 @@ export const placeOrder = async (order) => {
 
   const consumerId = Cookies.get("consumerId");
 
+  const tableId = Cookies.get("tableId");
+
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/order/place-order`,
+      `http://apitasweeq.hamiltonkw.com/api/order/place-order`,
       {
         place_order_json: JSON.stringify({
           // transaction_id: "",
@@ -248,6 +250,7 @@ export const placeOrder = async (order) => {
           // deliver_to_latitude: latitude,
           // deliver_to_longitude: longitude,
           transaction_id: order.transaction_id,
+          table_id: tableId,
           tax_details: [],
           coupon_code: "",
           gross_amount: order.grossAmount,
