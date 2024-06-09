@@ -95,14 +95,14 @@ export async function getServerSideProps(context) {
       cartDetails = cartResponse.data.payload.cartItems;
     }
 
-    if (!cartDetails || cartDetails.length === 0) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
+    // if (!cartDetails || cartDetails.length === 0) {
+    //   return {
+    //     redirect: {
+    //       destination: "/",
+    //       permanent: false,
+    //     },
+    //   };
+    // }
 
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
