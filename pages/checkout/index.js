@@ -56,6 +56,9 @@ export async function getServerSideProps(context) {
       `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
 
+    console.log(cartPromise, "cartPromiseA");
+    console.log(consumerId, "consumerIdA");
+
     const restaurantPromise = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
@@ -85,15 +88,16 @@ export async function getServerSideProps(context) {
     const [cartResponse, restaurantResponse, paymentMethodResponse] =
       await Promise.all([cartPromise, restaurantPromise, paymentMethodPromise]);
 
-    let cartDetails = [];
-    if (
-      cartResponse.data &&
-      cartResponse.data.payload &&
-      cartResponse.data.payload.cartItems &&
-      cartResponse.data.payload.cartItems.length > 0
-    ) {
-      cartDetails = cartResponse.data.payload.cartItems;
-    }
+    // let cartDetails = [];
+    // if (
+    //   cartResponse.data &&
+    //   cartResponse.data.payload &&
+    //   cartResponse.data.payload.cartItems &&
+    //   cartResponse.data.payload.cartItems.length > 0
+    // ) {
+    //   cartDetails = cartResponse.data.payload.cartItems;
+    //   console.log(cartDetails, "cartDetails");
+    // }
 
     // if (!cartDetails || cartDetails.length === 0) {
     //   return {
@@ -103,6 +107,25 @@ export async function getServerSideProps(context) {
     //     },
     //   };
     // }
+
+    const cartDetails =
+      cartResponse.data &&
+      cartResponse.data.payload &&
+      cartResponse.data.payload.cartItems &&
+      cartResponse.data.payload.cartItems.length > 0
+        ? cartResponse.data.payload.cartItems
+        : [];
+
+    console.log(cartDetails, "cartDetails");
+
+    if (!cartDetails || cartDetails.length === 0) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
