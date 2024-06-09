@@ -164,7 +164,6 @@ function Product({
             const response = await placeOrder(order);
             const orderId = response.order_id;
 
-            Cookies.remove("tableId");
             router.push(`/order?orderId=${orderId}`);
           }
         } catch (error) {
@@ -186,7 +185,6 @@ function Product({
     if (response) {
       router.push(`/order?orderId=${orderId}`);
       Cookies.set("orderId", orderId);
-      Cookies.remove("tableId");
     } else {
       console.log("Failed to place order");
     }
