@@ -77,7 +77,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   const discountType = restaurantDetails.discount_type;
   const discountAmount = restaurantDetails.discount_value;
 
-  const subTotal = cartDetails.reduce(
+  const subTotal = cartItems.reduce(
     (total, item) => total + item.total_price,
     0
   );
@@ -176,6 +176,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
     debounce(async (cartId, qty) => {
       try {
         await updateCart(cartId, qty);
+        fetchCartItems(); // refresh cart items after updating quantity
       } catch (error) {
         console.error("Error updating item from cart:", error);
       }
