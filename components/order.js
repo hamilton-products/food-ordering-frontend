@@ -278,21 +278,21 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
           </div>
 
           <div className="border-t-2 border-blue-gray-50"></div>
+          {orderDetails.status === "new" && (
+            <div className="flex items-center justify-center">
+              <Button
+                onClick={handleCancelOrder}
+                size="lg"
+                variant="gradient"
+                className="rounded-full px-48"
+                loading={loading}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
         </React.Fragment>
 
-        {orderDetails.status === "new" && (
-          <div className="flex items-center justify-center">
-            <Button
-              onClick={handleCancelOrder}
-              size="lg"
-              variant="gradient"
-              className="rounded-full px-48"
-              loading={loading}
-            >
-              Cancel
-            </Button>
-          </div>
-        )}
         {/* ))} */}
       </div>
       {errorMessage && (
