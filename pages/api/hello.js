@@ -228,7 +228,7 @@ export const placeOrder = async (order) => {
 
   try {
     const response = await axios.post(
-      `http://apitasweeq.hamiltonkw.com/api/order/place-order`,
+      `https://apitasweeq.hamiltonkw.com/api/order/place-order`,
       {
         place_order_json: JSON.stringify({
           // transaction_id: "",
