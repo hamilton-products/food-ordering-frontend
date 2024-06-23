@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Card,
   Typography,
@@ -67,16 +67,16 @@ const settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 3,
+  slidesToShow: 2,
+  slidesToScroll: 2,
   initialSlide: 0,
 
   responsive: [
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToShow: 2,
+        slidesToScroll: 2,
         infinite: true,
         dots: true,
       },
@@ -84,8 +84,8 @@ const settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: 2,
+        slidesToScroll: 2,
         initialSlide: 2,
       },
     },
@@ -147,8 +147,6 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
-
-  // create a function for screen size for mobile and set in a useState hook
 
   // create a function for screen size for mobile and set in a useState hook
   React.useEffect(() => {
@@ -284,6 +282,28 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
   console.log(checkCartExists, "checkCartExists");
 
+  const categoryRefs = useRef({});
+
+  // Assuming `menu` is your array of categories with `item_category_id`
+  menu.forEach((category) => {
+    // Initialize ref for each category
+    if (!categoryRefs.current[category.item_category_id]) {
+      categoryRefs.current[category.item_category_id] = React.createRef();
+    }
+  });
+
+  const scrollToCategory = (categoryId) => {
+    const categoryRef = categoryRefs.current[categoryId];
+    console.log(categoryRef, "categoryRef");
+    console.log(categoryId, "categoryId");
+    if (categoryRef && categoryRef.current) {
+      categoryRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     // <Card
     //   className={`${
@@ -323,15 +343,16 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
       <Slider {...settings}>
         {menu.map((category, categoryIndex) => (
-          <div key={categoryIndex} className="px-2">
+          <div key={category.item_category_id} className="px-2">
             <Card
               shadow={true}
               className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
+              onClick={() => scrollToCategory(category.item_category_id)}
             >
               <Typography
                 variant="small"
                 color="black"
-                className="font-normal uppercase text-center"
+                className="font-normal uppercase text-center truncate"
               >
                 {category.title}
               </Typography>
@@ -343,12 +364,24 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
+            <div
+              className="mx-3"
+              ref={categoryRefs.current[category.item_category_id]}
+            >
+              <Typography
+                variant="h5"
+                color="black"
+                className="font-normal uppercase text-left"
+              >
+                {category.title}
+              </Typography>
+            </div>
             {category.itemDetails.map((item, itemIndex) => (
               <Card
                 key={itemIndex}
                 color="transparent"
                 shadow={true}
-                className="flex flex-row items-center "
+                className="flex flex-row items-center"
               >
                 <div className="flex-1">
                   <Link

@@ -13,3 +13,11 @@
   padding: 10px;
   background-color: #f5f5f5;
 }
+
+
+.truncate {
+  max-width: 100%; /* Adjust based on your layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
