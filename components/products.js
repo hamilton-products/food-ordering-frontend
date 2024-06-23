@@ -345,9 +345,9 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         {menu.map((category, categoryIndex) => (
           <div key={category.item_category_id} className="px-2">
             <Card
+              onClick={() => scrollToCategory(category.item_category_id)}
               shadow={true}
               className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
-              onClick={() => scrollToCategory(category.item_category_id)}
             >
               <Typography
                 variant="small"
