@@ -94,10 +94,14 @@ function App({ Component, pageProps, restaurantDetails }) {
   // Generate a unique fingerprint for the user
   useEffect(() => {
     async function generateFingerprint() {
-      const components = await Fingerprint2.getPromise();
-      const values = components.map((component) => component.value);
-      const fingerprint = Fingerprint2.x64hash128(values.join(""), 31);
-      Cookies.set("fingerprint", fingerprint);
+      try {
+        const components = await Fingerprint2.getPromise();
+        const values = components.map((component) => component.value);
+        const fingerprint = Fingerprint2.x64hash128(values.join(""), 31);
+        Cookies.set("fingerprint", fingerprint);
+      } catch (error) {
+        console.error("Error generating fingerprint:", error);
+      }
     }
 
     generateFingerprint();
@@ -125,7 +129,7 @@ function App({ Component, pageProps, restaurantDetails }) {
       <Head>
         <title>Tasweeq</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
-        {/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco&libraries=places"></script> */}
+        {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> */}
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>

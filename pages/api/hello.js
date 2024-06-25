@@ -66,7 +66,6 @@ export const addToCart = async (productId, quantity, transformedData) => {
   const consumerId = Cookies.get("consumerId");
   const deviceId = Cookies.get("fingerprint");
   let consumerType = "consumer";
-  console.log(consumerId, "consumerIdssss");
 
   if (!consumerId) {
     consumerType = "guest";
@@ -74,25 +73,47 @@ export const addToCart = async (productId, quantity, transformedData) => {
 
   const idToUse = consumerId ? consumerId : deviceId;
 
-  // I want transformedData in a stringfy format
+  // Transform data to string format
   transformedData = JSON.stringify(transformedData);
+
   try {
-    const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/cart/add-to-cart/${consumerType}`,
-      {
-        item_id: productId,
-        qty: quantity,
-        consumer_id: idToUse,
-        restaurant_id: "RES1708493724LCA58967",
-        code: "EN",
-        item_options: transformedData, // send as a string
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    let response;
+
+    if (consumerId) {
+      response = await axios.post(
+        "https://apitasweeq.hamiltonkw.com/api/cart/add-to-cart/consumer",
+        {
+          item_id: productId,
+          qty: quantity,
+          consumer_id: consumerId,
+          restaurant_id: "RES1708493724LCA58967",
+          code: "EN",
+          item_options: transformedData,
         },
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } else {
+      response = await axios.post(
+        "https://apitasweeq.hamiltonkw.com/api/cart/add-to-cart/guest",
+        {
+          item_id: productId,
+          qty: quantity,
+          device_id: deviceId,
+          restaurant_id: "RES1708493724LCA58967",
+          code: "EN",
+          item_options: transformedData,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
     return response.data.payload;
   } catch (error) {
