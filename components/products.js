@@ -341,25 +341,27 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         )}
       </div>
 
-      <Slider {...settings}>
-        {menu.map((category) => (
-          <div key={category.item_category_id} className="px-2">
-            <Card
-              onClick={() => scrollToCategory(category.item_category_id)}
-              shadow={true}
-              className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
-            >
-              <Typography
-                variant="small"
-                color="black"
-                className="font-normal uppercase text-center truncate"
+      <div className="sticky-slider">
+        <Slider {...settings}>
+          {menu.map((category) => (
+            <div key={category.item_category_id} className="px-2">
+              <Card
+                onClick={() => scrollToCategory(category.item_category_id)}
+                shadow={true}
+                className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
               >
-                {category.title}
-              </Typography>
-            </Card>
-          </div>
-        ))}
-      </Slider>
+                <Typography
+                  variant="small"
+                  color="black"
+                  className="font-normal uppercase text-center truncate"
+                >
+                  {category.title}
+                </Typography>
+              </Card>
+            </div>
+          ))}
+        </Slider>
+      </div>
 
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-1 xl:grid-cols-1 p-5">
         {filteredMenu.map((category, categoryIndex) => (

@@ -16,8 +16,15 @@
 
 
 .truncate {
-  max-width: 100%; /* Adjust based on your layout */
+  max-width: 100%; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.sticky-slider {
+  position: sticky;
+  top: 0;
+  z-index: 1000; 
+  background-color: #fff;
 }
