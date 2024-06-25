@@ -342,7 +342,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       </div>
 
       <Slider {...settings}>
-        {menu.map((category, categoryIndex) => (
+        {menu.map((category) => (
           <div key={category.item_category_id} className="px-2">
             <Card
               onClick={() => scrollToCategory(category.item_category_id)}

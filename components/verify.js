@@ -96,6 +96,7 @@ function Phone() {
         response.data.payload.consumer_id !== "" &&
         response.data.payload.consumer_id !== undefined
       ) {
+        // console.log(response.data.payload.consumer_id);
         await axios.put(
           `https://apitasweeq.hamiltonkw.com/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
         );
