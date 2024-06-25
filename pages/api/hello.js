@@ -82,7 +82,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
       {
         item_id: productId,
         qty: quantity,
-        [consumerType === "guest" ? "device_id" : "consumer_id"]: idToUse,
+        consumer_id: idToUse,
         restaurant_id: "RES1708493724LCA58967",
         code: "EN",
         item_options: transformedData, // send as a string
