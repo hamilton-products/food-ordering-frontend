@@ -35,6 +35,8 @@ import {
   getAddressDetails,
   paymentMethod,
   executePayment,
+  applyCoupon,
+  verifyCoupon,
 } from "@/pages/api/hello";
 import { add, set } from "lodash";
 
@@ -86,11 +88,22 @@ function Product({
   paymentMethodList,
   transactionDetails,
   addressDetailss,
+  couponDetails,
 }) {
   const [loading, setLoading] = useState(false);
 
+  console.log(cartDetails, "cartDetails mms");
+  console.log(couponDetails, "couponDetails");
   console.log(restaurantDetails, "restaurantDetails mms");
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
+  const [promo, setPromo] = useState("");
+  console.log(promo, "promo");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState("");
+
+  const [couponDiscount, setCouponDiscount] = useState(0);
+
+  console.log(appliedCoupon, "appliedCoupon");
 
   useEffect(() => {
     const handleResizeXtraSmall = () => {
@@ -135,6 +148,63 @@ function Product({
     0
   );
 
+  const handleApplyCoupon = async () => {
+    setLoading(true);
+    setCouponError("");
+    try {
+      const response = await verifyCoupon(promo, subTotal);
+      console.log(response, "response");
+      if (response) {
+        const coupon = response;
+        console.log(coupon, "coupon");
+        setAppliedCoupon(coupon);
+        // Update the order state with coupon details
+        setOrder((prevOrder) => ({
+          ...prevOrder,
+          coupon_code: coupon.coupon_code,
+          coupon_id: coupon.coupon_id,
+        }));
+      } else {
+        setCouponError("Invalid coupon code");
+      }
+    } catch (error) {
+      console.error("Error applying coupon:", error);
+      setCouponError("Error applying coupon");
+    }
+    setLoading(false);
+  };
+
+  // Calculate discounted total with coupon
+  const calculateDiscountedTotal = () => {
+    let total = subTotal + delivery;
+
+    // Apply restaurant discount
+    const restaurantDiscountValue =
+      discountType === "amount"
+        ? discountAmount
+        : (total * discountAmount) / 100;
+    total -= restaurantDiscountValue;
+
+    // Apply coupon discount if available
+    if (appliedCoupon) {
+      const couponDiscountValue =
+        appliedCoupon.discount_type === "percentage"
+          ? (total * appliedCoupon.value) / 100
+          : appliedCoupon.value;
+
+      // Apply maximum discount cap if exists
+      const cappedCouponDiscount = appliedCoupon.maximum_discount_value
+        ? Math.min(couponDiscountValue, appliedCoupon.maximum_discount_value)
+        : couponDiscountValue;
+
+      console.log(cappedCouponDiscount, "cappedCouponDiscount");
+
+      total -= cappedCouponDiscount;
+    }
+
+    return Math.max(total, 0); // Ensure total is not negative
+  };
+
   const discountType = restaurantDetails.discount_type;
   const discountAmount = restaurantDetails.discount_value;
 
@@ -143,11 +213,65 @@ function Product({
   const discountValue =
     discountType === "amount" ? discountAmount : (total * discountAmount) / 100;
 
-  const discountedTotal =
-    total -
-    (discountType === "amount"
-      ? discountAmount
-      : (total * discountAmount) / 100);
+  const discountedTotal = calculateDiscountedTotal();
+
+  // Update coupon discount whenever dependencies change
+  useEffect(() => {
+    if (appliedCoupon) {
+      let total = subTotal + delivery;
+
+      // Apply restaurant discount
+      const restaurantDiscountValue =
+        discountType === "amount"
+          ? discountAmount
+          : (total * discountAmount) / 100;
+      total -= restaurantDiscountValue;
+
+      // Apply coupon discount
+      const couponDiscountValue =
+        appliedCoupon.discount_type === "percentage"
+          ? (total * appliedCoupon.value) / 100
+          : appliedCoupon.value;
+
+      // Apply maximum discount cap if exists
+      const cappedCouponDiscount = appliedCoupon.maximum_discount_value
+        ? Math.min(couponDiscountValue, appliedCoupon.maximum_discount_value)
+        : couponDiscountValue;
+
+      setCouponDiscount(cappedCouponDiscount);
+    } else {
+      setCouponDiscount(0);
+    }
+  }, [appliedCoupon, subTotal, delivery, discountType, discountAmount]);
+
+  const handleCouponButtonClick = () => {
+    if (appliedCoupon) {
+      handleRemoveCoupon();
+    } else {
+      handleApplyCoupon();
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setPromo("");
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      coupon_code: null,
+      coupon_id: null,
+    }));
+  };
+
+  // Update order state when discountedTotal changes
+  useEffect(() => {
+    const newDiscountedTotal = calculateDiscountedTotal();
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      net_amount: newDiscountedTotal,
+    }));
+  }, [subTotal, delivery, discountType, discountAmount, appliedCoupon]);
+
+  console.log(discountedTotal, "discountedTotal");
 
   const location = Cookies.get("location");
   const center = {
@@ -180,14 +304,19 @@ function Product({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await placeOrder(order);
-    const orderId = response.order_id;
-    if (response) {
-      router.push(`/order?orderId=${orderId}`);
-      Cookies.set("orderId", orderId);
-    } else {
-      console.log("Failed to place order");
+    try {
+      const response = await placeOrder(order);
+      const orderId = response.order_id;
+      if (response) {
+        router.push(`/order?orderId=${orderId}`);
+        Cookies.set("orderId", orderId);
+      } else {
+        console.log("Failed to place order");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
     }
+    setLoading(false);
   };
 
   const handlePaymentMethod = async () => {
@@ -231,7 +360,10 @@ function Product({
     houseFlatNo: addressDetailss?.floor || "",
     landmark: addressDetailss?.landmark || "",
     grossAmount: subTotal,
+    coupon_id: "",
+    coupon_code: "",
   });
+  console.log(order, "order++++++++++++++");
   useEffect(() => {
     const timer = setTimeout(() => {
       setTransactionStatus(null);
@@ -343,6 +475,30 @@ function Product({
             </div>
           )}
           <div className="border-t-2 border-blue-gray-50"></div>
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Promo Code
+          </Typography>
+          <div className="relative flex w-full">
+            <Input
+              type="text"
+              value={promo}
+              onChange={(e) => setPromo(e.target.value)}
+              className="pr-20"
+              containerProps={{ className: "min-w-0" }}
+              disabled={!!appliedCoupon}
+            />
+            <Button
+              size="sm"
+              color={promo || appliedCoupon ? "gray" : "blue-gray"}
+              disabled={(!promo && !appliedCoupon) || loading}
+              className="!absolute right-1 top-1 rounded"
+              onClick={handleCouponButtonClick}
+            >
+              {appliedCoupon ? "Remove" : "Apply"}
+            </Button>
+          </div>
+          {couponError && <Typography color="red">{couponError}</Typography>}
+          <div className="border-t-2 border-blue-gray-50"></div>
 
           <div className="flex flex-row justify-between items-center">
             <Typography variant="h6" color="blue-gray">
@@ -376,6 +532,17 @@ function Product({
 
               <span className="flex items-center">
                 - {discountValue} {currency}
+              </span>
+            </div>
+          )}
+          {couponDiscount > 0 && (
+            <div className="flex flex-row justify-between items-center">
+              <Typography variant="small" color="blue-gray">
+                Coupon Discount:
+              </Typography>
+
+              <span className="flex items-center">
+                - {couponDiscount} {currency}
               </span>
             </div>
           )}

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { ThemeProvider } from "@material-tailwind/react";
 import Hero from "@/components/hero";
+import Navbar from "@/components/navbar";
 import Loader from "@/components/loader";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import { useRouter } from "next/router";
 import Fingerprint2 from "fingerprintjs2";
 import Cookies from "js-cookie";
 import Head from "next/head";
-import { appWithTranslation } from "next-i18next";
+import { appWithTranslation, i18n } from "next-i18next";
 
 function App({ Component, pageProps, restaurantDetails }) {
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,9 @@ function App({ Component, pageProps, restaurantDetails }) {
   console.log(restaurantDetails, "restaurantDetails");
 
   const { locale } = router;
+  console.log(locale, "locale");
+
+  // console.log("altamash", i18n.language);
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
 

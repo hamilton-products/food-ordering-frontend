@@ -116,7 +116,7 @@ function SidebarWithSearch({ pastOrderList, currentOrderList }) {
                         className="m-0 w-2/5 shrink-0 rounded-r-none rounded-lg"
                       >
                         <img
-                          src={item.cover_photo}
+                          src={item.logo}
                           alt="card-image"
                           className="h-full w-full object-cover "
                         />

@@ -90,6 +90,9 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
 
   const orderItemsDetails = orderDetails.order_details;
 
+  console.log(orderItemsDetails, "orderItemsDetails");
+  console.log(orderDetails, "orderDetails");
+
   // Function to format date and time
   const formatDateTime = (dateTimeString) => {
     const date = new Date(dateTimeString);

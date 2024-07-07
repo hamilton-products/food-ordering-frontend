@@ -67,18 +67,19 @@ const settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 2,
+  slidesToShow: 3,
+  slidesToScroll: 3,
   initialSlide: 0,
 
   responsive: [
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        infinite: true,
-        dots: true,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        initialSlide: 2,
+        infinite: false,
+        dots: false,
       },
     },
     {
@@ -108,6 +109,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(0);
   const [openAlert, setOpenAlert] = React.useState(true);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
 
   const [cartItems, setCartItems] = React.useState(cartDetails);
   console.log(cartItems, "cartItems");
@@ -120,9 +122,9 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] =
     React.useState(true);
 
-  const { locale } = router;
+  // const { locale } = router;
 
-  console.log(locale, "sad");
+  // console.log(locale, "sad");
 
   const { t, i18n } = useTranslation("common");
   console.log("Current locale:", i18n.language);
@@ -296,6 +298,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
     const categoryRef = categoryRefs.current[categoryId];
     console.log(categoryRef, "categoryRef");
     console.log(categoryId, "categoryId");
+
     if (categoryRef && categoryRef.current) {
       categoryRef.current.scrollIntoView({
         behavior: "smooth",
@@ -348,7 +351,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
               <Card
                 onClick={() => scrollToCategory(category.item_category_id)}
                 shadow={true}
-                className="p-5 m-5 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
+                className="p-5 m-5 bg-blue-gray-50 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
               >
                 <Typography
                   variant="small"

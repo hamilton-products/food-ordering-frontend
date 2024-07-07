@@ -7,6 +7,7 @@ export default function AddressPage({
   restaurantDetails,
   paymentMethodList,
   addressDetailss,
+  couponDetails,
 }) {
   return (
     <>
@@ -16,6 +17,7 @@ export default function AddressPage({
         cartDetails={cartDetails}
         restaurantDetails={restaurantDetails}
         transactionDetails={transactionDetails}
+        couponDetails={couponDetails}
       />
     </>
   );
@@ -84,29 +86,28 @@ export async function getServerSideProps(context) {
       }
     );
 
+    const couponPromise = axios.get(
+      "https://apitasweeq.hamiltonkw.com/api/coupon/get-coupon",
+      {
+        params: {
+          code: "EN",
+          restaurant_id: "RES1708493724LCA58967",
+        },
+      }
+    );
+
     // Use Promise.all to resolve all promises concurrently
-    const [cartResponse, restaurantResponse, paymentMethodResponse] =
-      await Promise.all([cartPromise, restaurantPromise, paymentMethodPromise]);
-
-    // let cartDetails = [];
-    // if (
-    //   cartResponse.data &&
-    //   cartResponse.data.payload &&
-    //   cartResponse.data.payload.cartItems &&
-    //   cartResponse.data.payload.cartItems.length > 0
-    // ) {
-    //   cartDetails = cartResponse.data.payload.cartItems;
-    //   console.log(cartDetails, "cartDetails");
-    // }
-
-    // if (!cartDetails || cartDetails.length === 0) {
-    //   return {
-    //     redirect: {
-    //       destination: "/",
-    //       permanent: false,
-    //     },
-    //   };
-    // }
+    const [
+      cartResponse,
+      restaurantResponse,
+      paymentMethodResponse,
+      couponResponse,
+    ] = await Promise.all([
+      cartPromise,
+      restaurantPromise,
+      paymentMethodPromise,
+      couponPromise,
+    ]);
 
     const cartDetails =
       cartResponse.data &&
@@ -148,6 +149,9 @@ export async function getServerSideProps(context) {
       paymentMethodResponse.data.payload &&
       paymentMethodResponse.data.payload.PaymentMethods;
     console.log(paymentMethodList, "paymentMethodList");
+
+    const couponDetails = couponResponse.data && couponResponse.data.payload;
+    console.log(couponDetails, "couponDetails");
 
     // Handle payment status if paymentId is present
     if (paymentId) {
@@ -195,6 +199,7 @@ export async function getServerSideProps(context) {
         paymentMethodList: paymentMethodList,
         cartDetails: cartDetails,
         restaurantDetails: restaurantDetails,
+        couponDetails: couponDetails,
       },
     };
   } catch (error) {

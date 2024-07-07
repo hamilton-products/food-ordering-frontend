@@ -273,11 +273,11 @@ export const placeOrder = async (order) => {
           transaction_id: order.transaction_id,
           table_id: tableId,
           tax_details: [],
-          coupon_code: "",
+          coupon_code: order.coupon_code,
           gross_amount: order.grossAmount,
           total_tax_amount: 10,
           delivery_fee: 15,
-          coupon_id: "",
+          coupon_id: order.coupon_id,
           net_amount: order.net_amount,
           apt_name: order.apt_name,
           floor: order.houseFlatNo,
@@ -298,6 +298,8 @@ export const placeOrder = async (order) => {
         },
       }
     );
+
+    console.log(response, "response");
 
     return response.data.payload;
   } catch (error) {
@@ -406,5 +408,58 @@ export const executePayment = async (paymentMethodId, discountedTotal) => {
     return response.data && response.data.payload;
   } catch (error) {
     console.log("Error while executing payment");
+  }
+};
+
+// Coupon Apply
+
+export const applyCoupon = async (coupon_id, amount) => {
+  const consumerId = Cookies.get("consumerId");
+
+  try {
+    const response = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/api/coupon/apply-coupon`,
+      {
+        code: "EN",
+        user_id: consumerId,
+        coupon_id: coupon_id,
+        amount: 8,
+      },
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data && response.data.payload;
+  } catch (error) {
+    console.log("Error while apply coupon");
+  }
+};
+
+export const verifyCoupon = async (coupon_code, amount) => {
+  const consumerId = Cookies.get("consumerId");
+  try {
+    const response = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/api/coupon/verify-coupon`,
+      {
+        code: "EN",
+        user_id: consumerId,
+        coupon_code: coupon_code,
+        amount: amount,
+      },
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data && response.data.payload;
+  } catch (error) {
+    console.log("Error while apply coupon");
   }
 };
