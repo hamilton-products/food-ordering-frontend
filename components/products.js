@@ -28,10 +28,12 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const [cartItems, setCartItems] = useState(cartDetails);
   const [mobileResponse, setMobileResponse] = useState(true);
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const { t } = useTranslation("common");
 
   const categoryRefs = useRef({});
   const scrollContainerRef = useRef(null);
+  const sliderRef = useRef(null);
 
   const filteredMenu = menu.map((category) => ({
     ...category,
@@ -63,6 +65,29 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
       if (currentActiveCategory !== activeCategory) {
         setActiveCategory(currentActiveCategory);
+
+        // Move the slider to show the current active category
+        const activeCategoryIndex = menu.findIndex(
+          (category) => category.item_category_id === currentActiveCategory
+        );
+        if (sliderRef.current) {
+          const slidesToShow = 3; // Number of slides visible
+          const totalSlides = menu.length; // Total number of categories
+
+          // Calculate the target index for the slider to go to
+          let targetIndex = activeCategoryIndex;
+          if (currentIndex > activeCategoryIndex) {
+            targetIndex = Math.max(activeCategoryIndex - 2, 0); // Ensure targetIndex is not negative
+          } else if (currentIndex === activeCategoryIndex) {
+            targetIndex = Math.max(activeCategoryIndex - 1, 0); // Adjust if the current index is the target
+          } // No else needed, targetIndex is set to activeCategoryIndex by default
+
+          // Go to the calculated slide, ensuring it's within bounds
+          sliderRef.current.slickGoTo(
+            Math.min(targetIndex, totalSlides - slidesToShow)
+          );
+          setCurrentIndex(activeCategoryIndex);
+        }
       }
     };
 
@@ -70,16 +95,39 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
     container.addEventListener("scroll", handleScroll);
 
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [activeCategory]);
+  }, [activeCategory, currentIndex, menu]);
 
-  const scrollToCategory = (categoryId) => {
-    setActiveCategory(categoryId);
+  const scrollToCategory = (categoryId, index) => {
+    // setActiveCategory(categoryId);
     const categoryRef = categoryRefs.current[categoryId];
     if (categoryRef && categoryRef.current) {
       categoryRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
+    }
+
+    // Move the slider to show the next set of categories
+    if (sliderRef.current) {
+      console.log(sliderRef.current, "sliderRef.current");
+      const slidesToShow = 3; // Number of slides visible
+      const totalSlides = menu.length; // Total number of categories
+      console.log(totalSlides, "totalSlides");
+      console.log(index, "index");
+      setCurrentIndex(index);
+
+      // Calculate the target index for the slider to go to
+      let targetIndex = index;
+      if (currentIndex > index) {
+        targetIndex = Math.max(index - 2, 0); // Ensure targetIndex is not negative
+      } else if (currentIndex === index) {
+        targetIndex = Math.max(index - 1, 0); // Adjust if the current index is the target
+      } // No else needed, targetIndex is set to index by default
+
+      // Go to the calculated slide, ensuring it's within bounds
+      sliderRef.current.slickGoTo(
+        Math.min(targetIndex, totalSlides - slidesToShow)
+      );
     }
   };
 
@@ -88,7 +136,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
     infinite: false,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
       {
@@ -152,11 +200,13 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       )}
 
       <div className="sticky-slider">
-        <Slider {...settings}>
-          {menu.map((category) => (
+        <Slider ref={sliderRef} {...settings}>
+          {menu.map((category, index) => (
             <div key={category.item_category_id} className="px-2">
               <Card
-                onClick={() => scrollToCategory(category.item_category_id)}
+                onClick={() =>
+                  scrollToCategory(category.item_category_id, index)
+                }
                 shadow={true}
                 className={`p-3 m-2 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out ${
                   activeCategory === category.item_category_id
