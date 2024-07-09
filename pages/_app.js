@@ -91,6 +91,7 @@ function App({ Component, pageProps, restaurantDetails }) {
     "/checkout",
     "/order",
     "/orders",
+    "/delivery",
   ]; // replace with your actual routes
 
   const showHero = routesWithHero.includes(router.pathname);
