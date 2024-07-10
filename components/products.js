@@ -7,6 +7,7 @@ import {
   Button,
   CardHeader,
   Alert,
+  tab,
 } from "@material-tailwind/react";
 import {
   ShoppingBagIcon,
@@ -19,7 +20,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
+function SidebarWithSearch({ menu, cartDetails, restaurantDetails, tableId }) {
+  console.log(tableId, "tableId");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState(null);
   const restStatus = restaurantDetails.availability_status;

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Products from "@/components/products";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import cookie from "cookie";
 
 const MainPage = ({ menu, cartDetails, restaurantDetails }) => {
   return (
@@ -16,9 +17,26 @@ const MainPage = ({ menu, cartDetails, restaurantDetails }) => {
 
 export async function getServerSideProps(context) {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
+
+  // Get tableId from query parameters
+  const { tableId } = context.query;
+
+  // Set tableId in cookies, if it exists
+  if (tableId) {
+    context.res.setHeader(
+      "Set-Cookie",
+      cookie.serialize("tableId", tableId, {
+        httpOnly: true,
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+      })
+    );
+  }
+
   try {
-    const consumerId = context.req.cookies.consumerId;
-    const deviceId = context.req.cookies.fingerprint;
+    const cookies = cookie.parse(context.req.headers.cookie || "");
+    const consumerId = cookies.consumerId;
+    const deviceId = cookies.deviceId;
 
     let consumerType = "consumer";
     if (!consumerId) {
