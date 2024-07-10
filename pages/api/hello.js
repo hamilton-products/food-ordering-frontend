@@ -247,6 +247,8 @@ export const placeOrder = async (order) => {
 
   const tableId = Cookies.get("tableId");
 
+  console.log(tableId, "tableId++++++++++++++");
+
   try {
     const response = await axios.post(
       `https://apitasweeq.hamiltonkw.com/api/order/place-order`,

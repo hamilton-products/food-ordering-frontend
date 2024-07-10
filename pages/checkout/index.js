@@ -34,6 +34,8 @@ export async function getServerSideProps(context) {
     const consumerId = context.req.cookies.consumerId;
     const tableId = context.req.cookies.tableId;
 
+    console.log(tableId, "tableId");
+
     if (!consumerId) {
       return {
         redirect: {
