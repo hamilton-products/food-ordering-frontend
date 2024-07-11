@@ -95,17 +95,9 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
 
   // Function to format date and time
   const formatDateTime = (dateTimeString) => {
+    console.log(dateTimeString, "dateTimeString");
     const date = new Date(dateTimeString);
-    const formattedDate = date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-    const formattedTime = date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return `${formattedDate} ${formattedTime}`;
+    return date.toUTCString();
   };
 
   const handleCancelOrder = async () => {
