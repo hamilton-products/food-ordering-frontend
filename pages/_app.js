@@ -9,25 +9,27 @@ import { useRouter } from "next/router";
 import Fingerprint2 from "fingerprintjs2";
 import Cookies from "js-cookie";
 import Head from "next/head";
-import { appWithTranslation, i18n } from "next-i18next";
+import { appWithTranslation } from "next-i18next";
+import cookie from "cookie";
 
-function App({ Component, pageProps, restaurantDetails }) {
+function App({ Component, pageProps, restaurantDetails, restaurantId }) {
+  console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  console.log(restaurantDetails, "restaurantDetails");
-
   const { locale } = router;
-  console.log(locale, "locale");
-
-  // console.log("altamash", i18n.language);
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
-
   const [heroShown, setHeroShown] = useState(true);
 
-  // set the user's location to the cookies when the location state changes
+  // Set the user's location to the cookies when the location state changes
   Cookies.set("location", JSON.stringify(location));
+
+  useEffect(() => {
+    if (restaurantId) {
+      Cookies.set("restaurantId", restaurantId);
+    }
+  }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -41,28 +43,6 @@ function App({ Component, pageProps, restaurantDetails }) {
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
-
-  // Function to detect full address using lat and long
-  // const detectAddress = async () => {
-  //   try {
-  //     if (!location.lat || !location.lng) return;
-  //     const response = await fetch(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&${process.env.GOOGLE_API_KEY}`
-  //     );
-  //     const data = await response.json();
-  //     if (data.results.length > 0) {
-  //       const area = data.results[0].formatted_address;
-  //       setAddress({ ...address, area });
-  //       Cookies.set("address", area);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error detecting address:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   detectAddress();
-  // }, []);
 
   useEffect(() => {
     const handleStart = () => {
@@ -96,7 +76,6 @@ function App({ Component, pageProps, restaurantDetails }) {
 
   const showHero = routesWithHero.includes(router.pathname);
 
-  // Generate a unique fingerprint for the user
   useEffect(() => {
     async function generateFingerprint() {
       try {
@@ -134,13 +113,11 @@ function App({ Component, pageProps, restaurantDetails }) {
       <Head>
         <title>Tasweeq</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
-        {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> */}
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
         <div style={{ display: "flex", justifyContent: "center" }}>
           {loading ? <Loader /> : <Component {...pageProps} />}
-
           {showHero && !heroShown && (
             <Hero restaurantDetails={restaurantDetails} />
           )}
@@ -151,14 +128,28 @@ function App({ Component, pageProps, restaurantDetails }) {
 }
 
 App.getInitialProps = async ({ Component, ctx }) => {
-  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   try {
-    // Define the promise for fetching restaurant details
-    const restaurantDetailsPromise = axios.post(
-      `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
+    const { req } = ctx;
+
+    const restaurantCookiesId = req.cookies.restaurantId;
+
+    console.log(restaurantCookiesId, "restaurantCookiesId");
+    console.log(req.headers, "req.headers");
+
+    const host = req.headers.host;
+    const subdomain = host.split(".")[0];
+    // const subdomain = "altamash";
+
+    console.log(baseUrl, "baseUrl");
+
+    console.log(subdomain, "subdomain");
+
+    const restaurantIdResponse = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
       {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+        restaurant_subdomain: subdomain,
       },
       {
         headers: {
@@ -167,26 +158,51 @@ App.getInitialProps = async ({ Component, ctx }) => {
       }
     );
 
-    // Define the promise for fetching page props if Component.getInitialProps exists
-    let pagePropsPromise = Promise.resolve({});
+    console.log(restaurantIdResponse, "restaurantIdResponse");
+
+    const restaurantId =
+      restaurantIdResponse.data &&
+      restaurantIdResponse.data.payload &&
+      restaurantIdResponse.data.payload.restaurant_id;
+
+    console.log(restaurantId, "restaurantId");
+
+    // set restaurantId in the cookies
+
+    // if (restaurantId) {
+    //   context.res.setHeader(
+    //     "Set-Cookie",
+    //     cookie.serialize("restaurantId", restaurantId, {
+    //       path: "/",
+    //       // maxAge: 60 * 60 * 24, // 1 day
+    //     })
+    //   );
+    // }
+
+    const restaurantDetailsResponse = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
+      {
+        restaurant_id: restaurantId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    let pageProps = {};
     if (Component.getInitialProps) {
-      pagePropsPromise = Component.getInitialProps(ctx);
+      pageProps = await Component.getInitialProps(ctx);
     }
 
-    // Use Promise.all to fetch both restaurant details and page props concurrently
-    const [restaurantResponse, pageProps] = await Promise.all([
-      restaurantDetailsPromise,
-      pagePropsPromise,
-    ]);
-
-    console.log(restaurantResponse, "responsessss");
     const restaurantDetails =
-      restaurantResponse.data && restaurantResponse.data.payload;
+      restaurantDetailsResponse.data && restaurantDetailsResponse.data.payload;
 
-    return { pageProps, restaurantDetails };
+    return { pageProps, restaurantDetails, restaurantId };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { pageProps: {} }; // Return an empty object if there's an error
+    return { pageProps: {} };
   }
 };
 

@@ -15,6 +15,7 @@ export default function CartPage({ orderDetails, restaurantDetails }) {
 export async function getServerSideProps(context) {
   try {
     // Retrieve device_id from cookies in the server-side context
+    const restaurantId = context.req.cookies.restaurantId;
     const consumerId = context.req.cookies.consumerId;
     const { orderId } = context.query;
 
@@ -30,7 +31,7 @@ export async function getServerSideProps(context) {
     const restaurantPromise = axios.post(
       "https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend",
       {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+        restaurant_id: restaurantId, // replace with your actual data
       },
       {
         headers: {

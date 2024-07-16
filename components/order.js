@@ -77,6 +77,8 @@ function ChefIcon() {
 
 function SidebarWithSearch({ orderDetails, restaurantDetails }) {
   const router = useRouter();
+  const orderStatus = orderDetails.status;
+  console.log(orderStatus, "orderStatus");
   const [activeStep, setActiveStep] = React.useState(0);
   const [isLastStep, setIsLastStep] = React.useState(false);
   const [isFirstStep, setIsFirstStep] = React.useState(false);
@@ -158,7 +160,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
             isLastStep={(value) => setIsLastStep(value)}
             isFirstStep={(value) => setIsFirstStep(value)}
           >
-            <Step onClick={() => setActiveStep(0)}>
+            <Step>
               <CheckCircleIcon className="h-8 w-8" />
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
@@ -169,7 +171,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
                 </Typography>
               </div>
             </Step>
-            <Step onClick={() => setActiveStep(1)}>
+            <Step>
               <ChefIcon className="h-5 w-5" />
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
@@ -180,7 +182,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
                 </Typography>
               </div>
             </Step>
-            <Step onClick={() => setActiveStep(2)}>
+            <Step>
               <BuildingLibraryIcon className="h-5 w-5" />
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
@@ -191,7 +193,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
                 </Typography>
               </div>
             </Step>
-            <Step onClick={() => setActiveStep(3)}>
+            <Step>
               <BuildingLibraryIcon className="h-5 w-5" />
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography

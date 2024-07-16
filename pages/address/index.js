@@ -12,6 +12,7 @@ export default function AddressPage({ restaurantDetails }) {
 export async function getServerSideProps(context) {
   const consumerId = context.req.cookies.consumerId;
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
+  const restaurantId = context.req.cookies.restaurantId;
 
   if (!consumerId) {
     return {
@@ -26,7 +27,7 @@ export async function getServerSideProps(context) {
   const fetchRestaurantDetails = axios.post(
     `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
     {
-      restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+      restaurant_id: restaurantId, // replace with your actual data
     },
     {
       headers: {

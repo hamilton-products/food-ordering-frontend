@@ -33,6 +33,7 @@ export async function getServerSideProps(context) {
     const addressType = context.req.cookies.address_type;
     const consumerId = context.req.cookies.consumerId;
     const tableId = context.req.cookies.tableId;
+    const restaurantId = context.req.cookies.restaurantId;
 
     console.log(tableId, "tableId");
 
@@ -66,7 +67,7 @@ export async function getServerSideProps(context) {
     const restaurantPromise = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+        restaurant_id: restaurantId, // replace with your actual data
       },
       {
         headers: {
@@ -83,7 +84,7 @@ export async function getServerSideProps(context) {
           type_id: "PYT1572591869XMA79487",
           code: "EN",
           amount: 100,
-          restaurant_id: "RES1708493724LCA58967",
+          restaurant_id: restaurantId,
         },
       }
     );
@@ -93,7 +94,7 @@ export async function getServerSideProps(context) {
       {
         params: {
           code: "EN",
-          restaurant_id: "RES1708493724LCA58967",
+          restaurant_id: restaurantId,
         },
       }
     );

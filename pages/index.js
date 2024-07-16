@@ -17,9 +17,12 @@ const MainPage = ({ menu, cartDetails, restaurantDetails }) => {
 
 export async function getServerSideProps(context) {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
-
+  const restaurantId = context.req.cookies.restaurantId;
   // Get tableId from query parameters
   const { tableId } = context.query;
+  console.log(tableId, "tableId");
+
+  console.log(context, "restaurantId+++++++");
 
   // Set tableId in cookies, if it exists
   if (tableId) {
@@ -59,7 +62,7 @@ export async function getServerSideProps(context) {
       axios.post(
         `${baseUrl}/backend/restaurant/get-restaurant-menu-backend`,
         {
-          restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+          restaurant_id: restaurantId, // replace with your actual data
         },
         {
           headers: {
@@ -70,7 +73,7 @@ export async function getServerSideProps(context) {
       axios.post(
         `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
         {
-          restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+          restaurant_id: restaurantId, // replace with your actual data
         },
         {
           headers: {

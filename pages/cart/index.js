@@ -18,6 +18,7 @@ export async function getServerSideProps(context) {
     // Retrieve device_id from cookies in the server-side context
     const consumerId = context.req.cookies.consumerId;
     const deviceId = context.req.cookies.fingerprint;
+    const restaurantId = context.req.cookies.restaurantId;
 
     let consumerType = "consumer";
 
@@ -31,7 +32,7 @@ export async function getServerSideProps(context) {
     const fetchRestaurantDetails = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
-        restaurant_id: "RES1708493724LCA58967", // replace with your actual data
+        restaurant_id: restaurantId, // replace with your actual data
       },
       {
         headers: {

@@ -65,6 +65,7 @@ export const verifyMobileOTP = async (countryCode, otp) => {
 export const addToCart = async (productId, quantity, transformedData) => {
   const consumerId = Cookies.get("consumerId");
   const deviceId = Cookies.get("fingerprint");
+  const restaurantId = Cookies.get("restaurantId");
   let consumerType = "consumer";
 
   if (!consumerId) {
@@ -86,7 +87,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
           item_id: productId,
           qty: quantity,
           consumer_id: consumerId,
-          restaurant_id: "RES1708493724LCA58967",
+          restaurant_id: restaurantId,
           code: "EN",
           item_options: transformedData,
         },
@@ -103,7 +104,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
           item_id: productId,
           qty: quantity,
           device_id: deviceId,
-          restaurant_id: "RES1708493724LCA58967",
+          restaurant_id: restaurantId,
           code: "EN",
           item_options: transformedData,
         },
@@ -243,6 +244,8 @@ export const placeOrder = async (order) => {
   console.log(order, "order");
   console.log(order.transaction_id, "orderh");
 
+  const restaurantId = Cookies.get("restaurantId");
+
   const consumerId = Cookies.get("consumerId");
 
   const tableId = Cookies.get("tableId");
@@ -289,7 +292,7 @@ export const placeOrder = async (order) => {
           landmark: order.landmark,
           mobile: 11111111,
           consumer_id: consumerId,
-          restaurant_id: "RES1708493724LCA58967",
+          restaurant_id: restaurantId,
           deliver_to_latitude: order.latitude,
           deliver_to_longitude: order.longitude,
         }),
@@ -341,9 +344,10 @@ export const getAddressDetails = async () => {
 // get payment method
 
 export const paymentMethod = async (data) => {
+  const restaurantId = Cookies.get("restaurantId");
   try {
     const response = await axios.get(
-      `https://apitasweeq.hamiltonkw.com/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=RES1708493724LCA58967`,
+      `https://apitasweeq.hamiltonkw.com/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=${restaurantId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -384,6 +388,8 @@ export const cancelOrder = async (orderId) => {
 export const executePayment = async (paymentMethodId, discountedTotal) => {
   const consumerId = Cookies.get("consumerId");
 
+  const restaurantId = Cookies.get("restaurantId");
+
   try {
     const response = await axios.post(
       `https://apitasweeq.hamiltonkw.com/api/payment/execute-payment`,
@@ -397,7 +403,7 @@ export const executePayment = async (paymentMethodId, discountedTotal) => {
         expiryMonth: "12",
         expiryYear: "25",
         securityCode: "300",
-        restaurant_id: "RES1708493724LCA58967",
+        restaurant_id: restaurantId,
       },
 
       {
