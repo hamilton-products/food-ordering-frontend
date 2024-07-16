@@ -17,12 +17,17 @@ const MainPage = ({ menu, cartDetails, restaurantDetails }) => {
 
 export async function getServerSideProps(context) {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
-  const restaurantId = context.req.cookies.restaurantId;
+  // const restaurantId = context.req.cookies.restaurantId;
   // Get tableId from query parameters
   const { tableId } = context.query;
   console.log(tableId, "tableId");
 
   console.log(context, "restaurantId+++++++");
+  const host = context.headers.host;
+  const subdomain = host.split(".")[0];
+  // const subdomain = "altamash";
+
+  console.log(subdomain, "subdomain");
 
   // Set tableId in cookies, if it exists
   if (tableId) {
@@ -39,6 +44,38 @@ export async function getServerSideProps(context) {
     const cookies = cookie.parse(context.req.headers.cookie || "");
     const consumerId = cookies.consumerId;
     const deviceId = cookies.deviceId;
+
+    const restaurantIdResponse = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+      {
+        restaurant_subdomain: subdomain,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log(restaurantIdResponse, "restaurantIdResponse");
+
+    const restaurantId =
+      restaurantIdResponse.data &&
+      restaurantIdResponse.data.payload &&
+      restaurantIdResponse.data.payload.restaurant_id;
+
+    console.log(restaurantId, "restaurantId");
+
+    if (restaurantId) {
+      context.res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("restaurantId", restaurantId, {
+          domain: subdomain,
+          path: "/",
+          // maxAge: 60 * 60 * 24, // 1 day
+        })
+      );
+    }
 
     let consumerType = "consumer";
     if (!consumerId) {

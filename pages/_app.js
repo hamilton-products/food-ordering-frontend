@@ -10,7 +10,6 @@ import Fingerprint2 from "fingerprintjs2";
 import Cookies from "js-cookie";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
-import cookie from "cookie";
 
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   console.log(restaurantId, "restaurantId123");
@@ -22,14 +21,15 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
   const [heroShown, setHeroShown] = useState(true);
 
-  // Set the user's location to the cookies when the location state changes
-  Cookies.set("location", JSON.stringify(location));
-
   useEffect(() => {
     if (restaurantId) {
       Cookies.set("restaurantId", restaurantId);
     }
-  }, []);
+  }, [restaurantId]);
+
+  useEffect(() => {
+    Cookies.set("location", JSON.stringify(location));
+  }, [location]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -72,7 +72,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
     "/order",
     "/orders",
     "/delivery",
-  ]; // replace with your actual routes
+  ];
 
   const showHero = routesWithHero.includes(router.pathname);
 
@@ -102,7 +102,6 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
     window.addEventListener("resize", handleResize);
 
-    // Initial check
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
@@ -133,17 +132,11 @@ App.getInitialProps = async ({ Component, ctx }) => {
   try {
     const { req } = ctx;
 
-    const restaurantCookiesId = req.cookies.restaurantId;
-
-    console.log(restaurantCookiesId, "restaurantCookiesId");
-    console.log(req.headers, "req.headers");
-
     const host = req.headers.host;
-    // const subdomain = host.split(".")[0];
-    const subdomain = "altamash";
+    const subdomain = host.split(".")[0];
+    // const subdomain = "altamash";
 
     console.log(baseUrl, "baseUrl");
-
     console.log(subdomain, "subdomain");
 
     const restaurantIdResponse = await axios.post(
@@ -167,18 +160,6 @@ App.getInitialProps = async ({ Component, ctx }) => {
 
     console.log(restaurantId, "restaurantId");
 
-    // set restaurantId in the cookies
-
-    // if (restaurantId) {
-    //   context.res.setHeader(
-    //     "Set-Cookie",
-    //     cookie.serialize("restaurantId", restaurantId, {
-    //       path: "/",
-    //       // maxAge: 60 * 60 * 24, // 1 day
-    //     })
-    //   );
-    // }
-
     const restaurantDetailsResponse = await axios.post(
       `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
       {
@@ -190,6 +171,8 @@ App.getInitialProps = async ({ Component, ctx }) => {
         },
       }
     );
+
+    console.log(restaurantDetailsResponse, "restaurantDetailsResponse");
 
     let pageProps = {};
     if (Component.getInitialProps) {
