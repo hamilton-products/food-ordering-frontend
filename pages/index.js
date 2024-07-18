@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
 
   console.log(host, "host++");
   const subdomain = host.split(".")[0];
-  // const subdomain = "altamash";
+  // const subdomain = "mall";
 
   console.log(subdomain, "subdomain");
 
@@ -122,7 +122,11 @@ export async function getServerSideProps(context) {
       ),
     ]);
 
+    console.log(menuResponse, "menuResponse");
+
     const restaurantDetails = restaurantResponse.data?.payload;
+
+    console.log(restaurantDetails, "restaurantDetails");
 
     if (menuResponse.data?.payload && menuResponse.data.payload.length > 0) {
       const menuWithItemDetails = await Promise.all(
@@ -155,6 +159,8 @@ export async function getServerSideProps(context) {
         })
       );
 
+      console.log(menuWithItemDetails, "menuWithItemDetails");
+
       return {
         props: {
           restaurantDetails,
@@ -164,7 +170,14 @@ export async function getServerSideProps(context) {
         },
       };
     } else {
-      throw new Error("No data received from API");
+      return {
+        props: {
+          restaurantDetails,
+          menu: [],
+          cartDetails,
+          ...(await serverSideTranslations(locale, ["common"])),
+        },
+      };
     }
   } catch (error) {
     console.error("Error fetching data:", error);

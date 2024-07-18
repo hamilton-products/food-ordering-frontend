@@ -165,7 +165,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       },
     ],
   };
-
+  // console.log(menu, "menu");
   return (
     <Card
       ref={scrollContainerRef}

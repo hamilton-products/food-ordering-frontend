@@ -134,7 +134,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
 
     const host = req.headers.host;
     const subdomain = host.split(".")[0];
-    // const subdomain = "altamash";
+    // const subdomain = "mall";
 
     console.log(baseUrl, "baseUrl");
     console.log(subdomain, "subdomain");
