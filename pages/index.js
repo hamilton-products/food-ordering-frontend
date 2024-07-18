@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
 
   console.log(host, "host++");
   const subdomain = host.split(".")[0];
-  // const subdomain = "mall";
+  // const subdomain = "altamash";
 
   console.log(subdomain, "subdomain");
 
