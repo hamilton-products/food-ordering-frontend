@@ -23,11 +23,11 @@ export async function getServerSideProps(context) {
   console.log(tableId, "tableId");
 
   console.log(context, "restaurantId+++++++");
-  const host = context.req.headers.host;
+  const host = context.req.headers.host || "fuga";
 
   console.log(host, "host++");
   const subdomain = host.split(".")[0];
-  // const subdomain = "altamash";
+  // const subdomain = "fuga";
 
   console.log(subdomain, "subdomain");
 

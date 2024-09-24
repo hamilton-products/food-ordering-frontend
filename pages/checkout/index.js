@@ -2,12 +2,13 @@ import axios from "axios";
 import Checkout from "@/components/checkout";
 
 export default function AddressPage({
-  transactionDetails,
+  // transactionDetails,
   cartDetails,
   restaurantDetails,
   paymentMethodList,
   addressDetailss,
   couponDetails,
+  subdomain,
 }) {
   return (
     <>
@@ -16,8 +17,9 @@ export default function AddressPage({
         paymentMethodList={paymentMethodList}
         cartDetails={cartDetails}
         restaurantDetails={restaurantDetails}
-        transactionDetails={transactionDetails}
+        // transactionDetails={transactionDetails}
         couponDetails={couponDetails}
+        subdomain={subdomain}
       />
     </>
   );
@@ -26,6 +28,10 @@ export default function AddressPage({
 export async function getServerSideProps(context) {
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   let transactionDetails = {}; // Declare transactionDetails here
+  const host = context.req.headers.host || "fuga";
+
+  console.log(host, "host++");
+  const subdomain = host.split(".")[0];
 
   try {
     const device_id = context.req.cookies.fingerprint;
@@ -157,19 +163,19 @@ export async function getServerSideProps(context) {
     console.log(couponDetails, "couponDetails");
 
     // Handle payment status if paymentId is present
-    if (paymentId) {
-      const paymentStatusResponse = await axios.post(
-        `${baseUrl}/api/payment/payment-status`,
-        {
-          paymentId: paymentId,
-        }
-      );
+    // if (paymentId) {
+    //   const paymentStatusResponse = await axios.post(
+    //     `${baseUrl}/api/payment/payment-status`,
+    //     {
+    //       paymentId: paymentId,
+    //     }
+    //   );
 
-      transactionDetails =
-        paymentStatusResponse.data && paymentStatusResponse.data.payload;
-    }
+    //   transactionDetails =
+    //     paymentStatusResponse.data && paymentStatusResponse.data.payload;
+    // }
 
-    console.log(transactionDetails, "transactionDetails Altamash");
+    // console.log(transactionDetails, "transactionDetails Altamash");
 
     let addressDetailss = null;
 
@@ -198,11 +204,12 @@ export async function getServerSideProps(context) {
     return {
       props: {
         addressDetailss: addressDetailss,
-        transactionDetails: transactionDetails,
+        // transactionDetails: transactionDetails,
         paymentMethodList: paymentMethodList,
         cartDetails: cartDetails,
         restaurantDetails: restaurantDetails,
         couponDetails: couponDetails,
+        subdomain: subdomain,
       },
     };
   } catch (error) {

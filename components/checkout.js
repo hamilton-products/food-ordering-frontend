@@ -86,11 +86,13 @@ function Product({
   cartDetails,
   restaurantDetails,
   paymentMethodList,
-  transactionDetails,
+  // transactionDetails,
   addressDetailss,
   couponDetails,
+  subdomain,
 }) {
   const [loading, setLoading] = useState(false);
+  console.log(subdomain, "subdomain");
 
   console.log(cartDetails, "cartDetails mms");
   console.log(couponDetails, "couponDetails");
@@ -118,24 +120,24 @@ function Product({
     return () => window.removeEventListener("resize", handleResizeXtraSmall);
   }, []);
 
-  const transactionStatuss =
-    transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
-      ? transactionDetails.Data.InvoiceTransactions[0].TransactionStatus
-      : "";
+  // const transactionStatuss =
+  //   transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
+  //     ? transactionDetails.Data.InvoiceTransactions[0].TransactionStatus
+  //     : "";
 
-  const [paymentId, setPaymentId] = useState(null);
-  const [transactionStatus, setTransactionStatus] = useState(
-    transactionStatuss || ""
-  );
+  // const [paymentId, setPaymentId] = useState(null);
+  // const [transactionStatus, setTransactionStatus] = useState(
+  //   transactionStatuss || ""
+  // );
   const [open, setOpen] = React.useState(true);
   console.log(addressDetailss, "bhai bolye");
 
-  const transactionId =
-    transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
-      ? transactionDetails.Data.InvoiceTransactions[0].PaymentId
-      : "";
+  // const transactionId =
+  //   transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
+  //     ? transactionDetails.Data.InvoiceTransactions[0].PaymentId
+  //     : "";
 
-  console.log(transactionId, transactionStatuss);
+  // console.log(transactionId, transactionStatuss);
 
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -279,25 +281,25 @@ function Product({
     lng: restaurantDetails.longitude,
   };
 
-  useEffect(() => {
-    if (transactionId) {
-      const placeOrderAsync = async () => {
-        try {
-          if (transactionId && transactionStatus === "Succss") {
-            setLoading(true);
-            const response = await placeOrder(order);
-            const orderId = response.order_id;
+  // useEffect(() => {
+  //   if (transactionId) {
+  //     const placeOrderAsync = async () => {
+  //       try {
+  //         if (transactionId && transactionStatus === "Succss") {
+  //           setLoading(true);
+  //           const response = await placeOrder(order);
+  //           const orderId = response.order_id;
 
-            router.push(`/order?orderId=${orderId}`);
-          }
-        } catch (error) {
-          console.error("Error placing order:", error);
-        }
-      };
+  //           router.push(`/order?orderId=${orderId}`);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error placing order:", error);
+  //       }
+  //     };
 
-      placeOrderAsync();
-    }
-  }, [transactionId]);
+  //     placeOrderAsync();
+  //   }
+  // }, [transactionId]);
 
   const [paymentMethodDetails, setPaymentMethodDetails] = useState(null);
 
@@ -336,7 +338,22 @@ function Product({
   const handleExecutePayment = async (paymentMethodId) => {
     try {
       setLoading(true);
-      const response = await executePayment(paymentMethodId, discountedTotal);
+      // Place the order first
+      const orderResponse = await placeOrder(order);
+      if (!orderResponse || !orderResponse.order_id) {
+        console.log("Failed to place order");
+        setLoading(false);
+        return;
+      }
+
+      const orderId = orderResponse.order_id;
+      Cookies.set("orderId", orderId);
+      const response = await executePayment(
+        paymentMethodId,
+        discountedTotal,
+        subdomain,
+        orderId
+      );
       const paymentLink = response.Data ? response.Data.PaymentURL : null;
       window.location.href = paymentLink;
       console.log(response, "response");
@@ -347,7 +364,7 @@ function Product({
   };
 
   const [order, setOrder] = useState({
-    transaction_id: transactionId,
+    transaction_id: "",
     address: addressDetailss?.address || "",
     latitude: addressDetailss?.latitude || "",
     longitude: addressDetailss?.longitude || "",
@@ -364,12 +381,12 @@ function Product({
     coupon_code: "",
   });
   console.log(order, "order++++++++++++++");
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTransactionStatus(null);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [transactionStatus]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setTransactionStatus(null);
+  //   }, 5000);
+  //   return () => clearTimeout(timer);
+  // }, [transactionStatus]);
 
   const hanldeBackButton = () => {
     router.back();
@@ -391,7 +408,7 @@ function Product({
         </Button>
       </div>
 
-      {transactionStatus === "Succss" && (
+      {/* {transactionStatus === "Succss" && (
         <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
@@ -405,9 +422,9 @@ function Product({
             </Alert>
           </div>
         </div>
-      )}
+      )} */}
 
-      {transactionStatus === "Failed" && (
+      {/* {transactionStatus === "Failed" && (
         <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
@@ -421,7 +438,7 @@ function Product({
             </Alert>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
         <div className="flex items-center justify-center">
@@ -622,7 +639,7 @@ function Product({
           {paymentMethodList &&
             paymentMethodList.map((value) => {
               if (
-                [1, 2, 3, 6].includes(value.PaymentMethodId) &&
+                [1, 3, 6].includes(value.PaymentMethodId) &&
                 selectedPaymentMethod === "online"
               ) {
                 return (

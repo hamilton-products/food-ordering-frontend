@@ -72,6 +72,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
     "/order",
     "/orders",
     "/delivery",
+    "/tables",
   ];
 
   const showHero = routesWithHero.includes(router.pathname);
@@ -128,65 +129,50 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
 App.getInitialProps = async ({ Component, ctx }) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  let pageProps = {};
 
   try {
-    const { req } = ctx;
+    if (typeof window === "undefined") {
+      const { req } = ctx;
+      const host = req.headers.host || "fuga";
+      const subdomain = host.split(".")[0];
+      // const subdomain = "fuga"; // Hardcoded subdomain for now
 
-    const host = req.headers.host;
-    const subdomain = host.split(".")[0];
-    // const subdomain = "altamash";
+      console.log(baseUrl, "baseUrl");
+      console.log(subdomain, "subdomain");
 
-    console.log(baseUrl, "baseUrl");
-    console.log(subdomain, "subdomain");
+      const restaurantIdResponse = await axios.post(
+        `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+        { restaurant_subdomain: subdomain },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-    const restaurantIdResponse = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
-      {
-        restaurant_subdomain: subdomain,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const restaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
+
+      console.log(restaurantId, "restaurantId");
+
+      const restaurantDetailsResponse = await axios.post(
+        `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
+        { restaurant_id: restaurantId },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const restaurantDetails = restaurantDetailsResponse?.data?.payload;
+
+      console.log(restaurantDetails, "restaurantDetails");
+
+      if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
       }
-    );
 
-    console.log(restaurantIdResponse, "restaurantIdResponse");
-
-    const restaurantId =
-      restaurantIdResponse.data &&
-      restaurantIdResponse.data.payload &&
-      restaurantIdResponse.data.payload.restaurant_id;
-
-    console.log(restaurantId, "restaurantId");
-
-    const restaurantDetailsResponse = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
-      {
-        restaurant_id: restaurantId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log(restaurantDetailsResponse, "restaurantDetailsResponse");
-
-    let pageProps = {};
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      return { pageProps, restaurantDetails, restaurantId };
     }
-
-    const restaurantDetails =
-      restaurantDetailsResponse.data && restaurantDetailsResponse.data.payload;
-
-    return { pageProps, restaurantDetails, restaurantId };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { pageProps: {} };
   }
+
+  // Always return pageProps even if error occurs
+  return { pageProps };
 };
 
 export default appWithTranslation(App);

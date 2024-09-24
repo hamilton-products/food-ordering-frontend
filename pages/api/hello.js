@@ -385,7 +385,12 @@ export const cancelOrder = async (orderId) => {
   }
 };
 
-export const executePayment = async (paymentMethodId, discountedTotal) => {
+export const executePayment = async (
+  paymentMethodId,
+  discountedTotal,
+  subdomain,
+  orderId
+) => {
   const consumerId = Cookies.get("consumerId");
 
   const restaurantId = Cookies.get("restaurantId");
@@ -404,6 +409,8 @@ export const executePayment = async (paymentMethodId, discountedTotal) => {
         expiryYear: "25",
         securityCode: "300",
         restaurant_id: restaurantId,
+        subdomain,
+        orderId,
       },
 
       {
