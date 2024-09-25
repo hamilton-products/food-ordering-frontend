@@ -35,6 +35,7 @@ import {
   ShoppingCartIcon,
   CheckCircleIcon,
   CheckIcon,
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/solid";
 import {
   ChevronRightIcon,
@@ -44,6 +45,7 @@ import {
   CogIcon,
   UserIcon,
   BuildingLibraryIcon,
+  CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -79,7 +81,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
   const router = useRouter();
   const orderStatus = orderDetails.status;
   console.log(orderStatus, "orderStatus");
-  const [activeStep, setActiveStep] = React.useState(0);
+  // const [activeStep, setActiveStep] = React.useState(0);
   const [isLastStep, setIsLastStep] = React.useState(false);
   const [isFirstStep, setIsFirstStep] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -94,6 +96,24 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
 
   console.log(orderItemsDetails, "orderItemsDetails");
   console.log(orderDetails, "orderDetails");
+
+  // Function to determine the active step based on order status
+  const getActiveStep = (status) => {
+    switch (status) {
+      case "new":
+        return 0;
+      case "confirmed":
+        return 1;
+      case "ready":
+        return 2;
+      case "delivered":
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  const activeStep = getActiveStep(orderDetails.status);
 
   // Function to format date and time
   const formatDateTime = (dateTimeString) => {
@@ -155,46 +175,58 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
         <div className="w-full py-5 px-5 mb-5 mt-5">
-          <Stepper
-            activeStep={activeStep}
-            isLastStep={(value) => setIsLastStep(value)}
-            isFirstStep={(value) => setIsFirstStep(value)}
-          >
+          <Stepper activeStep={activeStep}>
             <Step>
-              <CheckCircleIcon className="h-8 w-8" />
+              {activeStep >= 0 ? (
+                <ExclamationCircleIcon className="h-8 w-8" />
+              ) : (
+                <ExclamationCircleIcon className="h-5 w-5" />
+              )}
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
                   variant="h6"
                   color={activeStep === 0 ? "blue-gray" : "gray"}
+                >
+                  Not Confirmed
+                </Typography>
+              </div>
+            </Step>
+            <Step>
+              {activeStep >= 1 ? (
+                <CheckCircleIcon className="h-8 w-8" />
+              ) : (
+                <CheckBadgeIcon className="h-8 w-8" />
+              )}
+              <div className="absolute -bottom-[2rem] w-max text-center">
+                <Typography
+                  variant="h6"
+                  color={activeStep === 1 ? "blue-gray" : "gray"}
                 >
                   Confirmed
                 </Typography>
               </div>
             </Step>
             <Step>
-              <ChefIcon className="h-5 w-5" />
+              {activeStep >= 2 ? (
+                <CheckCircleIcon className="h-8 w-8" />
+              ) : (
+                <ChefIcon className="h-5 w-5" />
+              )}
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
                   variant="h6"
-                  color={activeStep === 1 ? "blue-gray" : "gray"}
+                  color={activeStep === 2 ? "blue-gray" : "gray"}
                 >
                   Food Ready
                 </Typography>
               </div>
             </Step>
             <Step>
-              <BuildingLibraryIcon className="h-5 w-5" />
-              <div className="absolute -bottom-[2rem] w-max text-center">
-                <Typography
-                  variant="h6"
-                  color={activeStep === 2 ? "blue-gray" : "gray"}
-                >
-                  On the Way
-                </Typography>
-              </div>
-            </Step>
-            <Step>
-              <BuildingLibraryIcon className="h-5 w-5" />
+              {activeStep >= 3 ? (
+                <CheckCircleIcon className="h-8 w-8" />
+              ) : (
+                <BuildingLibraryIcon className="h-5 w-5" />
+              )}
               <div className="absolute -bottom-[2rem] w-max text-center">
                 <Typography
                   variant="h6"
