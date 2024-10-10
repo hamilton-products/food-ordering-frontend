@@ -4,10 +4,10 @@ import Products from "@/components/cart";
 export default function CartPage({ cartDetails, restaurantDetails }) {
   return (
     <>
-      <Products
+      {restaurantDetails?<Products
         cartDetails={cartDetails}
         restaurantDetails={restaurantDetails}
-      />
+      />:<>loading...</>}
     </>
   );
 }

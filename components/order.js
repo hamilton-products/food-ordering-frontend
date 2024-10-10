@@ -78,6 +78,7 @@ function ChefIcon() {
 }
 
 function SidebarWithSearch({ orderDetails, restaurantDetails }) {
+  if(!restaurantDetails) return null;
   const router = useRouter();
   const orderStatus = orderDetails.status;
   console.log(orderStatus, "orderStatus");

@@ -59,6 +59,7 @@ function Icon() {
 }
 
 function SidebarWithSearch({ cartDetails, restaurantDetails }) {
+  // if(!restaurantDetails) return null;
   console.log(cartDetails, "menushsg");
   const router = useRouter();
   const [open, setOpen] = React.useState(0);

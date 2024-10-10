@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from "axios";
 import Cookies from "js-cookie";
+import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/router"; // Import the useRouter hook
 
 export const sendOTP = async (phoneNumber, countryCode) => {
@@ -411,6 +412,7 @@ export const executePayment = async (
         restaurant_id: restaurantId,
         subdomain,
         orderId,
+        redirect_url:"http://"+window.location.hostname+"/confirmation/"
       },
 
       {
@@ -423,6 +425,40 @@ export const executePayment = async (
     return response.data && response.data.payload;
   } catch (error) {
     console.log("Error while executing payment");
+  }
+};
+export const checkPaymentStatus = async (paymentId) => {
+  try {
+    // Ensure paymentId is provided
+    if (!paymentId) {
+      console.log("Error: Parameter Missing: paymentId is required.");
+      return;
+    }
+
+    // Prepare the request body
+    const requestBody = { paymentId:paymentId };
+
+    // Send the POST request to check the payment status
+    const response = await axios.post(
+      `https://apitasweeq.hamiltonkw.com/api/payment/payment-status`,
+      requestBody,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // Return the response based on the payment type logic
+    if (response.data && response.data.payload) {
+      return response.data.payload; // Adjust according to the API's response structure
+    } else {
+      console.log("Error: Invalid payment status response.");
+      return;
+    }
+  } catch (error) {
+    console.error("Error while checking payment status:", error);
+    return null;
   }
 };
 

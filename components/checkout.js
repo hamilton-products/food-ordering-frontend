@@ -91,6 +91,7 @@ function Product({
   couponDetails,
   subdomain,
 }) {
+  if(!restaurantDetails) return null;
   const [loading, setLoading] = useState(false);
   console.log(subdomain, "subdomain");
 
@@ -334,7 +335,6 @@ function Product({
       setLoading(false);
     }
   };
-
   const handleExecutePayment = async (paymentMethodId) => {
     try {
       setLoading(true);
@@ -354,7 +354,10 @@ function Product({
         subdomain,
         orderId
       );
-      const paymentLink = response.Data ? response.Data.PaymentURL : null;
+      const paymentLink = response.url ? response.url : null;
+      // const paymentLink = response.Data ? response.Data.PaymentURL : null;
+
+
       window.location.href = paymentLink;
       console.log(response, "response");
     } catch (error) {

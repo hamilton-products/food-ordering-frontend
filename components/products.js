@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
+  // if(!restaurantDetails) return null;
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState(null);
   const restStatus = restaurantDetails.availability_status;
