@@ -73,7 +73,12 @@ function SidebarWithSearch({ pastOrderList, currentOrderList }) {
   console.log(pastOrderList, "pastOrderList");
 
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none">
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none"
+    style={{
+      background: "#F4F5F5",
+      scrollbarWidth: "none", 
+      msOverflowStyle: "none", 
+    }}>
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         {/* <img
           src="https://docs.material-tailwind.com/img/logo-ct-dark.png"

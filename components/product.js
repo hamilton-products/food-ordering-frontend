@@ -228,7 +228,12 @@ function Product({ itemDetails, consumerId }) {
           : mobileResponse
           ? "h-[calc(100vh-8rem)]"
           : "h-[calc(100vh-13rem)]"
-      } w-full max-w-[32rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
+      } w-full max-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
+      style={{
+        background: "#F4F5F5",
+        scrollbarWidth: "none", 
+        msOverflowStyle: "none", 
+      }}
     >
       <div className="absolute z-10">
         <Button onClick={() => goToItems()} color="white" variant="text">

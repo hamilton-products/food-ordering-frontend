@@ -29,7 +29,9 @@ function NavList() {
   };
 
   return (
-    <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 w-full">
+    <ul className="my-2 max-w-screen flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 w-full"
+
+    >
       <Typography
         as="li"
         variant="h6"
@@ -51,6 +53,7 @@ function NavList() {
           />
         </svg>
       </Typography>
+      <Link href="/cart">
       <Typography
         as="li"
         variant="small"
@@ -59,6 +62,8 @@ function NavList() {
       >
         <ShoppingBagIcon className="h-6 w-6 cursor-pointer" strokeWidth={2} />
       </Typography>
+      </Link>
+      
       <Typography
         as="li"
         variant="small"
@@ -104,8 +109,8 @@ function NavbarSimple() {
   }, []);
 
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-6 py-5 rounded-none bg-transparent">
-      <div className="flex items-center justify-between text-white">
+    <Navbar>
+      <div className="flex items-center justify-between text-white" style={{float: "left",}}>
         <Typography
           as="a"
           href="#"

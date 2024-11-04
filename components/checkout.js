@@ -396,9 +396,17 @@ function Product({
   };
 
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto">
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{
+      background: "#F4F5F5",
+      scrollbarWidth: "none", 
+      msOverflowStyle: "none", 
+    }}>
       {loading && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] bg-[#0000008a] z-20 flex items-center justify-center">
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] bg-[#0000008a] z-20 flex items-center justify-center" style={{
+          background: "#F4F5F5",
+          scrollbarWidth: "none", 
+          msOverflowStyle: "none", 
+        }}>
           <div className="flex items-center justify-center">
             <Spinner className="h-12 w-12" />
           </div>
@@ -412,7 +420,7 @@ function Product({
       </div>
 
       {/* {transactionStatus === "Succss" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
               variant="gradient"
@@ -428,7 +436,7 @@ function Product({
       )} */}
 
       {/* {transactionStatus === "Failed" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
               variant="gradient"
@@ -443,7 +451,7 @@ function Product({
         </div>
       )} */}
 
-      {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[32rem] z-20 flex items-center justify-center">
+      {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] z-20 flex items-center justify-center">
         <div className="flex items-center justify-center">
           <Alert
             variant="gradient"

@@ -10,7 +10,7 @@ import Fingerprint2 from "fingerprintjs2";
 import Cookies from "js-cookie";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
-
+import { Avatar, Typography } from "@material-tailwind/react";
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
@@ -107,6 +107,21 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const cover_photo = restaurantDetails?.cover_photo || "";
+  const logo = restaurantDetails.logo || "";
+  const description =
+    restaurantDetails.description && restaurantDetails.description.EN;
+
+  const name = restaurantDetails.name && restaurantDetails.name.EN;
+
+  const address = restaurantDetails.address;
+
+  const contactInfo = restaurantDetails.mobile;
+
+  const contactInfoCountryCode = restaurantDetails.mobile_country_code;
+
+  const latitude = restaurantDetails.latitude;
+  const longitude = restaurantDetails.longitude;
 
   return (
     <>
@@ -116,8 +131,49 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {loading ? <Loader /> : <Component {...pageProps} />}
+        <div  style={{ display: "flex", justifyContent: "center" }}>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="flex flex-col">
+              <div className="flex max-w-[40rem]">
+              <div>
+                  <Avatar src={logo} alt="avatar" size="xxl" />
+                </div>
+                
+                <div className="grid grid-cols-2">
+                <Typography
+                  variant="h6"
+                  color="dark"
+                  className="mt-2 md:max-w-full lg:max-w-3xl"
+                >
+                  {name}
+                </Typography>
+              
+                {/* <Typography variant="h6" color="dark" className="mt-2">
+                  {description}
+                </Typography> */}
+                <Typography variant="h6" color="dark" className="mt-2">
+                  {address}
+                </Typography>
+                {/* <Typography variant="h6" color="dark" className="mt-2">
+                  {contactInfoCountryCode} {contactInfo}
+                </Typography> */}
+                {/* <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}
+                  target="_blank"
+                  className="text-dark underline mt-2"
+                >
+                  View on Map
+                </a> */}
+                </div>
+                
+               
+              </div>
+              <Component {...pageProps} />
+            </div>
+          )}
+
           {showHero && !heroShown && (
             <Hero restaurantDetails={restaurantDetails} />
           )}

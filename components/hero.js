@@ -25,12 +25,12 @@ function Hero({ restaurantDetails }) {
       style={{ backgroundImage: `url('${cover_photo}')` }}
     >
       {/* Ensure Navbar is above the overlay */}
-      {/* <div className="relative z-20 w-full">
+      <div className="relative z-20 w-full">
         <Navbar />
-      </div> */}
+      </div>
       <div className="absolute inset-0 h-full w-full  opacity-50 z-10" />
       <div className="grid h-full">
-        <div className="container relative z-30 m-auto grid place-items-center text-center px-8">
+        {/* <div className="container relative z-30 m-auto grid place-items-center text-center px-8">
           <Typography
             variant="h1"
             color="dark"
@@ -57,7 +57,7 @@ function Hero({ restaurantDetails }) {
           >
             View on Map
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

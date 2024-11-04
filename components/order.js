@@ -151,7 +151,12 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
 
   console.log(orderDetails.status, "sajhdsjahd");
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none">
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none"
+    style={{
+      background: "#F4F5F5",
+      scrollbarWidth: "none", 
+      msOverflowStyle: "none", 
+    }}>
       <div className="flex items-left justify-left gap-4 ">
         {/* <img
           src="https://docs.material-tailwind.com/img/logo-ct-dark.png"

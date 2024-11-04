@@ -22,7 +22,12 @@ import {
 
 function Loader() {
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[32rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none">
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none"
+    style={{
+      background: "#F4F5F5",
+      scrollbarWidth: "none", 
+      msOverflowStyle: "none", 
+    }}>
       <div className="mt-[50%] flex items-center justify-center gap-4 p-4">
         <Spinner className="h-12 w-12" />
       </div>
