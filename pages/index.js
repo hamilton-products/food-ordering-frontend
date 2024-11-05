@@ -85,7 +85,7 @@ export async function getServerSideProps(context) {
     }
 
     const idToUse = consumerId ? consumerId : deviceId;
-    const locale = context.locale === "ar" ? "AR" : "EN" || "EN";
+    const locale = context.locale === "ar" ? "AR" : "EN" || "AR";
 
     console.log(locale, "locale");
     let cartDetails = [];

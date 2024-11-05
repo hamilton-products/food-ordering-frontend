@@ -1,0 +1,18 @@
+{
+  "title": "Privacy Policy",
+  "intro": "Welcome to our Privacy Policy page. Your privacy is critically important to us.",
+  "content": [
+    {
+      "heading": "Information We Collect",
+      "text": "We collect various types of information in connection with the services we provide, including name, email address, etc."
+    },
+    {
+      "heading": "How We Use Your Information",
+      "text": "We use the information we collect to provide, operate, and improve our services."
+    },
+    {
+      "heading": "Your Data Protection Rights",
+      "text": "You have the right to request access to your personal data, as well as the right to rectify, erase, or restrict its processing."
+    }
+  ]
+}

@@ -179,7 +179,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         msOverflowStyle: "none", 
       }}
     >
-      <div className="mb-2 flex items-center justify-center gap-4 p-4">
+      {/* <div className="mb-2 flex items-center justify-center gap-4 p-4">
         <Typography
           variant="h5"
           color="blue-gray"
@@ -188,7 +188,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         >
           {t("ReviewOrder")}
         </Typography>
-      </div>
+      </div> */}
       <div className="p-2 ">
         <Input
           icon={<MagnifyingGlassIcon className="h-5 w-5" />}

@@ -30,6 +30,9 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   useEffect(() => {
     Cookies.set("location", JSON.stringify(location));
   }, [location]);
+  useEffect(() => {
+    Cookies.set("location", JSON.stringify(location));
+  }, [location]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -65,6 +68,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
   const routesWithHero = [
     "/",
+    "/privacy-policy",
     "/product",
     "/cart",
     "/address",
@@ -131,11 +135,13 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
-        <div  style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           {loading ? (
             <Loader />
           ) : (
-            <div className="flex flex-col">
+            <div className="h-[calc(100vh)] flex flex-col"  style={{
+              background: "#F4F5F5"
+            }}>
               <div className="flex max-w-[40rem]">
               <div>
                   <Avatar src={logo} alt="avatar" size="xxl" />
