@@ -68,7 +68,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
   const routesWithHero = [
     "/",
-    // "/privacy-policy",
+    "/privacy-policy",
     "/product",
     "/cart",
     "/address",
