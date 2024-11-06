@@ -242,6 +242,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           ))}
         </Slider>
       ) : (
+        <></>
         // List view for mobile view
         // <div className="flex flex-col space-y-2 bg-[#F4F5F5] p-2">
         //   {menu.map((category, index) => (
