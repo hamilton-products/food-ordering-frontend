@@ -146,7 +146,7 @@ function Product({ addressDetails }) {
   }, [message]);
 
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" 
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" 
     style={{
       background: "#F4F5F5",
       scrollbarWidth: "none", 

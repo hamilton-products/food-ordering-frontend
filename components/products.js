@@ -166,13 +166,13 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       },
     ],
   };
-  // console.log(menu, "menu");
+  console.log(menu[0], "menu");
   return (
     <Card
       ref={scrollContainerRef}
       className={`${
         cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
-      } w-full max-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
+      } w-full max-w-[40rem] min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
       style={{
         background: "#F4F5F5",
         scrollbarWidth: "none", 

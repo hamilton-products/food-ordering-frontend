@@ -15,6 +15,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  // const [locale, setLocale] = useState("ar");
 
   const { locale } = router;
 
@@ -30,9 +31,10 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   useEffect(() => {
     Cookies.set("location", JSON.stringify(location));
   }, [location]);
+
   useEffect(() => {
-    Cookies.set("location", JSON.stringify(location));
-  }, [location]);
+    Cookies.set("locale", JSON.stringify(locale));
+  }, [locale]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -142,40 +144,48 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             <div className="h-[calc(100vh)] flex flex-col"  style={{
               background: "#F4F5F5"
             }}>
-              <div className="flex max-w-[40rem]">
-              <div>
-                  <Avatar src={logo} alt="avatar" size="xxl" />
-                </div>
-                
-                <div className="grid grid-cols-2">
-                <Typography
-                  variant="h6"
-                  color="dark"
-                  className="mt-2 md:max-w-full lg:max-w-3xl"
-                >
-                  {name}
-                </Typography>
-              
-                {/* <Typography variant="h6" color="dark" className="mt-2">
-                  {description}
-                </Typography> */}
-                <Typography variant="h6" color="dark" className="mt-2">
-                  {address}
-                </Typography>
-                {/* <Typography variant="h6" color="dark" className="mt-2">
-                  {contactInfoCountryCode} {contactInfo}
-                </Typography> */}
-                {/* <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}
-                  target="_blank"
-                  className="text-dark underline mt-2"
-                >
-                  View on Map
-                </a> */}
-                </div>
-                
-               
-              </div>
+             <div className="flex max-w-[40rem] min-w-[40rem] border p-4 rounded-lg shadow-sm">
+  <div className="mr-4">
+    <Avatar src={logo} alt="avatar" size="xl" />
+  </div>
+  
+  <div className="grid">
+    <Typography
+      variant="h6"
+      color="dark"
+      className="font-semibold text-lg"
+    >
+      {name}
+    </Typography>
+    
+    <Typography
+      variant="body1"
+      color="dark"
+      className="text-gray-600"
+    >
+      {description}
+    </Typography>
+    
+    <Typography
+      variant="body1"
+      color="dark"
+      className="text-gray-600"
+    >
+      {address}
+    </Typography>
+    
+    <div className="flex items-center gap-2 mt-2">
+      {/* Add icons for payment methods or other information here */}
+      <span className="text-green-600"> {/* Example of payment icon */}
+        <i className="fas fa-credit-card"></i>
+      </span>
+      <span className="text-green-600"> {/* Example of cash icon */}
+        <i className="fas fa-money-bill"></i>
+      </span>
+    </div>
+  </div>
+</div>
+
               <Component {...pageProps} />
             </div>
           )}

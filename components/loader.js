@@ -22,7 +22,7 @@ import {
 
 function Loader() {
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none"
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none"
     style={{
       background: "#F4F5F5",
       scrollbarWidth: "none", 

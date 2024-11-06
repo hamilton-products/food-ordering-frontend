@@ -73,7 +73,7 @@ function SidebarWithSearch({ pastOrderList, currentOrderList }) {
   console.log(pastOrderList, "pastOrderList");
 
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none"
+    <Card className="h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none"
     style={{
       background: "#F4F5F5",
       scrollbarWidth: "none", 

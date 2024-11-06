@@ -107,7 +107,7 @@ function SidebarWithSearch({ tableDetails }) {
   return (
     <Card
       className={` h-[calc(100vh-0rem)]
-       w-full max-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+       w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
        style={{
         background: "#F4F5F5",
         scrollbarWidth: "none", 
