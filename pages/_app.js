@@ -153,7 +153,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
                 background: "#F4F5F5",
               }}
             >
-              <div className="flex max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
+              { showHero && <div className="flex max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
                 <div className="mr-4">
                   <Avatar src={logo} alt="avatar" size="xl" />
                 </div>
@@ -197,7 +197,8 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>}
+              
 
               <Component {...pageProps} />
             </div>
