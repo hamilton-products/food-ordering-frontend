@@ -182,7 +182,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       ref={scrollContainerRef}
       className={`${
         cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
-      } w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
+      } w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
       style={{
         background: "#F4F5F5",
         scrollbarWidth: "none",
@@ -215,7 +215,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-        <div className="sticky-slider">
+        {/* <div className="sticky-slider">
           <Slider
             ref={sliderRef}
             {...settings}
@@ -249,8 +249,8 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
               </div>
             ))}
           </Slider>
-        </div>
-      <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 p-5">
+        </div> */}
+      <div className="container mx-auto grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
             <div
@@ -266,15 +266,21 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
               </Typography>
             </div>
             {category.itemDetails.map((item, itemIndex) => (
+              <Link
+              href={`/product?itemId=${item.item_id}`}
+              className="w-full text-center"
+            >
               <Card
-                key={itemIndex}
-                color="transparent"
-                shadow={true}
-                className="flex flex-col items-center p-4 rounded-lg border border-gray-200 bg-white"
-              >
+              key={itemIndex}
+              color="transparent"
+              shadow={true}
+              className="flex flex-col justify-between items-center p-4 rounded-lg border border-gray-200 bg-white h-full"
+            >
+              
+              <div className="flex-grow w-full">
                 <CardHeader
                   floated={false}
-                  className="w-full h-48 mb-4 rounded-lg overflow-hidden"
+                  className="w-full h-48 mb-4 mx-0 rounded-lg overflow-hidden"
                 >
                   <img
                     src={item.item_data.cover_photo}
@@ -282,10 +288,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
                     className="h-full w-full object-cover"
                   />
                 </CardHeader>
-                <Link
-                  href={`/product?itemId=${item.item_id}`}
-                  className="w-full text-center"
-                >
+                
                   <CardBody className="px-4">
                     <Typography variant="h6" className="mb-1" color="blue-gray">
                       {item.title}
@@ -296,27 +299,24 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
                         : item.description}
                     </Typography>
                   </CardBody>
-                </Link>
-                <div className="flex flex-row items-center justify-between w-full px-4 mb-4">
-                  <Typography
-                    variant="h6"
-                    className="text-primary font-semibold"
-                  >
-                    {item.price} {currency}
-                  </Typography>
-                  <Button
-                    onClick={() =>
-                      router.push(`/product?itemId=${item.item_id}`)
-                    }
-                    size="sm"
-                    variant="gradient"
-                    className="flex items-center gap-2 px-4 py-1 rounded-lg"
-                  >
-                    <ShoppingBagIcon className="h-5 w-5 text-dark" />
-                    <span>Add</span>
-                  </Button>
-                </div>
-              </Card>
+               
+              </div>
+              <div className="flex flex-row items-center justify-between w-full px-4 mb-4">
+                <Typography variant="h6" className="text-primary font-semibold">
+                  {item.price} {currency}
+                </Typography>
+                <Button
+                  onClick={() => router.push(`/product?itemId=${item.item_id}`)}
+                  size="sm"
+                  variant="gradient"
+                  className="flex items-center gap-2 px-4 py-1 rounded-lg"
+                >
+                  <ShoppingBagIcon className="h-5 w-5 text-dark" />
+                  <span>Add</span>
+                </Button>
+              </div>
+            </Card>
+            </Link>
             ))}
           </React.Fragment>
         ))}

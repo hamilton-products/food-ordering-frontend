@@ -107,7 +107,7 @@ function SidebarWithSearch({ tableDetails }) {
   return (
     <Card
       className={` h-[calc(100vh-0rem)]
-       w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem]p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+       w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem]p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
        style={{
         background: "#F4F5F5",
         scrollbarWidth: "none", 

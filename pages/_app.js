@@ -117,7 +117,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   const logo = restaurantDetails.logo || "";
   const description =
     restaurantDetails.description && restaurantDetails.description.EN;
-
+    const cover_photo = restaurantDetails?.cover_photo || "";
   const name = restaurantDetails.name && restaurantDetails.name.EN;
 
   const address = restaurantDetails.address;
@@ -130,7 +130,20 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="container-fluid"  style={{
+            backgroundImage: heroShown ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${cover_photo}')` : "none",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundBlendMode: "multiply",
+          }}>
+
+        <div style={{
+            display: "flex",
+            borderRadius:"20",
+            justifyContent: "center"
+          }}     
+        >
           {loading ? (
             <Loader />
           ) : (
@@ -140,7 +153,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
                 background: "#F4F5F5",
               }}
             >
-              <div className="flex max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
+              <div className="flex max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
                 <div className="mr-4">
                   <Avatar src={logo} alt="avatar" size="xl" />
                 </div>
@@ -193,6 +206,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           {showHero && !heroShown && (
             <Hero restaurantDetails={restaurantDetails} />
           )}
+        </div>
         </div>
       </ThemeProvider>
     </>
