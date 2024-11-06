@@ -233,7 +233,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
     <Card
       className={`${
         mobileResponse ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh-10rem)]"
-      } w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
+      } w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none`}
       style={{
         background: "#F4F5F5",
         scrollbarWidth: "none", 

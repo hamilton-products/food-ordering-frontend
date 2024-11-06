@@ -396,13 +396,13 @@ function Product({
   };
 
   return (
-    <Card className="h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{
+    <Card className="h-[calc(100vh)] w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto" style={{
       background: "#F4F5F5",
       scrollbarWidth: "none", 
       msOverflowStyle: "none", 
     }}>
       {loading && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] bg-[#0000008a] z-20 flex items-center justify-center" style={{
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] bg-[#0000008a] z-20 flex items-center justify-center" style={{
           background: "#F4F5F5",
           scrollbarWidth: "none", 
           msOverflowStyle: "none", 
@@ -420,7 +420,7 @@ function Product({
       </div>
 
       {/* {transactionStatus === "Succss" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] z-20 flex items-center justify-center">
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
               variant="gradient"
@@ -436,7 +436,7 @@ function Product({
       )} */}
 
       {/* {transactionStatus === "Failed" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] z-20 flex items-center justify-center">
+        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
           <div className="flex items-center justify-center">
             <Alert
               variant="gradient"
@@ -451,7 +451,7 @@ function Product({
         </div>
       )} */}
 
-      {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-[40rem] min-w-[40rem] z-20 flex items-center justify-center">
+      {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
         <div className="flex items-center justify-center">
           <Alert
             variant="gradient"

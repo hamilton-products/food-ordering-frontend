@@ -35,7 +35,16 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const categoryRefs = useRef({});
   const scrollContainerRef = useRef(null);
   const sliderRef = useRef(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024); // Set breakpoint for desktop at 1024px
+    };
 
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const filteredMenu = menu.map((category) => ({
     ...category,
     itemDetails: category.itemDetails.filter((item) =>
@@ -160,8 +169,9 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          initialSlide: 1,
+          slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
@@ -172,11 +182,11 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       ref={scrollContainerRef}
       className={`${
         cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
-      } w-full max-w-[40rem] min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
+      } w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
       style={{
         background: "#F4F5F5",
-        scrollbarWidth: "none", 
-        msOverflowStyle: "none", 
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
       }}
     >
       {/* <div className="mb-2 flex items-center justify-center gap-4 p-4">
@@ -205,41 +215,41 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-
-      <div className="sticky-slider">
-        <Slider ref={sliderRef} {...settings}  style={{
-        background: "#F4F5F5",
-      }}>
-          {menu.map((category, index) => (
-            <div key={category.item_category_id} className="px-2">
-              <Card
-                onClick={() =>
-                  scrollToCategory(category.item_category_id, index)
-                }
-                shadow={true}
-                className={`p-3 m-2 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out ${
-                  activeCategory === category.item_category_id
-                    ? "bg-gray-900 text-white"
-                    : "bg-white"
-                }`}
-              >
-                <Typography
-                  variant="small"
-                  color={
-                    activeCategory === category.item_category_id
-                      ? "white"
-                      : "black"
+        <div className="sticky-slider">
+          <Slider
+            ref={sliderRef}
+            {...settings}
+            style={{ background: "#F4F5F5" }}
+          >
+            {menu.map((category, index) => (
+              <div key={category.item_category_id} className="px-1 md:px-2">
+                <Card
+                  onClick={() =>
+                    scrollToCategory(category.item_category_id, index)
                   }
-                  className="font-normal uppercase text-center truncate"
+                  shadow={true}
+                  className={`p-2 md:p-3 m-1 md:m-2 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out ${
+                    activeCategory === category.item_category_id
+                      ? "bg-gray-900 text-white"
+                      : "bg-white"
+                  }`}
                 >
-                  {category.title}
-                </Typography>
-              </Card>
-            </div>
-          ))}
-        </Slider>
-      </div>
-
+                  <Typography
+                    variant="small"
+                    color={
+                      activeCategory === category.item_category_id
+                        ? "white"
+                        : "black"
+                    }
+                    className="font-normal uppercase text-center truncate"
+                  >
+                    {category.title}
+                  </Typography>
+                </Card>
+              </div>
+            ))}
+          </Slider>
+        </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
@@ -256,51 +266,57 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
               </Typography>
             </div>
             {category.itemDetails.map((item, itemIndex) => (
-              
               <Card
-                  key={itemIndex}
-                  color="transparent"
-                  shadow={true}
-                  className="flex flex-col items-center p-4 rounded-lg border border-gray-200 bg-white"
+                key={itemIndex}
+                color="transparent"
+                shadow={true}
+                className="flex flex-col items-center p-4 rounded-lg border border-gray-200 bg-white"
+              >
+                <CardHeader
+                  floated={false}
+                  className="w-full h-48 mb-4 rounded-lg overflow-hidden"
                 >
-                  <CardHeader
-                    floated={false}
-                    className="w-full h-48 mb-4 rounded-lg overflow-hidden"
-                  >
-                    <img
-                      src={item.item_data.cover_photo}
-                      alt={item.title}
-                      className="h-full w-full object-cover"
-                    />
-                  </CardHeader>
-                  <Link href={`/product?itemId=${item.item_id}`} className="w-full text-center">
-                    <CardBody className="px-4">
-                      <Typography variant="h6" className="mb-1" color="blue-gray">
-                        {item.title}
-                      </Typography>
-                      <Typography variant="small" className="mb-3 text-gray-500">
-                        {item.description.length > 50
-                          ? item.description.substring(0, 50) + "..."
-                          : item.description}
-                      </Typography>
-                    </CardBody>
-                  </Link>
-                  <div className="flex flex-row items-center justify-between w-full px-4 mb-4">
-                    <Typography variant="h6" className="text-primary font-semibold">
-                      {item.price} {currency}
+                  <img
+                    src={item.item_data.cover_photo}
+                    alt={item.title}
+                    className="h-full w-full object-cover"
+                  />
+                </CardHeader>
+                <Link
+                  href={`/product?itemId=${item.item_id}`}
+                  className="w-full text-center"
+                >
+                  <CardBody className="px-4">
+                    <Typography variant="h6" className="mb-1" color="blue-gray">
+                      {item.title}
                     </Typography>
-                    <Button
-                      onClick={() => router.push(`/product?itemId=${item.item_id}`)}
-                      size="sm"
-                      variant="gradient"
-                      className="flex items-center gap-2 px-4 py-1 rounded-lg"
-                    >
-                      <ShoppingBagIcon className="h-5 w-5 text-dark" />
-                      <span>Add</span>
-                    </Button>
-                  </div>
-                </Card>
-
+                    <Typography variant="small" className="mb-3 text-gray-500">
+                      {item.description.length > 50
+                        ? item.description.substring(0, 50) + "..."
+                        : item.description}
+                    </Typography>
+                  </CardBody>
+                </Link>
+                <div className="flex flex-row items-center justify-between w-full px-4 mb-4">
+                  <Typography
+                    variant="h6"
+                    className="text-primary font-semibold"
+                  >
+                    {item.price} {currency}
+                  </Typography>
+                  <Button
+                    onClick={() =>
+                      router.push(`/product?itemId=${item.item_id}`)
+                    }
+                    size="sm"
+                    variant="gradient"
+                    className="flex items-center gap-2 px-4 py-1 rounded-lg"
+                  >
+                    <ShoppingBagIcon className="h-5 w-5 text-dark" />
+                    <span>Add</span>
+                  </Button>
+                </div>
+              </Card>
             ))}
           </React.Fragment>
         ))}

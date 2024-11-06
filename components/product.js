@@ -230,7 +230,7 @@ function Product({ itemDetails, consumerId }) {
     //       : mobileResponse
     //       ? "h-[calc(100vh-8rem)]"
     //       : "h-[calc(100vh-13rem)]"
-    //   } w-full max-w-[40rem] min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
+    //   } w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem]shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
     //   style={{
     //     background: "#F4F5F5",
     //     scrollbarWidth: "none", 
@@ -483,7 +483,7 @@ function Product({ itemDetails, consumerId }) {
           : mobileResponse
           ? "h-[calc(100vh-8rem)]"
           : "h-[calc(100vh-13rem)]"
-      } w-full max-w-[40rem] min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none`}
+      } w-full max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none`}
       style={{
         background: "#F4F5F5",
       }}

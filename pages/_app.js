@@ -113,7 +113,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  const cover_photo = restaurantDetails?.cover_photo || "";
+
   const logo = restaurantDetails.logo || "";
   const description =
     restaurantDetails.description && restaurantDetails.description.EN;
@@ -121,13 +121,6 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   const name = restaurantDetails.name && restaurantDetails.name.EN;
 
   const address = restaurantDetails.address;
-
-  const contactInfo = restaurantDetails.mobile;
-
-  const contactInfoCountryCode = restaurantDetails.mobile_country_code;
-
-  const latitude = restaurantDetails.latitude;
-  const longitude = restaurantDetails.longitude;
 
   return (
     <>
@@ -141,50 +134,57 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           {loading ? (
             <Loader />
           ) : (
-            <div className="h-[calc(100vh)] flex flex-col"  style={{
-              background: "#F4F5F5"
-            }}>
-             <div className="flex max-w-[40rem] min-w-[40rem] border p-4 rounded-lg shadow-sm">
-  <div className="mr-4">
-    <Avatar src={logo} alt="avatar" size="xl" />
-  </div>
-  
-  <div className="grid">
-    <Typography
-      variant="h6"
-      color="dark"
-      className="font-semibold text-lg"
-    >
-      {name}
-    </Typography>
-    
-    <Typography
-      variant="body1"
-      color="dark"
-      className="text-gray-600"
-    >
-      {description}
-    </Typography>
-    
-    <Typography
-      variant="body1"
-      color="dark"
-      className="text-gray-600"
-    >
-      {address}
-    </Typography>
-    
-    <div className="flex items-center gap-2 mt-2">
-      {/* Add icons for payment methods or other information here */}
-      <span className="text-green-600"> {/* Example of payment icon */}
-        <i className="fas fa-credit-card"></i>
-      </span>
-      <span className="text-green-600"> {/* Example of cash icon */}
-        <i className="fas fa-money-bill"></i>
-      </span>
-    </div>
-  </div>
-</div>
+            <div
+              className="h-[calc(100vh)] flex flex-col"
+              style={{
+                background: "#F4F5F5",
+              }}
+            >
+              <div className="flex max-w-full sm:max-w-[20rem] sm:min-w-[20rem] md:max-w-[30rem] md:min-w-[30rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
+                <div className="mr-4">
+                  <Avatar src={logo} alt="avatar" size="xl" />
+                </div>
+
+                <div className="grid">
+                  <Typography
+                    variant="h6"
+                    color="dark"
+                    className="font-semibold text-lg"
+                  >
+                    {name}
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    color="dark"
+                    className="text-gray-600"
+                  >
+                    {description}
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    color="dark"
+                    className="text-gray-600"
+                  >
+                    {address}
+                  </Typography>
+
+                  <div className="flex items-center gap-2 mt-2">
+                    {/* Add icons for payment methods or other information here */}
+                    <span className="text-green-600">
+                      {" "}
+                      {/* Example of payment icon */}
+                      <i className="fas fa-credit-card"></i>
+                    </span>
+                    <span className="text-green-600">
+                      {" "}
+                      {/* Example of cash icon */}
+                      <i className="fas fa-money-bill"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
 
               <Component {...pageProps} />
             </div>
