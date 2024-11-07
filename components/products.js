@@ -169,8 +169,8 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       {
         breakpoint: 480,
         settings: {
-          initialSlide: 1,
-          slidesToShow: 1,
+          initialSlide: 2,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
@@ -215,73 +215,82 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-      {isDesktop ? (
+  
       <div className="sticky-slider">
         <Slider ref={sliderRef} {...settings} style={{ background: "#F4F5F5" }}>
           {menu.map((category, index) => (
-            <div key={category.item_category_id} className="px-1 md:px-2">
-              <Card
-                onClick={() => scrollToCategory(category.item_category_id, index)}
-                shadow={true}
-                className={`p-2 md:p-3 m-1 md:m-2 cursor-pointer hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out ${
-                  activeCategory === category.item_category_id
-                    ? "bg-gray-900 text-white"
-                    : "bg-white"
-                }`}
-              >
-                <Typography
-                  variant="small"
-                  color={activeCategory === category.item_category_id ? "white" : "black"}
-                  className="font-normal uppercase text-center truncate"
-                >
-                  {category.title}
-                </Typography>
-              </Card>
-            </div>
+           <div key={category.item_category_id} className="px-1 md:px-2">
+           <Card
+             onClick={() => scrollToCategory(category.item_category_id, index)}
+             shadow={true}
+             className={`p-4 md:p-5 m-2 cursor-pointer transition-transform duration-300 ease-in-out rounded-lg border flex justify-center ${
+               activeCategory === category.item_category_id
+                 ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg"
+                 : "bg-white hover:shadow-md hover:bg-gray-100"
+             }`}
+           >
+             {/* Optional: Add an Icon or Image */}
+             {/* <div className="flex justify-center items-center mb-3">
+               <img
+                 src={category.icon || '/placeholder-icon.png'}
+                 alt={category.title}
+                 className="h-12 w-12 object-contain"
+               />
+             </div> */}
+         
+             <Typography
+               variant="small"
+               color={activeCategory === category.item_category_id ? "white" : "blue-gray-700"}
+               className="font-semibold uppercase text-center truncate"
+             >
+               {category.title}
+             </Typography>
+           </Card>
+         </div>
+         
           ))}
         </Slider>
       </div>
-      ) : (
-        // <></>
-        // List view for mobile view
-        <div className="flex flex-col space-y-2 bg-[#F4F5F5] p-2">
-          {menu.map((category, index) => (
-            <Card
-              key={category.item_category_id}
-              onClick={() => scrollToCategory(category.item_category_id, index)}
-              shadow={true}
-              className={`p-2 cursor-pointer hover:shadow-lg transition-transform duration-300 ease-in-out ${
-                activeCategory === category.item_category_id
-                  ? "bg-gray-900 text-white"
-                  : "bg-white"
-              }`}
-            >
-              <Typography
-                variant="small"
-                color={activeCategory === category.item_category_id ? "white" : "black"}
-                className="font-normal uppercase text-center truncate"
-              >
-                {category.title}
-              </Typography>
-            </Card>
-          ))}
-        </div>
-      )}
-      <div className="container mx-auto grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 p-5">
+    
+      <div className="container mx-auto p-5 h-full overflow-y-auto"
+       style={{
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+      >
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
-            <div
-              className="mx-3 "
-              ref={categoryRefs.current[category.item_category_id]}
-            >
-              <Typography
-                variant="h5"
-                color="black"
-                className="font-normal uppercase text-left"
-              >
-                {category.title}
-              </Typography>
-            </div>
+<div
+  className="relative mx-2 my-4 p-4 rounded-lg shadow-lg"
+  style={{
+    background: "linear-gradient(270deg, #b28850, #7a5d2f)",
+  }}
+  ref={categoryRefs.current[category.item_category_id]}
+>
+  {/* Decorative Background Pattern */}
+  <div className="absolute inset-0 opacity-20 bg-[url('/pattern.svg')] bg-cover bg-center rounded-lg pointer-events-none"></div>
+
+  {/* Title */}
+  <Typography
+    variant="h6"
+    color="white"
+    className="relative z-10 font-extrabold uppercase text-left tracking-wide drop-shadow-lg"
+  >
+    {category.title}
+  </Typography>
+
+  {/* Decorative Accent */}
+  <div className="relative z-10 mt-2 flex items-center">
+    <div className="w-10 h-1 bg-amber-300 rounded-full"></div>
+    <div className="w-4 h-1 bg-amber-100 rounded-full mx-1"></div>
+    <div className="w-2 h-1 bg-amber-50 rounded-full"></div>
+  </div>
+</div>
+
+
+
+
+            <div className="grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2">
             {category.itemDetails.map((item, itemIndex) => (
               <Link
               href={`/product?itemId=${item.item_id}`}
@@ -335,18 +344,20 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
             </Card>
             </Link>
             ))}
+            </div>
+            
           </React.Fragment>
         ))}
       </div>
 
       {cartItems.length > 0 && (
         <div
-          className="group absolute bottom-5 z-50 overflow-hidden w-full px-3 "
+          className="group overflow-hidden w-full px-3 "
         >
           <Button
             size={"lg"}
             variant="gradient"
-            className="flex justify-center items-center gap-24 rounded-full shadow-none mx-auto"
+            className="flex justify-center items-center gap-24 rounded-full shadow-none mx-auto mb-5"
             onClick={() => router.push("/cart")}
           >
             <span className="flex items-center">
