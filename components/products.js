@@ -215,145 +215,155 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-  
+
       <div className="sticky-slider">
         <Slider ref={sliderRef} {...settings} style={{ background: "#F4F5F5" }}>
           {menu.map((category, index) => (
-           <div key={category.item_category_id} className="px-1 md:px-2">
-           <Card
-             onClick={() => scrollToCategory(category.item_category_id, index)}
-             shadow={true}
-             className={`p-4 md:p-5 m-2 cursor-pointer transition-transform duration-300 ease-in-out rounded-lg border flex justify-center ${
-               activeCategory === category.item_category_id
-                 ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg"
-                 : "bg-white hover:shadow-md hover:bg-gray-100"
-             }`}
-           >
-             {/* Optional: Add an Icon or Image */}
-             {/* <div className="flex justify-center items-center mb-3">
+            <div key={category.item_category_id} className="px-1 md:px-2">
+              <Card
+                onClick={() =>
+                  scrollToCategory(category.item_category_id, index)
+                }
+                shadow={true}
+                className={`p-4 md:p-5 m-2 cursor-pointer transition-transform duration-300 ease-in-out rounded-lg border flex justify-center ${
+                  activeCategory === category.item_category_id
+                    ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg"
+                    : "bg-white hover:shadow-md hover:bg-gray-100"
+                }`}
+              >
+                {/* Optional: Add an Icon or Image */}
+                {/* <div className="flex justify-center items-center mb-3">
                <img
                  src={category.icon || '/placeholder-icon.png'}
                  alt={category.title}
                  className="h-12 w-12 object-contain"
                />
              </div> */}
-         
-             <Typography
-               variant="small"
-               color={activeCategory === category.item_category_id ? "white" : "blue-gray-700"}
-               className="font-semibold uppercase text-center truncate"
-             >
-               {category.title}
-             </Typography>
-           </Card>
-         </div>
-         
+
+                <Typography
+                  variant="small"
+                  color={
+                    activeCategory === category.item_category_id
+                      ? "white"
+                      : "blue-gray-700"
+                  }
+                  className="font-semibold uppercase text-center truncate"
+                >
+                  {category.title}
+                </Typography>
+              </Card>
+            </div>
           ))}
         </Slider>
       </div>
-    
-      <div className="container mx-auto p-5 h-full overflow-y-auto"
-       style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
+
+      <div
+        className="container mx-auto p-5 h-full overflow-y-auto"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
       >
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
-<div
-  className="relative mx-2 my-4 p-4 rounded-lg shadow-lg"
-  style={{
-    background: "linear-gradient(270deg, #b28850, #7a5d2f)",
-  }}
-  ref={categoryRefs.current[category.item_category_id]}
->
-  {/* Decorative Background Pattern */}
-  <div className="absolute inset-0 opacity-20 bg-[url('/pattern.svg')] bg-cover bg-center rounded-lg pointer-events-none"></div>
+            <div
+              className="relative mx-2 my-4 p-4 rounded-lg shadow-lg"
+              style={{
+                background: "linear-gradient(270deg, #b28850, #7a5d2f)",
+              }}
+              ref={categoryRefs.current[category.item_category_id]}
+            >
+              {/* Decorative Background Pattern */}
+              <div className="absolute inset-0 opacity-20 bg-[url('/pattern.svg')] bg-cover bg-center rounded-lg pointer-events-none"></div>
 
-  {/* Title */}
-  <Typography
-    variant="h6"
-    color="white"
-    className="relative z-10 font-extrabold uppercase text-left tracking-wide drop-shadow-lg"
-  >
-    {category.title}
-  </Typography>
+              {/* Title */}
+              <Typography
+                variant="h6"
+                color="white"
+                className="relative z-10 font-extrabold uppercase text-left tracking-wide drop-shadow-lg"
+              >
+                {category.title}
+              </Typography>
 
-  {/* Decorative Accent */}
-  <div className="relative z-10 mt-2 flex items-center">
-    <div className="w-10 h-1 bg-amber-300 rounded-full"></div>
-    <div className="w-4 h-1 bg-amber-100 rounded-full mx-1"></div>
-    <div className="w-2 h-1 bg-amber-50 rounded-full"></div>
-  </div>
-</div>
-
-
-
+              {/* Decorative Accent */}
+              <div className="relative z-10 mt-2 flex items-center">
+                <div className="w-10 h-1 bg-amber-300 rounded-full"></div>
+                <div className="w-4 h-1 bg-amber-100 rounded-full mx-1"></div>
+                <div className="w-2 h-1 bg-amber-50 rounded-full"></div>
+              </div>
+            </div>
 
             <div className="grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2">
-            {category.itemDetails.map((item, itemIndex) => (
-              <Link
-              href={`/product?itemId=${item.item_id}`}
-              className="w-full text-center"
-            >
-              <Card
-              key={itemIndex}
-              color="transparent"
-              shadow={true}
-              className="flex flex-col justify-between items-center p-4 rounded-lg border border-gray-200 bg-white h-full"
-            >
-              
-              <div className="flex-grow w-full">
-                <CardHeader
-                  floated={false}
-                  className="w-full h-48 mb-4 mx-0 rounded-lg overflow-hidden"
+              {category.itemDetails.map((item, itemIndex) => (
+                <Link
+                  href={`/product?itemId=${item.item_id}`}
+                  className="w-full text-center"
                 >
-                  <img
-                    src={item.item_data.cover_photo}
-                    alt={item.title}
-                    className="h-full w-full object-cover"
-                  />
-                </CardHeader>
-                
-                  <CardBody className="px-4">
-                    <Typography variant="h6" className="mb-1" color="blue-gray">
-                      {item.title}
-                    </Typography>
-                    <Typography variant="small" className="mb-3 text-gray-500">
-                      {item.description.length > 50
-                        ? item.description.substring(0, 50) + "..."
-                        : item.description}
-                    </Typography>
-                  </CardBody>
-               
-              </div>
-              <div className="flex items-center justify-between w-full px-4 mb-4 flex-col md:flex-row lg:flex-row">
-                <Typography variant="h6" className="text-primary font-semibold">
-                  {item.price} {currency}
-                </Typography>
-                <Button
-                  onClick={() => router.push(`/product?itemId=${item.item_id}`)}
-                  size="sm"
-                  variant="gradient"
-                  className="flex items-center gap-2 px-4 py-1 rounded-lg"
-                >
-                  <ShoppingBagIcon className="h-5 w-5 text-dark" />
-                  <span>Add</span>
-                </Button>
-              </div>
-            </Card>
-            </Link>
-            ))}
+                  <Card
+                    key={itemIndex}
+                    color="transparent"
+                    shadow={true}
+                    className="flex flex-col justify-between items-center p-4 rounded-lg border border-gray-200 bg-white h-full"
+                  >
+                    <div className="flex-grow w-full">
+                      <CardHeader
+                        floated={false}
+                        className="w-full h-48 mb-4 mx-0 rounded-lg overflow-hidden"
+                      >
+                        <img
+                          src={item.item_data.cover_photo}
+                          alt={item.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </CardHeader>
+
+                      <CardBody className="px-4">
+                        <Typography
+                          variant="h6"
+                          className="mb-1"
+                          color="blue-gray"
+                        >
+                          {item.title}
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          className="mb-3 text-gray-500"
+                        >
+                          {item.description.length > 50
+                            ? item.description.substring(0, 50) + "..."
+                            : item.description}
+                        </Typography>
+                      </CardBody>
+                    </div>
+                    <div className="flex items-center justify-between w-full px-4 mb-4 flex-col md:flex-row lg:flex-row">
+                      <Typography
+                        variant="h6"
+                        className="text-primary font-semibold"
+                      >
+                        {item.price} {currency}
+                      </Typography>
+                      <Button
+                        onClick={() =>
+                          router.push(`/product?itemId=${item.item_id}`)
+                        }
+                        size="sm"
+                        variant="gradient"
+                        className="flex items-center gap-2 px-4 py-1 rounded-lg"
+                      >
+                        <ShoppingBagIcon className="h-5 w-5 text-dark" />
+                        <span>Add</span>
+                      </Button>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
             </div>
-            
           </React.Fragment>
         ))}
       </div>
 
       {cartItems.length > 0 && (
-        <div
-          className="group overflow-hidden w-full px-3 "
-        >
+        <div className="group overflow-hidden w-full px-3 ">
           <Button
             size={"lg"}
             variant="gradient"
