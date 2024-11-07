@@ -502,7 +502,7 @@ function Product({ itemDetails, consumerId }) {
           height={768}
           src={img}
           alt={title}
-          className="h-full w-full object-cover max-h-[25rem]"
+          className="h-full w-full object-cover max-h-[250px] object-center"
         />
       </div>
 

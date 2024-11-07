@@ -176,7 +176,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       },
     ],
   };
-  console.log(menu[0], "menu");
+  console.log(menu[0], "menucheck");
   return (
     <Card
       ref={scrollContainerRef}
@@ -319,7 +319,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
                   </CardBody>
                
               </div>
-              <div className="flex flex-row items-center justify-between w-full px-4 mb-4">
+              <div className="flex items-center justify-between w-full px-4 mb-4 flex-col md:flex-row lg:flex-row">
                 <Typography variant="h6" className="text-primary font-semibold">
                   {item.price} {currency}
                 </Typography>
@@ -342,17 +342,12 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
       {cartItems.length > 0 && (
         <div
-          className={
-            mobileResponse
-              ? "group fixed bottom-5 z-50 overflow-hidden mx-5 m-auto px-3"
-              : "group fixed bottom-5 z-50 overflow-hidden mx-5 left-0 right-0 m-auto"
-          }
+          className="group absolute bottom-5 z-50 overflow-hidden w-full px-3 "
         >
           <Button
-            size={mobileXtraSmallResponse ? "lg" : "md"}
+            size={"lg"}
             variant="gradient"
-            className="flex justify-center items-center gap-24 rounded-full shadow-none"
-            fullWidth
+            className="flex justify-center items-center gap-24 rounded-full shadow-none mx-auto"
             onClick={() => router.push("/cart")}
           >
             <span className="flex items-center">

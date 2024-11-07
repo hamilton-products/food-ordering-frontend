@@ -1,0 +1,12 @@
+{
+  "successTitle": "Thank You for Your Order!",
+  "successMessage1": "Your order has been successfully placed and is now being processed.",
+  "successMessage2": "You will receive an email confirmation shortly with your order details.",
+  "orderSummary": "Order Summary",
+  "total": "Total",
+  "failedTitle": "Oops! Something Went Wrong",
+  "failedMessage1": "Unfortunately, we were unable to process your order at this time.",
+  "failedMessage2": "Please try again later or contact customer support for assistance.",
+  "tryAgain": "Try Again"
+  }
+  

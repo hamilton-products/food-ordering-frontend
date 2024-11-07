@@ -148,7 +148,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             <Loader />
           ) : (
             <div
-              className="h-[calc(100vh)] flex flex-col"
+              className="h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] flex flex-col"
               style={{
                 background: "#F4F5F5",
               }}

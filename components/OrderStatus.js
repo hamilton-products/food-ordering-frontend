@@ -1,45 +1,42 @@
 import React from 'react';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; // FontAwesome for icons
+import { useTranslation } from 'react-i18next';
 
 const OrderStatus = ({ orderStatus }) => {
   const isSuccess = orderStatus === 'CAPTURED';
-
+  const { t } = useTranslation("ordersconfirm");
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        {isSuccess ? (
+      {isSuccess ? (
           <div style={styles.successContainer}>
-            <FaCheckCircle style={styles.successIcon} />
-            <h1 style={styles.title}>Thank You for Your Order!</h1>
-            <p style={styles.text}>
-              Your order has been successfully placed and is now being processed.
-            </p>
-            <p style={styles.text}>
-              You will receive an email confirmation shortly with your order details.
-            </p>
+            <svg style={styles.successIcon} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 style={styles.title}>{t('successTitle')}</h1>
+            <p style={styles.text}>{t('successMessage1')}</p>
+            <p style={styles.text}>{t('successMessage2')}</p>
             <div style={styles.orderDetails}>
-              <h3 style={styles.orderDetailsTitle}>Order Summary</h3>
+              <h3 style={styles.orderDetailsTitle}>{t('orderSummary')}</h3>
               <ul style={styles.orderItems}>
-                <li>Product 1 - $100</li>
-                <li>Product 2 - $50</li>
-                <li>Product 3 - $25</li>
+                {orderItems.map((item, index) => (
+                  <li key={index}>{item.name} - {item.price} {currency}</li>
+                ))}
               </ul>
-              <p style={styles.total}>Total: $175</p>
+              <p style={styles.total}>{t('total')}: {total} {currency}</p>
             </div>
           </div>
         ) : (
           <div style={styles.failedContainer}>
-            <FaTimesCircle style={styles.failedIcon} />
-            <h1 style={styles.title}>Oops! Something Went Wrong</h1>
-            <p style={styles.text}>
-              Unfortunately, we were unable to process your order at this time.
-            </p>
-            <p style={styles.text}>
-              Please try again later or contact customer support for assistance.
-            </p>
-            <button style={styles.retryButton}>Try Again</button>
+            <svg style={styles.failedIcon} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <h1 style={styles.title}>{t('failedTitle')}</h1>
+            <p style={styles.text}>{t('failedMessage1')}</p>
+            <p style={styles.text}>{t('failedMessage2')}</p>
+            <button style={styles.retryButton}>{t('tryAgain')}</button>
           </div>
         )}
+
       </div>
     </div>
   );
