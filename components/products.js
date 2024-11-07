@@ -215,9 +215,8 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-      <div className="sticky-slider">
       {isDesktop ? (
-        // Slider for desktop view
+      <div className="sticky-slider">
         <Slider ref={sliderRef} {...settings} style={{ background: "#F4F5F5" }}>
           {menu.map((category, index) => (
             <div key={category.item_category_id} className="px-1 md:px-2">
@@ -241,38 +240,38 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
             </div>
           ))}
         </Slider>
+      </div>
       ) : (
-        <></>
+        // <></>
         // List view for mobile view
-        // <div className="flex flex-col space-y-2 bg-[#F4F5F5] p-2">
-        //   {menu.map((category, index) => (
-        //     <Card
-        //       key={category.item_category_id}
-        //       onClick={() => scrollToCategory(category.item_category_id, index)}
-        //       shadow={true}
-        //       className={`p-2 cursor-pointer hover:shadow-lg transition-transform duration-300 ease-in-out ${
-        //         activeCategory === category.item_category_id
-        //           ? "bg-gray-900 text-white"
-        //           : "bg-white"
-        //       }`}
-        //     >
-        //       <Typography
-        //         variant="small"
-        //         color={activeCategory === category.item_category_id ? "white" : "black"}
-        //         className="font-normal uppercase text-center truncate"
-        //       >
-        //         {category.title}
-        //       </Typography>
-        //     </Card>
-        //   ))}
-        // </div>
+        <div className="flex flex-col space-y-2 bg-[#F4F5F5] p-2">
+          {menu.map((category, index) => (
+            <Card
+              key={category.item_category_id}
+              onClick={() => scrollToCategory(category.item_category_id, index)}
+              shadow={true}
+              className={`p-2 cursor-pointer hover:shadow-lg transition-transform duration-300 ease-in-out ${
+                activeCategory === category.item_category_id
+                  ? "bg-gray-900 text-white"
+                  : "bg-white"
+              }`}
+            >
+              <Typography
+                variant="small"
+                color={activeCategory === category.item_category_id ? "white" : "black"}
+                className="font-normal uppercase text-center truncate"
+              >
+                {category.title}
+              </Typography>
+            </Card>
+          ))}
+        </div>
       )}
-    </div>
       <div className="container mx-auto grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 p-5">
         {filteredMenu.map((category, categoryIndex) => (
           <React.Fragment key={categoryIndex}>
             <div
-              className="mx-3 hidden"
+              className="mx-3 "
               ref={categoryRefs.current[category.item_category_id]}
             >
               <Typography
