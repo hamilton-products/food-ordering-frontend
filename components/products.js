@@ -18,6 +18,7 @@ import { useTranslation } from "next-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import LocationSelector from "./locationSelector";
 
 function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   // if(!restaurantDetails) return null;
@@ -223,6 +224,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
+      <LocationSelector/>
 
     
 
@@ -231,7 +233,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         //   <Slider {...settings} style={{ background: "#F4F5F5" }}>
         <div className="grid grid-cols-2">
             {menu.map((category, index) => (
-             <div key={category.item_category_id} className="px-1 md:px-2">
+             <div key={category.item_category_id} className="p-1 md:p-2 ">
              <Card
                onClick={() => scrollToCategory(category.item_category_id)}
                shadow={true}
