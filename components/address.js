@@ -211,7 +211,7 @@ function Product({ restaurantDetails }) {
             >
               <Marker position={center} />
             </GoogleMap> */}
-            {/* <LocationSelector/> */}
+            <LocationSelector/>
           </div>
         </div>
       </div>

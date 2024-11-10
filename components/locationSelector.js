@@ -12,13 +12,6 @@ import {
 } from "@material-tailwind/react";
 import { useRouter } from "next/router";
 
-
-
-
-
-
-
-
 // Custom SVGs for Arrows
 const ChevronDownSVG = () => (
   <svg
@@ -38,7 +31,6 @@ const ChevronUpSVG = () => (
     className="h-5 w-5 absolute right-0"
     fill="none"
     viewBox="0 0 24 24"
-    
     stroke="currentColor"
   >
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
@@ -50,7 +42,7 @@ export default function LocationSelector() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("Select Location");
   const [isEditing, setIsEditing] = useState(false);
-  const [locationData, setlocationData] = useState([]);
+  const [locationData, setLocationData] = useState([]);
   const [open, setOpen] = useState(null);
   const router = useRouter();
 
@@ -61,11 +53,13 @@ export default function LocationSelector() {
   const handleSelectLocation = (location) => {
     setSelectedLocation(location);
     setIsEditing(false); // Close popup after selection
+    localStorage.setItem("defaultLocation", location); // Save the selected location
   };
 
   const handleOpen = (value) => {
     setOpen(open === value ? null : value);
   };
+
   const { locale } = router;
 
   const DeliveryArea = async () => {
@@ -80,39 +74,48 @@ export default function LocationSelector() {
         }
       );
       const data = await response.json();
-      setlocationData(data.payload)
+      setLocationData(data.payload);
     } catch (error) {
       console.error("Error checking delivery area:", error);
       return false;
     }
   };
-  useEffect(()=>{
-    DeliveryArea()
-  },[])
 
-  const processData = (data)=> {
+  useEffect(() => {
+    // Check for default location in localStorage
+    const savedLocation = localStorage.getItem("defaultLocation");
+    if (savedLocation) {
+      setSelectedLocation(savedLocation);
+    }
+
+    DeliveryArea();
+  }, []);
+
+  const processData = (data) => {
     const result = {};
-  
+
     data.forEach((item) => {
       if (!item.parent_id) {
-        result[locale=="en"?item.name_en:item.name_ar] = [];
+        result[locale === "en" ? item.name_en : item.name_ar] = [];
       }
     });
-  
+
     data.forEach((item) => {
       if (item.parent_id) {
         const parent = data.find((parent) => parent._id === item.parent_id);
         if (parent) {
-          result[locale=="en"?parent.name_en:parent.name_ar].push(locale=="en"?item.name_en:item.name_ar);
+          result[locale === "en" ? parent.name_en : parent.name_ar].push(
+            locale === "en" ? item.name_en : item.name_ar
+          );
         }
       }
     });
-  
+
     return result;
-  }
-  
+  };
+
   const processedData = processData(locationData);
-  console.log(processedData);
+
   const filteredData = Object.entries(processedData).reduce((acc, [governorate, places]) => {
     if (
       governorate.toLowerCase().includes(searchTerm) ||
