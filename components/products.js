@@ -237,7 +237,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
              <Card
                onClick={() => scrollToCategory(category.item_category_id)}
                shadow={true}
-               className={`p-4 md:p-5 cursor-pointer transition-transform duration-300 ease-in-out rounded-lg border flex justify-center items-center ${
+               className={`cursor-pointer transition-transform duration-300 ease-in-out rounded-lg border flex justify-center items-center ${
                  activeCategory === category.item_category_id
                    ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg"
                    : "bg-white hover:shadow-md hover:bg-gray-100"
