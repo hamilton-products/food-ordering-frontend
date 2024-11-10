@@ -126,7 +126,7 @@ export default function LocationSelector() {
   }, {});
 
   return (
-    <div className="p-6 mx-auto">
+    <div className="p-6">
       {/* Delivery and Pickup Toggle */}
       <div className="flex space-x-4 mb-4">
         <Button
