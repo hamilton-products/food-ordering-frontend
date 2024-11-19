@@ -19,34 +19,3 @@ export default function PhonePage() {
   );
 }
 
-// export async function getServerSideProps() {
-//   try {
-//     const response = await axios.post(
-//       "https://apitasweeq.hamiltonkw.com/api/auth/send-otp",
-//       {
-//         mobile: phoneNumber,
-//         request_type: "signUp",
-//         mobile_country_code: "+91",
-//         type: "guest",
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     return {
-//       props: {
-//         details: response.data.payload, // Corrected here
-//       },
-//     };
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     return {
-//       props: {
-//         error: [],
-//       },
-//     };
-//   }
-// }

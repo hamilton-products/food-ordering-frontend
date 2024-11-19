@@ -11,60 +11,112 @@ import Cookies from "js-cookie";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import { Avatar, Typography } from "@material-tailwind/react";
+
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  // const [locale, setLocale] = useState("ar");
-
   const { locale } = router;
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
   const [heroShown, setHeroShown] = useState(true);
 
+  const [restaurantData, setRestaurantData] = useState({
+    logo: "",
+    description: "",
+    cover_photo: "",
+    name: "",
+    address: "",
+  });
+
+
   useEffect(() => {
-    if (restaurantId) {
-      Cookies.set("restaurantId", restaurantId);
-    }
-  }, [restaurantId]);
+    const loadRestaurantDetails = async () => {
+      try {
+        if (!restaurantDetails) {
+          const host = window.location.hostname || "fuga";
+          const subdomain = host.split(".")[0];
+
+          const restaurantIdResponse = await axios.post(
+            `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+            { restaurant_subdomain: subdomain },
+            { headers: { "Content-Type": "application/json" } }
+          );
+
+          const newRestaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
+
+          const restaurantDetailsResponse = await axios.post(
+            `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
+            { restaurant_id: newRestaurantId },
+            { headers: { "Content-Type": "application/json" } }
+          );
+
+          const details = restaurantDetailsResponse?.data?.payload;
+
+          setRestaurantData({
+            logo: details.logo || "",
+            description: details.description?.EN || "",
+            cover_photo: details.cover_photo || "",
+            name: details.name?.EN || "",
+            address: details.address || "",
+          });
+
+          Cookies.set("restaurantId", newRestaurantId);
+        } else {
+          setRestaurantData({
+            logo: restaurantDetails.logo || "",
+            description: restaurantDetails.description?.EN || "",
+            cover_photo: restaurantDetails.cover_photo || "",
+            name: restaurantDetails.name?.EN || "",
+            address: restaurantDetails.address || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error loading restaurant details:", error);
+      }
+    };
+
+    loadRestaurantDetails();
+  }, [restaurantDetails]);
 
   useEffect(() => {
     Cookies.set("location", JSON.stringify(location));
   }, [location]);
 
   useEffect(() => {
-    Cookies.set("locale", JSON.stringify(locale));
+    Cookies.set("locale", locale);
   }, [locale]);
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      });
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => console.error("Geolocation error:", error)
+      );
     }
   }, []);
 
   useEffect(() => {
-    const handleStart = () => {
+    const handleRouteChange = (url) => {
+      console.log("App is changing to:", url);
       setLoading(true);
     };
-    const handleComplete = () => {
-      setLoading(false);
-    };
 
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
+    const handleRouteComplete = () => setLoading(false);
+
+    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteComplete);
+    router.events.on("routeChangeError", handleRouteComplete);
 
     return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleComplete);
-      router.events.off("routeChangeError", handleComplete);
+      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteComplete);
+      router.events.off("routeChangeError", handleRouteComplete);
     };
   }, [router]);
 
@@ -84,7 +136,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   const showHero = routesWithHero.includes(router.pathname);
 
   useEffect(() => {
-    async function generateFingerprint() {
+    const generateFingerprint = async () => {
       try {
         const components = await Fingerprint2.getPromise();
         const values = components.map((component) => component.value);
@@ -93,34 +145,18 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
       } catch (error) {
         console.error("Error generating fingerprint:", error);
       }
-    }
+    };
 
     generateFingerprint();
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 960) {
-        setHeroShown(true);
-      } else {
-        setHeroShown(false);
-      }
-    };
-
+    const handleResize = () => setHeroShown(window.innerWidth < 960);
     window.addEventListener("resize", handleResize);
-
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const logo = restaurantDetails.logo || "";
-  const description =
-    restaurantDetails.description && restaurantDetails.description.EN;
-    const cover_photo = restaurantDetails?.cover_photo || "";
-  const name = restaurantDetails.name && restaurantDetails.name.EN;
-
-  const address = restaurantDetails.address;
 
   return (
     <>
@@ -130,84 +166,47 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
       <ThemeProvider>
-        <div className="container-fluid"  style={{
-            backgroundImage: heroShown ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${cover_photo}')` : "none",
+        <div
+          className="container-fluid"
+          style={{
+            backgroundImage: heroShown
+              ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${restaurantData.cover_photo}')`
+              : "none",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backgroundBlendMode: "multiply",
-          }}>
-
-        <div style={{
-            display: "flex",
-            borderRadius:"20",
-            justifyContent: "center"
-          }}     
+          }}
         >
-          {loading ? (
-            <Loader />
-          ) : (
-            <div
-              className="h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] flex flex-col"
-              style={{
-                background: "#F4F5F5",
-              }}
-            >
-              { showHero && <div className="flex max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] border p-4 rounded-lg shadow-sm">
-                <div className="mr-4">
-                  <Avatar src={logo} alt="avatar" size="xl" />
-                </div>
-
-                <div className="grid">
-                  <Typography
-                    variant="h6"
-                    color="dark"
-                    className="font-semibold text-lg"
-                  >
-                    {name}
-                  </Typography>
-
-                  <Typography
-                    variant="body1"
-                    color="dark"
-                    className="text-gray-600"
-                  >
-                    {description}
-                  </Typography>
-
-                  <Typography
-                    variant="body1"
-                    color="dark"
-                    className="text-gray-600"
-                  >
-                    {address}
-                  </Typography>
-
-                  <div className="flex items-center gap-2 mt-2">
-                    {/* Add icons for payment methods or other information here */}
-                    <span className="text-green-600">
-                      {" "}
-                      {/* Example of payment icon */}
-                      <i className="fas fa-credit-card"></i>
-                    </span>
-                    <span className="text-green-600">
-                      {" "}
-                      {/* Example of cash icon */}
-                      <i className="fas fa-money-bill"></i>
-                    </span>
+          <div
+            style={{
+              display: "flex",
+              borderRadius: "20px",
+              justifyContent: "center",
+            }}
+          >
+            {loading ? (
+              <Loader />
+            ) : (
+              <div
+                className="h-[calc(100vh)] w-full max-w-[40rem] flex flex-col"
+                style={{ background: "#F4F5F5" }}
+              >
+                {showHero && router.pathname !== "/cart" && (
+                  <div className="flex border p-4 rounded-lg shadow-sm">
+                    <Avatar src={restaurantData.logo} alt="avatar" size="xl" />
+                    <div className="ml-4">
+                      <Typography variant="h6">{restaurantData.name}</Typography>
+                      <Typography className="text-gray-600">{restaurantData.description}</Typography>
+                      <Typography className="text-gray-600">{restaurantData.address}</Typography>
+                    </div>
                   </div>
-                </div>
-              </div>}
-              
+                )}
 
-              <Component {...pageProps} />
-            </div>
-          )}
-
-          {showHero && !heroShown && (
-            <Hero restaurantDetails={restaurantDetails} />
-          )}
-        </div>
+                <Component {...pageProps} />
+              </div>
+            )}
+            {showHero && !heroShown && <Hero restaurantDetails={restaurantDetails} />}
+          </div>
         </div>
       </ThemeProvider>
     </>
@@ -215,18 +214,12 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 }
 
 App.getInitialProps = async ({ Component, ctx }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   let pageProps = {};
-
   try {
     if (typeof window === "undefined") {
       const { req } = ctx;
       const host = req.headers.host || "fuga";
       const subdomain = host.split(".")[0];
-      // const subdomain = "fuga"; // Hardcoded subdomain for now
-
-      console.log(baseUrl, "baseUrl");
-      console.log(subdomain, "subdomain");
 
       const restaurantIdResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
@@ -236,8 +229,6 @@ App.getInitialProps = async ({ Component, ctx }) => {
 
       const restaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
 
-      console.log(restaurantId, "restaurantId");
-
       const restaurantDetailsResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
         { restaurant_id: restaurantId },
@@ -246,8 +237,6 @@ App.getInitialProps = async ({ Component, ctx }) => {
 
       const restaurantDetails = restaurantDetailsResponse?.data?.payload;
 
-      console.log(restaurantDetails, "restaurantDetails");
-
       if (Component.getInitialProps) {
         pageProps = await Component.getInitialProps(ctx);
       }
@@ -255,10 +244,9 @@ App.getInitialProps = async ({ Component, ctx }) => {
       return { pageProps, restaurantDetails, restaurantId };
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error in getInitialProps:", error);
   }
 
-  // Always return pageProps even if error occurs
   return { pageProps };
 };
 

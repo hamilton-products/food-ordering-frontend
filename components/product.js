@@ -612,7 +612,7 @@ function Product({ itemDetails, consumerId }) {
         <Button
           size="lg"
           variant="gradient"
-          className="flex items-center justify-between rounded-full px-8 w-full"
+          className="flex items-center justify-between rounded-full px-8 w-80"
           onClick={handleAddToCart}
         >
           {cartExits ? (
