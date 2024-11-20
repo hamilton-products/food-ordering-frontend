@@ -121,24 +121,8 @@ function Product({
     return () => window.removeEventListener("resize", handleResizeXtraSmall);
   }, []);
 
-  // const transactionStatuss =
-  //   transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
-  //     ? transactionDetails.Data.InvoiceTransactions[0].TransactionStatus
-  //     : "";
-
-  // const [paymentId, setPaymentId] = useState(null);
-  // const [transactionStatus, setTransactionStatus] = useState(
-  //   transactionStatuss || ""
-  // );
   const [open, setOpen] = React.useState(true);
-  console.log(addressDetailss, "bhai bolye");
 
-  // const transactionId =
-  //   transactionDetails.Data && transactionDetails.Data.InvoiceTransactions
-  //     ? transactionDetails.Data.InvoiceTransactions[0].PaymentId
-  //     : "";
-
-  // console.log(transactionId, transactionStatuss);
 
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -473,13 +457,13 @@ function Product({
       <div className="flex flex-wrap">
         <div className="w-full mb-3">
           <div style={{ height: "300px" }}>
-            <GoogleMap
+            {/* <GoogleMap
               mapContainerStyle={{ height: "100%", width: "100%" }}
               center={center}
               zoom={8}
             >
               <Marker position={center} />
-            </GoogleMap>
+            </GoogleMap> */}
           </div>
         </div>
       </div>
