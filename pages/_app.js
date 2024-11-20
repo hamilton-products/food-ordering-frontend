@@ -44,6 +44,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           );
 
           const newRestaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
+          Cookies.set("restaurantId", newRestaurantId);
 
           const restaurantDetailsResponse = await axios.post(
             `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
@@ -61,7 +62,6 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             address: details.address || "",
           });
 
-          Cookies.set("restaurantId", newRestaurantId);
         } else {
           setRestaurantData({
             logo: restaurantDetails.logo || "",
@@ -70,7 +70,9 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             name: restaurantDetails.name?.EN || "",
             address: restaurantDetails.address || "",
           });
+          Cookies.set("restaurantId", restaurantId);
         }
+       
       } catch (error) {
         console.error("Error loading restaurant details:", error);
       }

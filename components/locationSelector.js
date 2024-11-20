@@ -38,13 +38,17 @@ const ChevronUpSVG = () => (
 );
 
 export default function LocationSelector() {
+
+  const router = useRouter();
+  const { locale } = router;
   const [mode, setMode] = useState("Delivery"); // Default mode
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("Select Location");
+  const [selectedLocation, setSelectedLocation] = useState(
+    locale === "ar" ? "اختر موقعك" : "Select Location"
+  );
   const [isEditing, setIsEditing] = useState(false);
   const [locationData, setLocationData] = useState([]);
   const [open, setOpen] = useState(null);
-  const router = useRouter();
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -60,7 +64,6 @@ export default function LocationSelector() {
     setOpen(open === value ? null : value);
   };
 
-  const { locale } = router;
 
   const DeliveryArea = async () => {
     try {
@@ -70,7 +73,8 @@ export default function LocationSelector() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-          }
+      
+          },
         }
       );
       const data = await response.json();
@@ -129,20 +133,20 @@ export default function LocationSelector() {
   }, {});
 
   return (
-    <div className="px-6 py-2">
+    <div className={`px-6 py-2 ${locale === "ar" ? "rtl" : "ltr"}`}>
       {/* Delivery and Pickup Toggle */}
       <div className="flex space-x-4 mb-4">
         <Button
           color={mode === "Delivery" ? "orange" : "gray"}
           onClick={() => setMode("Delivery")}
         >
-          Delivery
+          {locale === "en" ? "Delivery" : "توصيل"}
         </Button>
         <Button
           variant={mode === "Pickup" ? "outlined" : "text"}
           onClick={() => setMode("Pickup")}
         >
-          Pickup
+          {locale === "en" ? "Pickup" : "استلام"}
         </Button>
       </div>
 
@@ -152,12 +156,12 @@ export default function LocationSelector() {
           <span role="img" aria-label="delivery-icon">
             🚴
           </span>
-          <span>Deliver to</span>
+          <span>{locale === "en" ? "Deliver to" : "التوصيل إلى"}</span>
         </div>
         <div className="flex items-center space-x-2">
           <strong>{selectedLocation}</strong>
           <Button variant="text" color="orange" onClick={() => setIsEditing(true)}>
-            Edit
+            {locale === "en" ? "Edit" : "تعديل"}
           </Button>
         </div>
       </div>
@@ -169,17 +173,22 @@ export default function LocationSelector() {
         size="sm" // Small width
         className="rounded-lg shadow-xl"
       >
-        <DialogHeader className="text-lg font-semibold">Choose Your Location</DialogHeader>
+        <DialogHeader className="text-lg font-semibold">
+          {locale === "en" ? "Choose Your Location" : "اختر موقعك"}
+        </DialogHeader>
         <DialogBody divider>
           <Input
-            label="Search..."
+            label={locale === "en" ? "Search..." : "بحث..."}
             onChange={handleSearch}
             className="mb-4"
           />
           <div>
             {Object.entries(filteredData).map(([governorate, places], idx) => (
               <Accordion open={open === idx} key={idx}>
-                <AccordionHeader onClick={() => handleOpen(idx)} className="flex items-center justify-between relative">
+                <AccordionHeader
+                  onClick={() => handleOpen(idx)}
+                  className="flex items-center justify-between relative"
+                >
                   {governorate}
                   {open === idx ? <ChevronUpSVG /> : <ChevronDownSVG />}
                 </AccordionHeader>
@@ -195,7 +204,7 @@ export default function LocationSelector() {
                       </div>
                     ))
                   ) : (
-                    <p>No places available</p>
+                    <p>{locale === "en" ? "No places available" : "لا توجد أماكن متاحة"}</p>
                   )}
                 </AccordionBody>
               </Accordion>
@@ -208,7 +217,7 @@ export default function LocationSelector() {
             color="red"
             onClick={() => setIsEditing(false)}
           >
-            Close
+            {locale === "en" ? "Close" : "إغلاق"}
           </Button>
         </DialogFooter>
       </Dialog>

@@ -13,9 +13,8 @@ export default function CartPage({ cartDetails, restaurantDetails }) {
 }
 
 export async function getServerSideProps(context) {
-  const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   try {
-    // Retrieve device_id from cookies in the server-side context
+    const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
     const consumerId = context.req.cookies.consumerId;
     const deviceId = context.req.cookies.fingerprint;
     const restaurantId = context.req.cookies.restaurantId;
@@ -26,13 +25,16 @@ export async function getServerSideProps(context) {
       consumerType = "guest";
     }
 
+    
+    
     const idToUse = consumerId ? consumerId : deviceId;
-
-    // Create promises for the API calls
-    const fetchRestaurantDetails = axios.post(
+    const cartResponse = await axios.get(
+      `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
+    );
+    const restaurantResponse = await axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
       {
-        restaurant_id: restaurantId, // replace with your actual data
+        restaurant_id: restaurantId, 
       },
       {
         headers: {
@@ -40,16 +42,9 @@ export async function getServerSideProps(context) {
         },
       }
     );
-
-    const fetchCartDetails = axios.get(
-      `${baseUrl}/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
-    );
-
-    // Await both promises
-    const [restaurantResponse, cartResponse] = await Promise.all([
-      fetchRestaurantDetails,
-      fetchCartDetails,
-    ]);
+    
+    console.log(restaurantId,"restaurantId");
+ 
 
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
@@ -68,8 +63,10 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (error) {
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
+    console.error("Full Error:", error.toJSON ? error.toJSON() : error);
     return {
+
       props: {
         error: "Failed to fetch data",
         restaurantDetails: null,
