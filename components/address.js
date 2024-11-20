@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import {
   Card,
   Typography,
@@ -7,7 +7,7 @@ import {
   Button,
   Alert,
 } from "@material-tailwind/react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker,LoadScript, useJsApiLoader } from "@react-google-maps/api";
 import Cookies from "js-cookie";
 import { addAddress } from "@/pages/api/hello";
 import { useRouter } from "next/router";
@@ -182,6 +182,20 @@ function Product({ restaurantDetails }) {
     }
   }, [message]);
 
+  const containerStyle = {
+    width: "100%",
+    height: "500px",
+  };
+
+    const onLoad = useCallback((map) => {
+      const marker = new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position: center,
+        title: "Hello, Advanced Marker!",
+      });
+    }, []);
+
+
   return (
     <Card className="h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto"
     style={{
@@ -205,13 +219,23 @@ function Product({ restaurantDetails }) {
         <div className="w-full mb-3">
           <div >
             <LocationSelector/>
-            <GoogleMap
+            {/* <GoogleMap
               mapContainerStyle={{ height: "100%", width: "100%" }}
               center={center}
               zoom={8}
             >
               <Marker position={center} />
-            </GoogleMap>
+            </GoogleMap> */}
+
+  <LoadScript googleMapsApiKey="AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco" libraries={["places"]}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={onLoad}
+        options={{ mapId: "DEMO_MAP_ID" }} // Custom Map ID for advanced features
+      />
+    </LoadScript>
           </div>
         </div>
       </div>
