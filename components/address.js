@@ -204,13 +204,13 @@ function Product({ restaurantDetails }) {
       <div className="flex flex-wrap">
         <div className="w-full mb-3">
           <div >
-            {/* <GoogleMap
+            <GoogleMap
               mapContainerStyle={{ height: "100%", width: "100%" }}
               center={center}
               zoom={8}
             >
               <Marker position={center} />
-            </GoogleMap> */}
+            </GoogleMap>
             <LocationSelector/>
           </div>
         </div>
