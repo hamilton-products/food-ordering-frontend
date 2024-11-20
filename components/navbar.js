@@ -21,6 +21,7 @@ import Cookies from "js-cookie";
 function NavList() {
   const { i18n } = useTranslation();
   const router = useRouter();
+  const { locale } = router;
 
   const handleLocaleChange = (locale) => {
     console.log("Current locale:", i18n.language);
@@ -70,7 +71,7 @@ function NavList() {
         color="blue-gray"
         className="p-2 font-medium bg-white rounded-md"
       >
-        <div onClick={() => handleLocaleChange("ar")}>
+        <div onClick={() => handleLocaleChange(locale=="ar"?"en":"ar")}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer"
