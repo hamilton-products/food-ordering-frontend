@@ -11,7 +11,6 @@ import Cookies from "js-cookie";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import { Avatar, Typography } from "@material-tailwind/react";
-
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);

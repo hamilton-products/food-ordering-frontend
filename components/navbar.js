@@ -26,6 +26,7 @@ function NavList() {
   const handleLocaleChange = (locale) => {
     console.log("Current locale:", i18n.language);
     i18n.changeLanguage(locale);
+    router.push(router.pathname, router.asPath, { locale }); 
     console.log("altamashsss", i18n.language);
   };
 
