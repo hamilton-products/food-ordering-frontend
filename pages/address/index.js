@@ -32,6 +32,7 @@ export async function getServerSideProps(context) {
     {
       headers: {
         "Content-Type": "application/json",
+        "lang":context.locale
       },
     }
   );

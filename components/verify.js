@@ -24,6 +24,7 @@ import axios from "axios";
 
 function Phone() {
   const router = useRouter();
+  const {locale}=router
   // const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(Array(4).fill(""));
 
@@ -83,6 +84,7 @@ function Phone() {
         {
           headers: {
             "Content-Type": "application/json",
+            "lang":locale
           },
         }
       );

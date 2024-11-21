@@ -55,6 +55,7 @@ export async function getServerSideProps(context) {
       {
         headers: {
           "Content-Type": "application/json",
+          "lang":context.locale
         },
       }
     );
@@ -107,7 +108,7 @@ export async function getServerSideProps(context) {
         {
           headers: {
             "Content-Type": "application/json",
-                  "lang":"ar"
+                  "lang":locale
           },
         }
       ),
@@ -119,7 +120,7 @@ export async function getServerSideProps(context) {
         {
           headers: {
             "Content-Type": "application/json",
-                  "lang":"ar"
+                  "lang":locale
           },
         }
       ),
@@ -144,7 +145,7 @@ export async function getServerSideProps(context) {
                 {
                   headers: {
                     "Content-Type": "application/json",
-                          "lang":"ar"
+                          "lang":locale
                   },
                 }
               );

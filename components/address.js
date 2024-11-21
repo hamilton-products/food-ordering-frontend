@@ -42,6 +42,7 @@ function Icon() {
 function Product({ restaurantDetails }) {
   const location = Cookies.get("location");
   const router = useRouter();
+  const {locale}=router
 
   const deliveryAreaCoordinates =
     restaurantDetails.restaraunt_delivery_areas &&
@@ -104,6 +105,7 @@ function Product({ restaurantDetails }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "lang":locale
           },
           body: JSON.stringify({
             restaurant_id: restaurantId,
@@ -227,15 +229,15 @@ function Product({ restaurantDetails }) {
               <Marker position={center} />
             </GoogleMap> */}
 
-  <LoadScript googleMapsApiKey="AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco" libraries={["places"]}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        options={{ mapId: "DEMO_MAP_ID" }} // Custom Map ID for advanced features
-      />
-    </LoadScript>
+        {/* <LoadScript googleMapsApiKey="AIzaSyDV3aChbZOKFp2kMd2Z-KCE_oeAzDVvlco" libraries={["places"]}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+              onLoad={onLoad}
+              options={{ mapId: "DEMO_MAP_ID" }} // Custom Map ID for advanced features
+            />
+          </LoadScript> */}
           </div>
         </div>
       </div>

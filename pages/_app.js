@@ -39,7 +39,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           const restaurantIdResponse = await axios.post(
             `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
             { restaurant_subdomain: subdomain },
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json","lang":locale } }
           );
 
           const newRestaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
@@ -48,7 +48,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           const restaurantDetailsResponse = await axios.post(
             `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
             { restaurant_id: newRestaurantId },
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json","lang":locale } }
           );
 
           const details = restaurantDetailsResponse?.data?.payload;
@@ -218,6 +218,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
   let pageProps = {};
   try {
     if (typeof window === "undefined") {
+      const locale = "en"
       const { req } = ctx;
       const host = req.headers.host || "fuga";
       const subdomain = host.split(".")[0];
@@ -225,7 +226,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       const restaurantIdResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
         { restaurant_subdomain: subdomain },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json","lang":locale } }
       );
 
       const restaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
@@ -233,7 +234,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       const restaurantDetailsResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
         { restaurant_id: restaurantId },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json","lang":locale } }
       );
 
       const restaurantDetails = restaurantDetailsResponse?.data?.payload;

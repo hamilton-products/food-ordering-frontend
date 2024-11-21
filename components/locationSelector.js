@@ -73,6 +73,7 @@ export default function LocationSelector() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "lang":locale
       
           },
         }
