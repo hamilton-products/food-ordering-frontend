@@ -93,20 +93,20 @@ function Product({
 }) {
   if(!restaurantDetails) return null;
   const [loading, setLoading] = useState(false);
-  console.log(subdomain, "subdomain");
+  // console.log(subdomain, "subdomain");
 
-  console.log(cartDetails, "cartDetails mms");
-  console.log(couponDetails, "couponDetails");
-  console.log(restaurantDetails, "restaurantDetails mms");
+  // console.log(cartDetails, "cartDetails mms");
+  // console.log(couponDetails, "couponDetails");
+  // console.log(restaurantDetails, "restaurantDetails mms");
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
   const [promo, setPromo] = useState("");
-  console.log(promo, "promo");
+  // console.log(promo, "promo");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState("");
 
   const [couponDiscount, setCouponDiscount] = useState(0);
 
-  console.log(appliedCoupon, "appliedCoupon");
+  // console.log(appliedCoupon, "appliedCoupon");
 
   useEffect(() => {
     const handleResizeXtraSmall = () => {
@@ -140,10 +140,10 @@ function Product({
     setCouponError("");
     try {
       const response = await verifyCoupon(promo, subTotal);
-      console.log(response, "response");
+      // console.log(response, "response");
       if (response) {
         const coupon = response;
-        console.log(coupon, "coupon");
+        // console.log(coupon, "coupon");
         setAppliedCoupon(coupon);
         // Update the order state with coupon details
         setOrder((prevOrder) => ({
@@ -184,7 +184,7 @@ function Product({
         ? Math.min(couponDiscountValue, appliedCoupon.maximum_discount_value)
         : couponDiscountValue;
 
-      console.log(cappedCouponDiscount, "cappedCouponDiscount");
+      // console.log(cappedCouponDiscount, "cappedCouponDiscount");
 
       total -= cappedCouponDiscount;
     }
@@ -258,7 +258,7 @@ function Product({
     }));
   }, [subTotal, delivery, discountType, discountAmount, appliedCoupon]);
 
-  console.log(discountedTotal, "discountedTotal");
+  // console.log(discountedTotal, "discountedTotal");
 
   const location = Cookies.get("location");
   const center = {
@@ -298,7 +298,7 @@ function Product({
         router.push(`/order?orderId=${orderId}`);
         Cookies.set("orderId", orderId);
       } else {
-        console.log("Failed to place order");
+        // console.log("Failed to place order");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -325,7 +325,7 @@ function Product({
       // Place the order first
       const orderResponse = await placeOrder(order);
       if (!orderResponse || !orderResponse.order_id) {
-        console.log("Failed to place order");
+        // console.log("Failed to place order");
         setLoading(false);
         return;
       }
@@ -343,7 +343,7 @@ function Product({
 
 
       window.location.href = paymentLink;
-      console.log(response, "response");
+      // console.log(response, "response");
     } catch (error) {
       console.error("Error executing payment:", error);
       setLoading(false);
@@ -367,7 +367,7 @@ function Product({
     coupon_id: "",
     coupon_code: "",
   });
-  console.log(order, "order++++++++++++++");
+  // console.log(order, "order++++++++++++++");
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setTransactionStatus(null);

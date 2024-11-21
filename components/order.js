@@ -81,22 +81,22 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
   if(!restaurantDetails) return null;
   const router = useRouter();
   const orderStatus = orderDetails.status;
-  console.log(orderStatus, "orderStatus");
+  // console.log(orderStatus, "orderStatus");
   // const [activeStep, setActiveStep] = React.useState(0);
   const [isLastStep, setIsLastStep] = React.useState(false);
   const [isFirstStep, setIsFirstStep] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const [errorMessage, setErrorMessage] = React.useState("");
-  console.log(errorMessage, "efjdshjfhs");
+  // console.log(errorMessage, "efjdshjfhs");
 
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
   const orderItemsDetails = orderDetails.order_details;
 
-  console.log(orderItemsDetails, "orderItemsDetails");
-  console.log(orderDetails, "orderDetails");
+  // console.log(orderItemsDetails, "orderItemsDetails");
+  // console.log(orderDetails, "orderDetails");
 
   // Function to determine the active step based on order status
   const getActiveStep = (status) => {
@@ -118,7 +118,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
 
   // Function to format date and time
   const formatDateTime = (dateTimeString) => {
-    console.log(dateTimeString, "dateTimeString");
+    // console.log(dateTimeString, "dateTimeString");
     const date = new Date(dateTimeString);
     return date.toUTCString();
   };
@@ -149,7 +149,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
     }
   }, [errorMessage]);
 
-  console.log(orderDetails.status, "sajhdsjahd");
+  // console.log(orderDetails.status, "sajhdsjahd");
   return (
     <Card className="h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 overflow-y-auto rounded-none"
     style={{

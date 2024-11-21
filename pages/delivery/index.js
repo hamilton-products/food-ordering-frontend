@@ -38,7 +38,7 @@ export async function getServerSideProps(context) {
     );
 
     const addressDetails = addressResponse.data?.payload || [];
-    console.log(addressDetails,"addressDetails");
+    // console.log(addressDetails,"addressDetails");
     
     return {
       props: {

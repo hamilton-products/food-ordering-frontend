@@ -24,10 +24,10 @@ function NavList() {
   const { locale } = router;
 
   const handleLocaleChange = (locale) => {
-    console.log("Current locale:", i18n.language);
+    // console.log("Current locale:", i18n.language);
     i18n.changeLanguage("ar");
     router.push(router.pathname, router.asPath, { locale }); 
-    console.log("altamashsss", i18n.language);
+    // console.log("altamashsss", i18n.language);
   };
 
   return (

@@ -2,36 +2,15 @@ import React from "react";
 import {
   Card,
   Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
   Alert,
-  Input,
   CardBody,
   Button,
   CardHeader,
 } from "@material-tailwind/react";
 import {
-  PresentationChartBarIcon,
   ShoppingBagIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
-  PowerIcon,
-  ShoppingCartIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/solid";
-import {
-  ChevronRightIcon,
-  ChevronDownIcon,
-  CubeTransparentIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { deleteCart, updateCart } from "@/pages/api/hello";
@@ -60,20 +39,21 @@ function Icon() {
 
 function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   // if(!restaurantDetails) return null;
-  console.log(cartDetails, "menushsg");
+  // // console.log(cartDetails, "menushsg");
   const router = useRouter();
+  const {locale}=router
   const [open, setOpen] = React.useState(0);
   const [openAlert, setOpenAlert] = React.useState(true);
   const [cartItems, setCartItems] = React.useState(cartDetails);
-  console.log(cartItems, "cartItems");
+  // // console.log(cartItems, "cartItems");
 
-  console.log(cartItems, "cartItems");
+  // // console.log(cartItems, "cartItems");
 
   const currency = restaurantDetails.currency;
   const delivery = restaurantDetails.delivery_charge;
 
   const restStatus = restaurantDetails.availability_status;
-  console.log(restStatus, "restStatus");
+  // // console.log(restStatus, "restStatus");
 
   const discountType = restaurantDetails.discount_type;
   const discountAmount = restaurantDetails.discount_value;
@@ -132,7 +112,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `https://apitasweeq.hamiltonkw.com/api/cart/list-cart-items/${idToUse}/${consumerType}/EN`
+        `https://apitasweeq.hamiltonkw.com/api/cart/list-cart-items/${idToUse}/${consumerType}/${locale=="ar"?"AR":"EN"}`
       );
       if (
         response.data &&
@@ -354,21 +334,25 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
           <div className="border-t-2 border-blue-gray-50"></div>
           <div className="flex flex-row justify-between items-center">
             <Typography variant="small" color="blue-gray">
-              Subtotal:
+              {locale === 'ar' ? 'المجموع الفرعي:' : 'Subtotal:'}
             </Typography>
-            <span className="flex items-center">{currency} {subTotal}</span>
+            <span className="flex items-center">
+              {locale === 'ar' ? `${subTotal} ${currency}` : `${currency} ${subTotal}`}
+            </span>
           </div>
           <div className="border-t-2 border-blue-gray-50"></div>
           <div className="flex flex-row justify-between items-center">
             <Typography variant="small" color="blue-gray">
-              Delivery Services:
+              {locale === 'ar' ? 'خدمات التوصيل:' : 'Delivery Services:'}
             </Typography>
-            <span className="flex items-center">{delivery} {currency}</span>
+            <span className="flex items-center">
+              {delivery} {currency}
+            </span>
           </div>
           {discountValue > 0 && (
             <div className="flex flex-row justify-between items-center">
               <Typography variant="small" color="blue-gray">
-                Restaurant Discount:
+                {locale === 'ar' ? 'خصم المطعم:' : 'Restaurant Discount:'}
               </Typography>
               <span className="flex items-center">
                 - {discountValue} {currency}
@@ -378,12 +362,13 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
           <div className="border-t-2 border-blue-gray-50"></div>
           <div className="flex flex-row justify-between items-center mb-2">
             <Typography variant="h6" color="blue-gray">
-              Total:
+              {locale === 'ar' ? 'الإجمالي:' : 'Total:'}
             </Typography>
             <Typography variant="h6" color="blue-gray" className="flex items-center">
               {discountedTotal} {currency}
             </Typography>
           </div>
+
         </React.Fragment>
       ) : (
         <div className="mb-2 flex flex-col items-center justify-center gap-4 pt-4">
@@ -391,8 +376,9 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
             <ShoppingBagIcon className="h-20 w-20" />
           </div>
           <Typography variant="h5" color="blue-gray">
-            No Items in Cart
+            {locale === 'ar' ? 'لا توجد عناصر في السلة' : 'No Items in Cart'}
           </Typography>
+
         </div>
       )}
     </div>
@@ -401,25 +387,26 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
     <div className="mt-4">
       <div className="w-full bg-[#F4F5F5] p-4 shadow-md">
         <div className="flex justify-between">
-          <Button
-            size={mobileResponse ? "lg" : "md"}
-            variant="outlined"
-            color="blue-gray"
-            onClick={addMoreItemHandler}
-            className="flex-1 mx-1"
-          >
-            Add Items
-          </Button>
-          <Button
-            size={mobileResponse ? "lg" : "md"}
-            variant="gradient"
-            color="black"
-            disabled={restStatus === "offline"}
-            onClick={placeOrderHandler}
-            className="flex-1 mx-1"
-          >
-            Checkout
-          </Button>
+        <Button
+          size={mobileResponse ? "lg" : "md"}
+          variant="outlined"
+          color="blue-gray"
+          onClick={addMoreItemHandler}
+          className="flex-1 mx-1"
+        >
+          {locale === 'ar' ? 'إضافة عناصر' : 'Add Items'}
+        </Button>
+        <Button
+          size={mobileResponse ? "lg" : "md"}
+          variant="gradient"
+          color="black"
+          disabled={restStatus === "offline"}
+          onClick={placeOrderHandler}
+          className="flex-1 mx-1"
+        >
+          {locale === 'ar' ? 'إتمام الشراء' : 'Checkout'}
+        </Button>
+
         </div>
       </div>
     </div>

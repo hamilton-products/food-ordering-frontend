@@ -44,7 +44,7 @@ function Product({ addressDetails }) {
   const location = Cookies.get("location");
   const router = useRouter();
 
-  console.log(addressDetails, "addressDetails");
+  // console.log(addressDetails, "addressDetails");
 
   //   const deliveryAreaCoordinates =
   //     restaurantDetails.restaraunt_delivery_areas &&
@@ -106,7 +106,7 @@ function Product({ addressDetails }) {
 
   async function fillInAddress() {
     const place = autocomplete.getPlace();
-    console.log("Place object:", place); // Log the place object to see its structure
+    // console.log("Place object:", place); // Log the place object to see its structure
 
     // Check if the place object contains the necessary data
     if (!place.geometry || !place.geometry.location) {
@@ -117,7 +117,7 @@ function Product({ addressDetails }) {
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
 
-    console.log(isWithinDeliveryArea);
+    // console.log(isWithinDeliveryArea);
 
     if (!isWithinDeliveryArea) {
       setMessage("Delivery not available in this area");

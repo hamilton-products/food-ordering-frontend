@@ -12,10 +12,11 @@ import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import { Avatar, Typography } from "@material-tailwind/react";
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
-  console.log(restaurantId, "restaurantId123");
+  // console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { locale } = router;
+// console.log(locale,"localelocale");
 
   const [location, setLocation] = useState({ lat: 19.076, lng: 72.8777 });
   const [heroShown, setHeroShown] = useState(true);
@@ -55,18 +56,18 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
           setRestaurantData({
             logo: details.logo || "",
-            description: details.description?.EN || "",
+            description:locale=="EN"? details.description?.EN:details.description?.AR || "",
             cover_photo: details.cover_photo || "",
-            name: details.name?.EN || "",
+            name: locale=="EN"?details.name?.EN:details.name?.AR || "",
             address: details.address || "",
           });
 
         } else {
           setRestaurantData({
             logo: restaurantDetails.logo || "",
-            description: restaurantDetails.description?.EN || "",
+            description: locale=="EN"?restaurantDetails.description?.EN :restaurantDetails.description?.AR|| "",
             cover_photo: restaurantDetails.cover_photo || "",
-            name: restaurantDetails.name?.EN || "",
+            name: locale=="EN"?restaurantDetails.name?.EN:restaurantDetails.name?.AR || "",
             address: restaurantDetails.address || "",
           });
           Cookies.set("restaurantId", restaurantId);
@@ -104,7 +105,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      console.log("App is changing to:", url);
+      // console.log("App is changing to:", url);
       setLoading(true);
     };
 
@@ -221,9 +222,8 @@ App.getInitialProps = async ({ Component, ctx }) => {
       const { req } = ctx;
       const host = req.headers.host || "fuga";
       const subdomain = host.split(".")[0];
-      // const urlPath = req.url || "/"; // Default to "/" if URL is undefined
-      // const pathSegments = urlPath.split("/").filter(Boolean); // Split by "/" and remove empty segments
-      const locale =  "en";
+      const locale = req.headers.cookie.split(";").filter(val=>val.includes("locale")).length>0?(req.headers.cookie.split(";").filter(val=>val.includes("locale"))[0].split("=")[1]=="ar"?"ar":"en"): "en";
+      console.log(locale,"locale");
       
       const restaurantIdResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,

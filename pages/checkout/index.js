@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
   let transactionDetails = {}; // Declare transactionDetails here
   const host = context.req.headers.host || "fuga";
 
-  console.log(host, "host++");
+  // console.log(host, "host++");
   const subdomain = host.split(".")[0];
 
   try {
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
     const tableId = context.req.cookies.tableId;
     const restaurantId = context.req.cookies.restaurantId;
 
-    console.log(tableId, "tableId");
+    // console.log(tableId, "tableId");
 
     if (!consumerId) {
       return {
@@ -60,15 +60,15 @@ export async function getServerSideProps(context) {
     }
 
     const paymentId = context.query.paymentId;
-    console.log(paymentId, "paymentId");
-    console.log(addressId, "addressId1", addressType, "addressType");
+    // console.log(paymentId, "paymentId");
+    // console.log(addressId, "addressId1", addressType, "addressType");
 
     const cartPromise = axios.get(
       `${baseUrl}/api/cart/list-cart-items/${consumerId}/consumer/EN`
     );
 
-    console.log(cartPromise, "cartPromiseA");
-    console.log(consumerId, "consumerIdA");
+    // console.log(cartPromise, "cartPromiseA");
+    // console.log(consumerId, "consumerIdA");
 
     const restaurantPromise = axios.post(
       `${baseUrl}/backend/restaurant/get-restaurant-details-backend`,
@@ -126,7 +126,7 @@ export async function getServerSideProps(context) {
         ? cartResponse.data.payload.cartItems
         : [];
 
-    console.log(cartDetails, "cartDetails");
+    // console.log(cartDetails, "cartDetails");
 
     if (!cartDetails || cartDetails.length === 0) {
       return {
@@ -139,10 +139,10 @@ export async function getServerSideProps(context) {
 
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
-    console.log(restaurantDetails, "restaurantDetails");
+    // console.log(restaurantDetails, "restaurantDetails");
 
     const restStatus = restaurantDetails.availability_status;
-    console.log(restStatus, "restStatus");
+    // console.log(restStatus, "restStatus");
 
     if (restStatus === "offline") {
       return {
@@ -157,10 +157,10 @@ export async function getServerSideProps(context) {
       paymentMethodResponse.data &&
       paymentMethodResponse.data.payload &&
       paymentMethodResponse.data.payload.PaymentMethods;
-    console.log(paymentMethodList, "paymentMethodList");
+    // console.log(paymentMethodList, "paymentMethodList");
 
     const couponDetails = couponResponse.data && couponResponse.data.payload;
-    console.log(couponDetails, "couponDetails");
+    // console.log(couponDetails, "couponDetails");
 
     // Handle payment status if paymentId is present
     // if (paymentId) {
@@ -175,7 +175,7 @@ export async function getServerSideProps(context) {
     //     paymentStatusResponse.data && paymentStatusResponse.data.payload;
     // }
 
-    // console.log(transactionDetails, "transactionDetails Altamash");
+    // // console.log(transactionDetails, "transactionDetails Altamash");
 
     let addressDetailss = null;
 
@@ -196,7 +196,7 @@ export async function getServerSideProps(context) {
         }
       );
 
-      console.log(addressResponse, "addressResponse");
+      // console.log(addressResponse, "addressResponse");
 
       addressDetailss = addressResponse.data && addressResponse.data.payload;
     }

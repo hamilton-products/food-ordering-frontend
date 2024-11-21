@@ -53,7 +53,7 @@ export async function getServerSideProps(context) {
     const restaurantDetails =
       restaurantResponse.data && restaurantResponse.data.payload;
 
-    console.log(consumerId, "consumerId");
+    // console.log(consumerId, "consumerId");
 
     // Check if order data exists and is not empty
     if (orderResponse.data && orderResponse.data.payload) {

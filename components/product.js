@@ -37,26 +37,27 @@ import { addToCart, checkCart } from "@/pages/api/hello";
 import Cookies from "js-cookie";
 
 function Product({ itemDetails, consumerId }) {
+  const router = useRouter();
+  const {locale}=router; 
   const img = itemDetails.cover_photo;
-  const title = itemDetails.title && itemDetails.title.EN;
-  const description = itemDetails.description && itemDetails.description.EN;
+  const title = itemDetails.title?(locale=="ar"?itemDetails.title.AR: itemDetails.title.EN):"";
+  const description = itemDetails.description?(locale=="ar"?itemDetails.description.AR: itemDetails.description.EN):"";
   const price = itemDetails.price;
 
   const avg_rating = itemDetails.avg_rating;
   const [open, setOpen] = React.useState(0);
   const [qty, setQty] = React.useState(1);
   const [cartExits, setCartExists] = React.useState(false);
-  console.log(cartExits, "cartExits");
+  // console.log(cartExits, "cartExits");
 
   const [loading, setLoading] = React.useState(false);
 
-  const router = useRouter();
 
   const [selectedOption, setSelectedOption] = React.useState(null);
 
   const [selectedItemOptions, setSelectedItemOptions] = React.useState([]);
 
-  console.log(selectedItemOptions, "selectedItemOptions");
+  // console.log(selectedItemOptions, "selectedItemOptions");
 
   const [mobileResponse, setMobileResponse] = React.useState(true);
 
@@ -66,7 +67,7 @@ function Product({ itemDetails, consumerId }) {
     setSelectedOption(value);
   };
 
-  console.log(itemDetails, "itemDetails");
+  // console.log(itemDetails, "itemDetails");
 
   const incrementQty = () => {
     setQty(qty + 1);
@@ -92,7 +93,7 @@ function Product({ itemDetails, consumerId }) {
     const checkCartExists = async () => {
       try {
         const response = await checkCart(productId);
-        console.log(response.exists, "response.exists");
+        // console.log(response.exists, "response.exists");
         if (response.exists === true) {
           setCartExists(true);
         }
@@ -218,7 +219,7 @@ function Product({ itemDetails, consumerId }) {
   };
 
   const transformedData = transformSelectedOptions();
-  console.log(transformedData);
+  // console.log(transformedData);
 
   return (
     // <Card
@@ -571,9 +572,9 @@ function Product({ itemDetails, consumerId }) {
         {/* Special Instructions */}
         <hr className="my-2 border-blue-gray-200" />
         <div className="mb-6 mx-5 flex flex-col gap-6">
-          <Typography variant="h6" color="blue-gray">
-            Special instructions
-          </Typography>
+        <Typography variant="h6" color="blue-gray">
+          {locale === 'ar' ? 'تعليمات خاصة' : 'Special instructions'}
+        </Typography>
           <Input
             size="lg"
             placeholder="Add instructions"
@@ -615,14 +616,21 @@ function Product({ itemDetails, consumerId }) {
           className="flex items-center justify-between rounded-full px-8 w-80"
           onClick={handleAddToCart}
         >
-          {cartExits ? (
-            <span className="mx-auto" >Go to the Cart</span>
+        {cartExits ? (
+            <span className="mx-auto">
+              {locale === 'ar' ? 'الذهاب إلى السلة' : 'Go to the Cart'}
+            </span>
           ) : (
             <div className="flex items-center justify-between w-full">
-              <span className="text-sm">Add to Cart</span>
-              <span className="text-lg">{price * qty} KD</span>
+              <span className="text-sm">
+                {locale === 'ar' ? 'أضف إلى السلة' : 'Add to Cart'}
+              </span>
+              <span className="text-lg">
+                {price * qty} KD
+              </span>
             </div>
           )}
+
         </Button>
       </div>
     </Card>

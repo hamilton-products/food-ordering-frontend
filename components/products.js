@@ -128,11 +128,11 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
 
   //   // Move the slider to show the next set of categories
   //   if (sliderRef.current) {
-  //     console.log(sliderRef.current, "sliderRef.current");
+  //     // console.log(sliderRef.current, "sliderRef.current");
   //     const slidesToShow = 3; // Number of slides visible
   //     const totalSlides = menu.length; // Total number of categories
-  //     console.log(totalSlides, "totalSlides");
-  //     console.log(index, "index");
+  //     // console.log(totalSlides, "totalSlides");
+  //     // console.log(index, "index");
   //     setCurrentIndex(index);
 
   //     // Calculate the target index for the slider to go to
@@ -185,7 +185,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       },
     ],
   };
-  console.log(menu[0], "menucheck");
+  // console.log(menu[0], "menucheck");
   return (
     <Card
       ref={scrollContainerRef}

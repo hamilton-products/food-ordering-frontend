@@ -20,16 +20,16 @@ export async function getServerSideProps(context) {
   // const restaurantId = context.req.cookies.restaurantId;
   // Get tableId from query parameters
   const { tableId } = context.query;
-  console.log(tableId, "tableId");
+  // console.log(tableId, "tableId");
 
-  console.log(context, "restaurantId+++++++");
+  // console.log(context, "restaurantId+++++++");
   const host = context.req.headers.host || "fuga";
 
-  console.log(host, "host++");
+  // console.log(host, "host++");
   const subdomain = host.split(".")[0];
   // const subdomain = "fuga";
 
-  console.log(subdomain, "subdomain");
+  // console.log(subdomain, "subdomain");
 
   // Set tableId in cookies, if it exists
   if (tableId) {
@@ -60,14 +60,14 @@ export async function getServerSideProps(context) {
       }
     );
 
-    console.log(restaurantIdResponse, "restaurantIdResponse");
+    // console.log(restaurantIdResponse, "restaurantIdResponse");
 
     const restaurantId =
       restaurantIdResponse.data &&
       restaurantIdResponse.data.payload &&
       restaurantIdResponse.data.payload.restaurant_id;
 
-    console.log(restaurantId, "restaurantId");
+    // console.log(restaurantId, "restaurantId");
 
     if (restaurantId) {
       context.res.setHeader(
@@ -89,7 +89,7 @@ export async function getServerSideProps(context) {
     const locale = context.locale === "ar" ? "AR" : "EN" || "AR";
     // const locale = "AR";
 
-    // console.log(locale, "locale");
+    // // console.log(locale, "locale");
     let cartDetails = [];
 
     if (idToUse) {
@@ -108,7 +108,7 @@ export async function getServerSideProps(context) {
         {
           headers: {
             "Content-Type": "application/json",
-                  "lang":locale
+                  "lang":locale=="AR"?"ar":"en"
           },
         }
       ),
@@ -120,7 +120,7 @@ export async function getServerSideProps(context) {
         {
           headers: {
             "Content-Type": "application/json",
-                  "lang":locale
+                  "lang":locale=="AR"?"ar":"en"
           },
         }
       ),
@@ -130,7 +130,7 @@ export async function getServerSideProps(context) {
 
     const restaurantDetails = restaurantResponse.data?.payload;
 
-    console.log(restaurantDetails, "restaurantDetails");
+    // console.log(restaurantDetails, "restaurantDetails");
 
     if (menuResponse.data?.payload && menuResponse.data.payload.length > 0) {
       const menuWithItemDetails = await Promise.all(
@@ -164,7 +164,7 @@ export async function getServerSideProps(context) {
         })
       );
 
-      console.log(menuWithItemDetails, "menuWithItemDetails");
+      // console.log(menuWithItemDetails, "menuWithItemDetails");
 
       return {
         props: {

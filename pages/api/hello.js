@@ -122,7 +122,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
     console.error("Error adding to cart:", error);
     // Check if the error is due to item already in the cart
     if (error.response && error.response.status === 406) {
-      console.log("Item already in cart, redirecting to /cart");
+      // console.log("Item already in cart, redirecting to /cart");
       redirectToCart(); // Execute the redirection callback
     } else {
       console.error("Unhandled error:", error); // Log the unhandled error
@@ -155,7 +155,7 @@ export const deleteCart = async (cartId) => {
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while deleting cart");
+    // console.log("Error while deleting cart");
   }
 };
 
@@ -176,7 +176,7 @@ export const updateCart = async (cartId, quantity) => {
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while updating cart");
+    // console.log("Error while updating cart");
   }
 };
 
@@ -203,7 +203,7 @@ export const checkCart = async (itemId) => {
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while check item cart");
+    // console.log("Error while check item cart");
   }
 };
 
@@ -212,7 +212,7 @@ export const addAddress = async (address) => {
   const latitude = JSON.parse(location).lat;
   const longitude = JSON.parse(location).lng;
   const consumerId = Cookies.get("consumerId");
-  console.log(consumerId, "consumerId");
+  // console.log(consumerId, "consumerId");
   const area = address.area;
   try {
     const response = await axios.post(
@@ -237,13 +237,13 @@ export const addAddress = async (address) => {
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while updating cart");
+    // console.log("Error while updating cart");
   }
 };
 
 export const placeOrder = async (order) => {
-  console.log(order, "order");
-  console.log(order.transaction_id, "orderh");
+  // console.log(order, "order");
+  // console.log(order.transaction_id, "orderh");
 
   const restaurantId = Cookies.get("restaurantId");
 
@@ -251,7 +251,7 @@ export const placeOrder = async (order) => {
 
   const tableId = Cookies.get("tableId");
 
-  console.log(tableId, "tableId++++++++++++++");
+  // console.log(tableId, "tableId++++++++++++++");
 
   try {
     const response = await axios.post(
@@ -305,11 +305,11 @@ export const placeOrder = async (order) => {
       }
     );
 
-    console.log(response, "response");
+    // console.log(response, "response");
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while updating cart");
+    // console.log("Error while updating cart");
   }
 };
 
@@ -317,7 +317,7 @@ export const getAddressDetails = async () => {
   const addressId = Cookies.get("address_id");
   const consumerId = Cookies.get("consumerId");
   const addressType = Cookies.get("address_type");
-  console.log(consumerId, "consumerId");
+  // console.log(consumerId, "consumerId");
 
   try {
     const response = await axios.post(
@@ -338,7 +338,7 @@ export const getAddressDetails = async () => {
 
     return response.data && response.data.payload;
   } catch (error) {
-    console.log("Error while getting address");
+    // console.log("Error while getting address");
   }
 };
 
@@ -358,7 +358,7 @@ export const paymentMethod = async (data) => {
 
     return response.data.payload;
   } catch (error) {
-    console.log("Error while getting payment method");
+    // console.log("Error while getting payment method");
   }
 };
 
@@ -381,7 +381,7 @@ export const cancelOrder = async (orderId) => {
     if (error.response && error.response.data.error.code === 406) {
       return error.response.data;
     } else {
-      console.log("Error while cancelling order");
+      // console.log("Error while cancelling order");
     }
   }
 };
@@ -424,14 +424,14 @@ export const executePayment = async (
 
     return response.data && response.data.payload;
   } catch (error) {
-    console.log("Error while executing payment");
+    // console.log("Error while executing payment");
   }
 };
 export const checkPaymentStatus = async (paymentId) => {
   try {
     // Ensure paymentId is provided
     if (!paymentId) {
-      console.log("Error: Parameter Missing: paymentId is required.");
+      // console.log("Error: Parameter Missing: paymentId is required.");
       return;
     }
 
@@ -453,7 +453,7 @@ export const checkPaymentStatus = async (paymentId) => {
     if (response.data && response.data.payload) {
       return response.data.payload; // Adjust according to the API's response structure
     } else {
-      console.log("Error: Invalid payment status response.");
+      // console.log("Error: Invalid payment status response.");
       return;
     }
   } catch (error) {
@@ -486,7 +486,7 @@ export const applyCoupon = async (coupon_id, amount) => {
 
     return response.data && response.data.payload;
   } catch (error) {
-    console.log("Error while apply coupon");
+    // console.log("Error while apply coupon");
   }
 };
 
@@ -511,6 +511,6 @@ export const verifyCoupon = async (coupon_code, amount) => {
 
     return response.data && response.data.payload;
   } catch (error) {
-    console.log("Error while apply coupon");
+    // console.log("Error while apply coupon");
   }
 };

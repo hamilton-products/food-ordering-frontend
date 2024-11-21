@@ -115,7 +115,7 @@ function Product({ restaurantDetails }) {
         }
       );
       const data = await response.json();
-      console.log(data.payload, "dat");
+      // // console.log(data.payload, "dat");
       return data.payload;
     } catch (error) {
       console.error("Error checking delivery area:", error);
@@ -139,7 +139,7 @@ function Product({ restaurantDetails }) {
 
   async function fillInAddress() {
     const place = autocomplete.getPlace();
-    console.log("Place object:", place); // Log the place object to see its structure
+    // // console.log("Place object:", place); // Log the place object to see its structure
 
     // Check if the place object contains the necessary data
     if (!place.geometry || !place.geometry.location) {
@@ -156,7 +156,7 @@ function Product({ restaurantDetails }) {
       restaurantDetails.restaurant_id
     );
 
-    console.log(isWithinDeliveryArea);
+    // // console.log(isWithinDeliveryArea);
 
     if (!isWithinDeliveryArea) {
       setMessage("Delivery not available in this area");

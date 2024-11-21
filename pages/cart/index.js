@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
       }
     );
     
-    console.log(restaurantId,"restaurantId");
+    // console.log(restaurantId,"restaurantId");
  
 
     const restaurantDetails =

@@ -12,7 +12,7 @@ export default function ConfirmationPage({ restaurantResponse }){
   if (restaurantResponse === 'loading') {
     return <div>Loading order status...</div>;
   }
-  console.log("saaaaaaaaa",restaurantResponse);
+  // console.log("saaaaaaaaa",restaurantResponse);
   
 
   return (
@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
     const [restaurantResponse] = await Promise.all([
       restaurantPromise
     ]);
-    console.log("restaurantResponse",restaurantResponse.data.payload);
+    // console.log("restaurantResponse",restaurantResponse.data.payload);
     
     if (restaurantResponse.data && restaurantResponse.data.payload) {
       return {

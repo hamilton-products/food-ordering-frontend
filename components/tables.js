@@ -65,7 +65,7 @@ function Icon() {
 }
 
 function SidebarWithSearch({ tableDetails }) {
-  console.log(tableDetails, "tableDetails");
+  // console.log(tableDetails, "tableDetails");
   const [mobileResponse, setMobileResponse] = React.useState(true);
 
   const router = useRouter();

@@ -25,6 +25,8 @@ import axios from "axios";
 function Phone() {
   const router = useRouter();
   const {locale}=router
+  console.log("locale",locale);
+  
   // const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(Array(4).fill(""));
 
@@ -98,7 +100,7 @@ function Phone() {
         response.data.payload.consumer_id !== "" &&
         response.data.payload.consumer_id !== undefined
       ) {
-        // console.log(response.data.payload.consumer_id);
+        // // console.log(response.data.payload.consumer_id);
         await axios.put(
           `https://apitasweeq.hamiltonkw.com/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
         );
@@ -131,70 +133,73 @@ function Phone() {
 
   return (
     <Card color="transparent" shadow={true} className="py-5 px-5">
-      <CardHeader
-        color="gray"
-        floated={false}
-        shadow={false}
-        className="m-0 grid place-items-center px-4 py-8 text-center mb-5"
-      >
-        <div className="mb-10 h-40 p-6 text-white">
-          <ChatBubbleLeftIcon className="h-40 w-40 text-white" />
-        </div>
+  <CardHeader
+    color="gray"
+    floated={false}
+    shadow={false}
+    className="m-0 grid place-items-center px-4 py-8 text-center mb-5"
+  >
+    <div className="mb-10 h-40 p-6 text-white">
+      <ChatBubbleLeftIcon className="h-40 w-40 text-white" />
+    </div>
 
-        <Typography variant="paragraph" color="white">
-          Check your phone for the verification code.
-        </Typography>
-        <Typography variant="paragraph" color="white">
-          +{countryCode} {phoneNumber}
-        </Typography>
-      </CardHeader>
-      <Typography variant="h4" color="blue-gray">
-        Didn't get the code?
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Resend (SMS) in 00:00
-      </Typography>
+    <Typography variant="paragraph" color="white">
+      {locale === 'ar'
+        ? 'تحقق من هاتفك للحصول على رمز التحقق.'
+        : 'Check your phone for the verification code.'}
+    </Typography>
+    <Typography variant="paragraph" color="white">
+      +{countryCode} {phoneNumber}
+    </Typography>
+  </CardHeader>
+  <Typography variant="h4" color="blue-gray">
+    {locale === 'ar' ? 'لم تستلم الرمز؟' : "Didn't get the code?"}
+  </Typography>
+  <Typography color="gray" className="mt-1 font-normal">
+    {locale === 'ar' ? 'إعادة الإرسال (رسالة نصية) خلال 00:00' : 'Resend (SMS) in 00:00'}
+  </Typography>
 
-      <form className="mt-8 mb-10 w-80 max-w-screen-lg sm:w-96">
-        <div
-          className={`mb-1 flex flex-row gap-6 justify-center  ${
-            loading === true ? "animate-pulse" : ""
-          }`}
-        >
-          {otp.map((data, index) => {
-            return (
-              <input
-                disabled={loading ? true : false}
-                className={`otp-field ${loading ? "bg-gray-500" : ""}`}
-                type="text"
-                name="otp"
-                maxLength="1"
-                key={index}
-                value={data}
-                onChange={(e) => handleChange(e.target, index)}
-                onFocus={(e) => e.target.select()}
-                style={{
-                  width: "65px",
-                  height: "65px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  textAlign: "center",
-                  fontSize: "20px",
-                  margin: "0 2px",
-                }}
-              />
-            );
-          })}
-        </div>
-      </form>
-      <div className="mb-5 flex flex-row gap-6 justify-center">
-        {error && ( // Conditionally render error message
-          <Typography variant="paragraph" color="red">
-            {error}
-          </Typography>
-        )}
-      </div>
-    </Card>
+  <form className="mt-8 mb-10 w-80 max-w-screen-lg sm:w-96">
+    <div
+      className={`mb-1 flex flex-row gap-6 justify-center  ${
+        loading === true ? 'animate-pulse' : ''
+      }`}
+    >
+      {otp.map((data, index) => {
+        return (
+          <input
+            disabled={loading ? true : false}
+            className={`otp-field ${loading ? 'bg-gray-500' : ''}`}
+            type="text"
+            name="otp"
+            maxLength="1"
+            key={index}
+            value={data}
+            onChange={(e) => handleChange(e.target, index)}
+            onFocus={(e) => e.target.select()}
+            style={{
+              width: '65px',
+              height: '65px',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              textAlign: 'center',
+              fontSize: '20px',
+              margin: '0 2px',
+            }}
+          />
+        );
+      })}
+    </div>
+  </form>
+  <div className="mb-5 flex flex-row gap-6 justify-center">
+    {error && (
+      <Typography variant="paragraph" color="red">
+        {error}
+      </Typography>
+    )}
+  </div>
+</Card>
+
   );
 }
 
