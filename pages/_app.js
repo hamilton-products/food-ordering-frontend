@@ -218,11 +218,13 @@ App.getInitialProps = async ({ Component, ctx }) => {
   let pageProps = {};
   try {
     if (typeof window === "undefined") {
-      const locale = "en"
       const { req } = ctx;
       const host = req.headers.host || "fuga";
       const subdomain = host.split(".")[0];
-
+      const urlPath = req.url || "/"; // Default to "/" if URL is undefined
+      const pathSegments = urlPath.split("/").filter(Boolean); // Split by "/" and remove empty segments
+      const locale = pathSegments[0] || "en";
+      
       const restaurantIdResponse = await axios.post(
         `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
         { restaurant_subdomain: subdomain },
