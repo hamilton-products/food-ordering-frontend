@@ -111,7 +111,7 @@ function NavbarSimple() {
   }, []);
 
   return (
-    <Navbar>
+    <Navbar style={{borderRadius:"0px"}}>
       <div className="flex items-center justify-between text-white" style={{float: "left",}}>
         <Typography
           as="a"
