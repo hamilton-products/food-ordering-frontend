@@ -280,7 +280,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
             .map((category) => (
               <React.Fragment key={category.item_category_id}>
                 <div
-                  className="relative mx-2 my-4 p-4 rounded-lg shadow-lg"
+                  className="relative mx-1 my-2 p-2 rounded-lg shadow-lg"
                   style={{
                     background: "linear-gradient(270deg, #b28850, #7a5d2f)",
                   }}
@@ -291,10 +291,11 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
                     variant="h6"
                     color="white"
                     className="relative z-10 font-extrabold uppercase text-left tracking-wide drop-shadow-lg"
+                    style={{fontSize:"16px"}}
                   >
                     {category.title}
                   </Typography>
-                  <div className="relative z-10 mt-2 flex items-center">
+                  <div className="relative z-10 mt-1 flex items-center">
                     <div className="w-10 h-1 bg-amber-300 rounded-full"></div>
                     <div className="w-4 h-1 bg-amber-100 rounded-full mx-1"></div>
                     <div className="w-2 h-1 bg-amber-50 rounded-full"></div>
@@ -316,12 +317,12 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
                         <div className="flex-grow w-full">
                           <CardHeader
                             floated={false}
-                            className="w-full h-48 mb-4 mx-0 rounded-lg overflow-hidden"
+                            className="w-full mb-2 mx-0 rounded-lg overflow-hidden"
                           >
                             <img
                               src={item.item_data.cover_photo}
                               alt={item.title}
-                              className="h-full w-full object-cover"
+                              className=" w-full object-cover aspect-square"
                             />
                           </CardHeader>
 

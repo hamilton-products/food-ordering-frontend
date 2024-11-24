@@ -222,268 +222,16 @@ function Product({ itemDetails, consumerId }) {
   // console.log(transformedData);
 
   return (
-    // <Card
-    //   className={`${
-    //     mobileResponse && cartExits
-    //       ? "h-[calc(100vh-5rem)]"
-    //       : cartExits
-    //       ? "h-[calc(100vh-10rem)]"
-    //       : mobileResponse
-    //       ? "h-[calc(100vh-8rem)]"
-    //       : "h-[calc(100vh-13rem)]"
-    //   } w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem]shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto`}
-    //   style={{
-    //     background: "#F4F5F5",
-    //     scrollbarWidth: "none", 
-    //     msOverflowStyle: "none", 
-    //   }}
-    // >
-    //   <div className="absolute z-10">
-    //     <Button onClick={() => goToItems()} color="white" variant="text">
-    //       <ArrowLeftIcon className="h-10 w-10" />
-    //     </Button>
-    //   </div>
-    //   <div className="w-full relative">
-    //     <Image
-    //       width={768}
-    //       height={768}
-    //       src={img}
-    //       alt={title}
-    //       className="h-full w-full object-cover max-h-[25rem]"
-    //     />
-    //   </div>
-    //   <div className="flex-1 mt-6">
-    //     <CardBody className="py-2">
-    //       <Typography variant="h6" className="mb-2">
-    //         {title}
-    //       </Typography>
-
-    //       <Typography className="mb-6 font-normal !text-gray-500 ">
-    //         {description}
-    //       </Typography>
-    //       <div className="flex justify-between items-center mb-5">
-    //         <Typography variant="h5" color="blue-gray">
-    //           KD {price}
-    //         </Typography>
-    //         <Rating value={avg_rating} readonly />
-    //       </div>
-    //     </CardBody>
-
-    //     <div className="mb-6 mx-5 flex flex-col gap-6">
-    //       {itemOption.length > 0 &&
-    //         itemOption.map((option, index) => (
-    //           <div key={index}>
-    //             {/* Replace this with the actual JSX you want to render for each option */}
-
-    //             <Typography variant="h6" color="blue-gray">
-    //               {option.title_cat.EN}
-    //               <div className="mb-3 flex flex-col gap-6 mt-3">
-    //                 <Card>
-    //                   {option.item_option_list.length > 0 &&
-    //                     option.item_option_list.map((items, index1) => (
-    //                       <div key={index1}>
-    //                         <CardBody className="flex items-center p-2">
-    //                           {option.is_multi === false ? (
-    //                             <Checkbox
-    //                               icon={<Radio className="p-1" />}
-    //                               checked={isSelected(
-    //                                 option.item_option_category_id,
-    //                                 items.item_option_id
-    //                               )}
-    //                               onChange={() =>
-    //                                 handleSelectedItemOptions(
-    //                                   option.item_option_category_id,
-    //                                   items.item_option_id
-    //                                 )
-    //                               }
-    //                               // I want style checkbox like radio button and remove right tick mark from checkbox
-    //                               style={{
-    //                                 borderRadius: "50%",
-    //                                 border: "1px solid #6B7280",
-    //                                 // hide the default checkbox tick mark
-    //                               }}
-    //                             />
-    //                           ) : (
-    //                             <Checkbox
-    //                               checked={isSelected(
-    //                                 option.item_option_category_id,
-    //                                 items.item_option_id
-    //                               )}
-    //                               onChange={() =>
-    //                                 handleSelectedItemOptions(
-    //                                   option.item_option_category_id,
-    //                                   items.item_option_id
-    //                                 )
-    //                               }
-    //                             />
-    //                           )}
-    //                           <Typography variant="small" color="blue-gray">
-    //                             {items.title.EN}
-    //                           </Typography>
-
-    //                           <Typography
-    //                             variant="small"
-    //                             color="blue-gray"
-    //                             className="flex items-end ml-auto p-2"
-    //                           >
-    //                             {items.price} KD
-    //                           </Typography>
-    //                         </CardBody>
-
-    //                         {/* Replace this with the actual JSX you want to render for each option */}
-    //                       </div>
-    //                     ))}
-    //                 </Card>
-    //               </div>
-    //             </Typography>
-    //           </div>
-    //         ))}
-    //     </div>
-
-    //     <hr className="my-2 border-blue-gray-200" />
-
-    //     <div className="mb-6 mx-5 flex flex-col gap-6">
-    //       <Typography variant="h6" color="blue-gray" className="-mb-3">
-    //         Special instructions
-    //       </Typography>
-    //       <Input
-    //         size="lg"
-    //         placeholder="Add instructions"
-    //         className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-    //         labelProps={{
-    //           className: "before:content-none after:content-none",
-    //         }}
-    //       />
-    //     </div>
-    //   </div>
-    //   {!cartExits && (
-    //     <div
-    //       className={
-    //         mobileResponse
-    //           ? "mb-8 fixed bottom-12 z-50 flex items-center justify-center gap-4 mx-48"
-    //           : "mb-8 fixed bottom-12 z-50 flex items-center justify-center gap-4 mx-32"
-    //       }
-    //     >
-    //       <Button
-    //         variant="outlined"
-    //         disabled={qty === 1}
-    //         onClick={decrementQty}
-    //         size="sm"
-    //         className="rounded-full p-2"
-    //       >
-    //         <svg
-    //           xmlns="http://www.w3.org/2000/svg"
-    //           fill="none"
-    //           viewBox="0 0 24 24"
-    //           strokeWidth={2}
-    //           stroke="currentColor"
-    //           className="h-5 w-5"
-    //         >
-    //           <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
-    //         </svg>
-    //       </Button>
-    //       <Typography variant="paragraph">{qty}</Typography>
-    //       <Button
-    //         onClick={incrementQty}
-    //         variant="outlined"
-    //         size="sm"
-    //         className="rounded-full p-2"
-    //       >
-    //         <svg
-    //           xmlns="http://www.w3.org/2000/svg"
-    //           fill="none"
-    //           viewBox="0 0 24 24"
-    //           stroke="currentColor"
-    //           className="h-5 w-5"
-    //         >
-    //           <path
-    //             strokeLinecap="round"
-    //             strokeLinejoin="round"
-    //             strokeWidth={2}
-    //             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-    //           />
-    //         </svg>
-    //       </Button>
-    //     </div>
-    //   )}
-
-    //   <div
-    //     className={
-    //       mobileResponse
-    //         ? "group fixed bottom-2 z-50 overflow-hidden mx-5  m-auto px-5"
-    //         : "group fixed bottom-2 z-50 overflow-hidden mx-5 left-0 right-0 m-auto "
-    //     }
-    //   >
-    //     {cartExits ? (
-    //       <Button
-    //         size="lg"
-    //         variant="gradient"
-    //         className={
-    //           mobileResponse
-    //             ? "flex justify-center items-center gap-48 rounded-full px-40"
-    //             : "flex justify-center items-center gap-32 rounded-full px-10"
-    //         }
-    //         fullWidth
-    //         onClick={handleAddToCart}
-    //       >
-    //         <span>Go to the Cart</span>
-    //       </Button>
-    //     ) : (
-    //       // <Button
-    //       //   // loading={loading ? true : false}
-    //       //   size="lg"
-    //       //   variant="gradient"
-    //       //   className={
-    //       //     mobileResponse
-    //       //       ? "flex justify-between items-center gap-48 rounded-full px-12"
-    //       //       : "flex justify-between items-center gap-24 rounded-full px-12"
-    //       //   }
-    //       //   onClick={handleAddToCart}
-    //       // >
-    //       //   <span className="text-sm">Add to Cart</span>
-    //       //   <span className="flex items-center text-lg">{price * qty} KD</span>
-    //       // </Button>
-    //       <Button
-    //         loading={loading === true ? true : false}
-    //         size="lg"
-    //         variant="gradient"
-    //         className={
-    //           mobileResponse
-    //             ? "flex justify-center items-center gap-48 rounded-full px-12"
-    //             : "flex justify-center items-center gap-20 rounded-full px-10"
-    //         }
-    //         fullWidth
-    //         onClick={handleAddToCart}
-    //       >
-    //         {loading === true ? (
-    //           "Add to Cart"
-    //         ) : (
-    //           <div
-    //             className={
-    //               mobileResponse
-    //                 ? "flex items-center justify-between gap-48"
-    //                 : "flex items-center justify-between gap-28"
-    //             }
-    //           >
-    //             <span className="text-sm">Add to Cart</span>
-    //             <span className="flex items-center text-lg">
-    //               {price * qty} KD
-    //             </span>
-    //           </div>
-    //         )}
-    //       </Button>
-    //     )}
-    //   </div>
-    // </Card>
+  
     <Card
       className={`${
         mobileResponse && cartExits
-          ? "h-[calc(100vh-5rem)]"
+          ? "h-[calc(100vh)]"
           : cartExits
-          ? "h-[calc(100vh-10rem)]"
+          ? "h-[calc(100vh)]"
           : mobileResponse
-          ? "h-[calc(100vh-8rem)]"
-          : "h-[calc(100vh-13rem)]"
+          ? "h-[calc(100vh)]"
+          : "h-[calc(100vh)]"
       } w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none`}
       style={{
         background: "#F4F5F5",
@@ -497,30 +245,32 @@ function Product({ itemDetails, consumerId }) {
       </div>
 
       {/* Image Section */}
-      <div className="relative w-full">
+      <div className="relative w-full p-5 rounded flex justify-center">
         <Image
-          width={768}
-          height={768}
+          width={250}
+          height={250}
           src={img}
           alt={title}
-          className="h-full w-full object-cover max-h-[250px] object-center"
+          className="h-full object-cover max-h-[250px] object-center flex rounded aspect-square"
         />
       </div>
 
       {/* Scrollable Middle Section */}
       <div className="flex-1 mt-6 px-5 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 20rem)' }}>
-        <CardBody className="py-2">
+        <CardBody className="py-2 grid" style={{gridTemplateColumns:"70% 30%"}}>
+          <div>
           <Typography variant="h6" className="mb-2">
             {title}
           </Typography>
           <Typography className="mb-6 font-normal text-gray-500">
             {description}
           </Typography>
+          </div>
           <div className="flex justify-between items-center mb-5">
             <Typography variant="h5" color="blue-gray">
               KD {price}
             </Typography>
-            <Rating value={avg_rating} readonly />
+            {/* <Rating value={avg_rating} readonly /> */}
           </div>
         </CardBody>
 
