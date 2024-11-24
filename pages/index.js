@@ -48,7 +48,7 @@ export async function getServerSideProps(context) {
     const deviceId = cookies.deviceId;
 
     const restaurantIdResponse = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+      `${baseUrl}/backend/restaurant/get-restaurant-id`,
       {
         restaurant_subdomain: subdomain,
       },

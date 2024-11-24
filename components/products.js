@@ -72,48 +72,48 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = scrollContainerRef.current.scrollTop + 100; // Add some offset
-      let currentActiveCategory = null;
+    // const handleScroll = () => {
+    //   const scrollPosition = scrollContainerRef.current.scrollTop + 100; // Add some offset
+    //   let currentActiveCategory = null;
 
-      Object.entries(categoryRefs.current).forEach(([categoryId, ref]) => {
-        if (ref.current && ref.current.offsetTop <= scrollPosition) {
-          currentActiveCategory = categoryId;
-        }
-      });
+    //   Object.entries(categoryRefs.current).forEach(([categoryId, ref]) => {
+    //     if (ref.current && ref.current.offsetTop <= scrollPosition) {
+    //       currentActiveCategory = categoryId;
+    //     }
+    //   });
 
-      if (currentActiveCategory !== activeCategory) {
-        setActiveCategory(currentActiveCategory);
+    //   if (currentActiveCategory !== activeCategory) {
+    //     setActiveCategory(currentActiveCategory);
 
-        // Move the slider to show the current active category
-        const activeCategoryIndex = menu.findIndex(
-          (category) => category.item_category_id === currentActiveCategory
-        );
-        if (sliderRef.current) {
-          const slidesToShow = 3; // Number of slides visible
-          const totalSlides = menu.length; // Total number of categories
+    //     // Move the slider to show the current active category
+    //     const activeCategoryIndex = menu.findIndex(
+    //       (category) => category.item_category_id === currentActiveCategory
+    //     );
+    //     if (sliderRef.current) {
+    //       const slidesToShow = 3; // Number of slides visible
+    //       const totalSlides = menu.length; // Total number of categories
 
-          // Calculate the target index for the slider to go to
-          let targetIndex = activeCategoryIndex;
-          if (currentIndex > activeCategoryIndex) {
-            targetIndex = Math.max(activeCategoryIndex - 2, 0); // Ensure targetIndex is not negative
-          } else if (currentIndex === activeCategoryIndex) {
-            targetIndex = Math.max(activeCategoryIndex - 1, 0); // Adjust if the current index is the target
-          } // No else needed, targetIndex is set to activeCategoryIndex by default
+    //       // Calculate the target index for the slider to go to
+    //       let targetIndex = activeCategoryIndex;
+    //       if (currentIndex > activeCategoryIndex) {
+    //         targetIndex = Math.max(activeCategoryIndex - 2, 0); // Ensure targetIndex is not negative
+    //       } else if (currentIndex === activeCategoryIndex) {
+    //         targetIndex = Math.max(activeCategoryIndex - 1, 0); // Adjust if the current index is the target
+    //       } // No else needed, targetIndex is set to activeCategoryIndex by default
 
-          // Go to the calculated slide, ensuring it's within bounds
-          sliderRef.current.slickGoTo(
-            Math.min(targetIndex, totalSlides - slidesToShow)
-          );
-          setCurrentIndex(activeCategoryIndex);
-        }
-      }
-    };
+    //       // Go to the calculated slide, ensuring it's within bounds
+    //       sliderRef.current.slickGoTo(
+    //         Math.min(targetIndex, totalSlides - slidesToShow)
+    //       );
+    //       setCurrentIndex(activeCategoryIndex);
+    //     }
+    //   }
+    // };
 
-    const container = scrollContainerRef.current;
-    container.addEventListener("scroll", handleScroll);
+    // const container = scrollContainerRef.current;
+    // container.addEventListener("scroll", handleScroll);
 
-    return () => container.removeEventListener("scroll", handleScroll);
+    // return () => container.removeEventListener("scroll", handleScroll);
   }, [activeCategory, currentIndex, menu]);
 
   // const scrollToCategory = (categoryId, index) => {

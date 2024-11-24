@@ -96,7 +96,7 @@ export async function getServerSideProps(context) {
     );
 
     const couponPromise = axios.get(
-      "https://apitasweeq.hamiltonkw.com/api/coupon/get-coupon",
+      `${baseUrl}/api/coupon/get-coupon`,
       {
         params: {
           code: "EN",
