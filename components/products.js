@@ -227,7 +227,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-      <LocationSelector/>
+      { !tableId && <LocationSelector/> }
 
     
 

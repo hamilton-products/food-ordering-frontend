@@ -210,207 +210,170 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
     router.back();
   };
   return (
-    <Card
-    className={`h-full w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 shadow-xl shadow-blue-gray-900/5 rounded-none flex flex-col`}
-    style={{
-      background: "#F4F5F5",
-      scrollbarWidth: "none",
-      msOverflowStyle: "none",
-    }}
-  >
-    <div className="absolute z-10 mt-1">
-      <Button color="dark" variant="text" onClick={hanldeBackButton}>
-        <ArrowLeftIcon className="h-8 w-8" />
+<Card
+  className={`h-full w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] p-4 rounded-none flex flex-col bg-white shadow-lg`}
+  style={{ direction: locale === "ar" ? "rtl" : "ltr" }} // Adjust direction
+>
+  {/* Back Button */}
+  <div className={`absolute z-10 mt-1 ${locale === "ar" ? "right-4" : "left-4"}`}>
+    <Button color="dark" variant="text" onClick={hanldeBackButton}>
+      <ArrowLeftIcon className="h-8 w-8" />
+    </Button>
+  </div>
+
+  {/* Title */}
+  <div className="flex items-center justify-center py-4 border-b border-gray-200">
+    <Typography variant="h6" color="blue-gray" className="font-bold">
+      {locale === "ar" ? "سلة التسوق" : "My Cart"}
+    </Typography>
+  </div>
+
+  {/* Check if cart is empty */}
+  {cartItems.length === 0 ? (
+    <div className="flex flex-col items-center justify-center flex-1 py-10">
+      <Typography variant="h6" color="blue-gray" className="mb-4">
+        {locale === "ar" ? "سلة التسوق فارغة" : "Your Cart is Empty"}
+      </Typography>
+      <Button
+        variant="gradient"
+        size="lg"
+        onClick={() => window.location.href = "/"}
+        className="text-center"
+      >
+        {locale === "ar" ? "العودة إلى الصفحة الرئيسية" : "Go to Home"}
       </Button>
     </div>
-    <div className="mb-2 flex items-center justify-center gap-4 p-4">
-      <Typography variant="h5" color="blue-gray">
-        Cart
-      </Typography>
-    </div>
-    <div className="border-t-2 border-blue-gray-200 mb-3"></div>
-  
-    {/* Scrollable content */}
-    <div className="flex-1 overflow-y-auto">
-      {restStatus === "offline" && (
-        <Alert icon={<Icon />} color="red" className="mb-3">
-          Restaurant is currently not accepting orders
-        </Alert>
-      )}
-  
-      {cartItems.length > 0 ? (
-        <React.Fragment>
-          {cartItems.map((item, itemIndex) => (
-            <Card
-              key={itemIndex}
-              color="transparent"
-              shadow={true}
-              className="flex flex-row items-center mb-4"
-            >
-              <div className="flex-1 mr-6 mt-6">
-                <CardHeader floated={true} className="mx-0 mt-0 mb-3 h-28">
-                  <Image
-                    width={256}
-                    height={256}
-                    src={item.item_cover_photo}
-                    alt={item.item_name}
-                    className="h-full w-full object-cover"
-                  />
-                </CardHeader>
-              </div>
-              <div className="flex-1">
-                <CardBody className="p-2">
-                  <Typography
-                    style={{ fontSize: "small" }}
-                    variant="h6"
-                    color="blue-gray"
-                    className="mb-5"
-                  >
-                    {item.item_name}
-                  </Typography>
-                  <Typography
-                    style={{ fontSize: "small" }}
-                    variant="h6"
-                    color="blue-gray"
-                    className="mb-3"
-                  >
-                    {currency} {item.price}
-                  </Typography>
-                </CardBody>
-              </div>
-              <div className="mb-3 flex flex-row gap-3 mx-3">
-                <Button
-                  variant="outlined"
-                  onClick={() => decrementQty(item.cart_id)}
-                  size="sm"
-                  className="rounded-full p-2"
-                  style={{ width: "30px", height: "30px" }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 44 44"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
-                  </svg>
-                </Button>
-                <Typography
-                  style={{ fontSize: "small" }}
-                  variant="h6"
-                  color="dark"
-                  className="mt-1"
-                >
-                  {qtyMap[item.cart_id]}
-                </Typography>
-                <Button
-                  style={{ width: "30px", height: "30px" }}
-                  onClick={() => incrementQty(item.cart_id)}
-                  variant="outlined"
-                  size="sm"
-                  className="rounded-full p-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 44 44"
-                    stroke="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                </Button>
-              </div>
-            </Card>
-          ))}
-  
-          <div className="border-t-2 border-blue-gray-50"></div>
-          <div className="flex flex-row justify-between items-center">
-            <Typography variant="small" color="blue-gray">
-              {locale === 'ar' ? 'المجموع الفرعي:' : 'Subtotal:'}
-            </Typography>
-            <span className="flex items-center">
-              {locale === 'ar' ? `${subTotal} ${currency}` : `${currency} ${subTotal}`}
-            </span>
-          </div>
-          <div className="border-t-2 border-blue-gray-50"></div>
-          <div className="flex flex-row justify-between items-center">
-            <Typography variant="small" color="blue-gray">
-              {locale === 'ar' ? 'خدمات التوصيل:' : 'Delivery Services:'}
-            </Typography>
-            <span className="flex items-center">
-              {delivery} {currency}
-            </span>
-          </div>
-          {discountValue > 0 && (
-            <div className="flex flex-row justify-between items-center">
-              <Typography variant="small" color="blue-gray">
-                {locale === 'ar' ? 'خصم المطعم:' : 'Restaurant Discount:'}
-              </Typography>
-              <span className="flex items-center">
-                - {discountValue} {currency}
-              </span>
+  ) : (
+    <>
+      {/* Cart Items */}
+      <div className="flex-1 overflow-y-auto py-4">
+        {cartItems.map((item, itemIndex) => (
+          <div
+            key={itemIndex}
+            className="flex items-center justify-between bg-gray-50 p-4 mb-3 rounded-lg shadow-sm"
+          >
+            {/* Image */}
+            <div className="w-1/4">
+              <Image
+                width={256}
+                height={256}
+                src={item.item_cover_photo}
+                alt={item.item_name}
+                className="h-16 w-16 rounded object-cover"
+              />
             </div>
-          )}
-          <div className="border-t-2 border-blue-gray-50"></div>
-          <div className="flex flex-row justify-between items-center mb-2">
-            <Typography variant="h6" color="blue-gray">
-              {locale === 'ar' ? 'الإجمالي:' : 'Total:'}
-            </Typography>
-            <Typography variant="h6" color="blue-gray" className="flex items-center">
-              {discountedTotal} {currency}
-            </Typography>
-          </div>
 
-        </React.Fragment>
-      ) : (
-        <div className="mb-2 flex flex-col items-center justify-center gap-4 pt-4">
-          <div className="p-2">
-            <ShoppingBagIcon className="h-20 w-20" />
+            {/* Item Details */}
+            <div className="w-2/4 px-3">
+              <Typography variant="subtitle2" color="blue-gray" className="font-medium">
+                {item.item_name}
+              </Typography>
+              <Typography variant="small" color="blue-gray" className="text-gray-500">
+                {locale === "ar" ? `${currency} ${item.price}` : `${currency} ${item.price}`}
+              </Typography>
+            </div>
+
+            {/* Quantity Controls */}
+            <div className="flex items-center gap-2 w-1/4">
+              <Button
+                variant="outlined"
+                onClick={() => decrementQty(item.cart_id)}
+                size="sm"
+                className="p-1 rounded-full"
+                style={{ width: "30px", height: "30px" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-4 w-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
+                </svg>
+              </Button>
+              <Typography variant="small" color="dark">
+                {qtyMap[item.cart_id]}
+              </Typography>
+              <Button
+                onClick={() => incrementQty(item.cart_id)}
+                variant="outlined"
+                size="sm"
+                className="p-1 rounded-full"
+                style={{ width: "30px", height: "30px" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-4 w-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                </svg>
+              </Button>
+            </div>
           </div>
-          <Typography variant="h5" color="blue-gray">
-            {locale === 'ar' ? 'لا توجد عناصر في السلة' : 'No Items in Cart'}
+        ))}
+      </div>
+
+      {/* Cart Summary */}
+      <div className="bg-gray-100 p-4 rounded-t-lg shadow-lg">
+        <div className="flex justify-between items-center mb-2">
+          <Typography variant="small" color="gray">
+            {locale === "ar" ? "الإجمالي الجزئي" : "Subtotal"}
           </Typography>
-
+          <Typography variant="small" color="gray">
+            {locale === "ar" ? `${currency} ${subTotal}` : `${currency} ${subTotal}`}
+          </Typography>
         </div>
-      )}
-    </div>
-  
-    {/* Fixed bottom buttons */}
-    <div className="mt-4">
-      <div className="w-full bg-[#F4F5F5] p-4 shadow-md">
-        <div className="flex justify-between">
-        <Button
-          size={mobileResponse ? "lg" : "md"}
-          variant="outlined"
-          color="blue-gray"
-          onClick={addMoreItemHandler}
-          className="flex-1 mx-1"
-        >
-          {locale === 'ar' ? 'إضافة عناصر' : 'Add Items'}
-        </Button>
-        <Button
-          size={mobileResponse ? "lg" : "md"}
-          variant="gradient"
-          color="black"
-          disabled={restStatus === "offline"}
-          onClick={placeOrderHandler}
-          className="flex-1 mx-1"
-        >
-          {locale === 'ar' ? 'إتمام الشراء' : 'Checkout'}
-        </Button>
-
+        <div className="flex justify-between items-center mb-2">
+          <Typography variant="small" color="gray">
+            {locale === "ar" ? "رسوم التوصيل" : "Delivery Fee"}
+          </Typography>
+          <Typography variant="small" color="gray">
+            {locale === "ar" ? `${currency} ${delivery}` : `${currency} ${delivery}`}
+          </Typography>
+        </div>
+        {discountValue > 0 && (
+          <div className="flex justify-between items-center mb-2">
+            <Typography variant="small" color="green">
+              {locale === "ar" ? "الخصم" : "Discount"}
+            </Typography>
+            <Typography variant="small" color="green">
+              {locale === "ar" ? `- ${currency} ${discountValue}` : `- ${currency} ${discountValue}`}
+            </Typography>
+          </div>
+        )}
+        <div className="flex justify-between items-center border-t border-gray-200 pt-2">
+          <Typography variant="medium" color="blue-gray" className="font-bold">
+            {locale === "ar" ? "الإجمالي" : "Total"}
+          </Typography>
+          <Typography variant="medium" color="blue-gray" className="font-bold">
+            {locale === "ar" ? `${currency} ${discountedTotal}` : `${currency} ${discountedTotal}`}
+          </Typography>
         </div>
       </div>
-    </div>
-  </Card>
+
+      {/* Checkout Button */}
+      <div className="p-4 bg-white shadow-md">
+        <Button
+          variant="gradient"
+          size="lg"
+          className="w-full text-center"
+          onClick={placeOrderHandler}
+          disabled={restStatus === "offline"}
+        >
+          {locale === "ar" ? "إتمام الشراء" : "Checkout"}
+        </Button>
+      </div>
+    </>
+  )}
+</Card>
+
+  
   
   );
 }
