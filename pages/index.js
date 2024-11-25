@@ -20,7 +20,7 @@ export async function getServerSideProps(context) {
   // const restaurantId = context.req.cookies.restaurantId;
   // Get tableId from query parameters
   const { tableId } = context.query;
-  // console.log(tableId, "tableId");
+  console.log(tableId, "tableId");
 
   // console.log(context, "restaurantId+++++++");
   const host = context.req.headers.host || "fuga";
@@ -32,15 +32,20 @@ export async function getServerSideProps(context) {
   // console.log(subdomain, "subdomain");
 
   // Set tableId in cookies, if it exists
-  if (tableId) {
-    context.res.setHeader(
-      "Set-Cookie",
-      cookie.serialize("tableId", tableId, {
-        path: "/",
-        maxAge: 60 * 60 * 24, // 1 day
-      })
-    );
-  }
+  // Cookies.set("tableId", tableId);
+  // if (tableId) {
+  //   if (tableId) {
+  //     context.res.setHeader(
+  //       "Set-Cookie",
+  //       cookie.serialize("tableId", tableId, {
+  //         path: "/",
+  //         maxAge: 60 * 60 * 5, // 5 hours
+  //         secure: process.env.NODE_ENV === "production", // Only for HTTPS in production
+  //         sameSite: "lax", // Adjust based on your needs
+  //       })
+  //     );
+  //   }
+  // }
 
   try {
     const cookies = cookie.parse(context.req.headers.cookie || "");

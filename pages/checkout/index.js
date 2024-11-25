@@ -50,7 +50,7 @@ export async function getServerSideProps(context) {
           permanent: false,
         },
       };
-    } else if (!addressId && !tableId) {
+    } else if (!(addressId || tableId)) {
       return {
         redirect: {
           destination: "/address",

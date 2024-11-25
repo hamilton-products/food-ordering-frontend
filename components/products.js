@@ -19,6 +19,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import LocationSelector from "./locationSelector";
+import Cookies from "js-cookie";
 
 function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   // if(!restaurantDetails) return null;
@@ -32,6 +33,8 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   const [mobileXtraSmallResponse, setMobileXtraSmallResponse] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { t } = useTranslation("common");
+  const { tableId } = router.query;
+  Cookies.set("tableId",tableId)
 
   const categoryRefs = useRef({});
   const scrollContainerRef = useRef(null);

@@ -13,11 +13,19 @@ export async function getServerSideProps(context) {
   const consumerId = context.req.cookies.consumerId;
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   const restaurantId = context.req.cookies.restaurantId;
+  const tableId = context.req.cookies.tableId;
 
   if (!consumerId) {
     return {
       redirect: {
         destination: "/phone",
+        permanent: false,
+      },
+    };
+  }else if (tableId) {
+    return {
+      redirect: {
+        destination: "/address",
         permanent: false,
       },
     };
