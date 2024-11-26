@@ -72,7 +72,7 @@ export async function getServerSideProps(context) {
       restaurantIdResponse.data.payload &&
       restaurantIdResponse.data.payload.restaurant_id;
 
-    // console.log(restaurantId, "restaurantId");
+    console.log(restaurantId, "restaurantId");
 
     if (restaurantId) {
       context.res.setHeader(

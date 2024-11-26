@@ -238,9 +238,9 @@ function Product({ itemDetails, consumerId }) {
       }}
     >
       {/* Back Button */}
-      <div className="absolute z-10 p-2">
-        <Button onClick={() => goToItems()} color="white" variant="text">
-          <ArrowLeftIcon className="h-10 w-10" />
+      <div className="absolute z-10 p-1">
+        <Button onClick={() => goToItems()} color="black" variant="text">
+          <ArrowLeftIcon className="h-7 w-7" />
         </Button>
       </div>
 
