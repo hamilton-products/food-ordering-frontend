@@ -13,7 +13,8 @@ export async function getServerSideProps(context) {
   const consumerId = context.req.cookies.consumerId;
   const baseUrl = process.env.NEXT_PRODUCTION_BASE_URL;
   const restaurantId = context.req.cookies.restaurantId;
-  const tableId = context.req.cookies.tableId;
+  // const tableId = context.req.cookies.tableId;
+  const tableId = context.req.cookies.tableId && context.req.cookies.tableId!=="undefined"?context.req.cookies.tableId:null;
 
   if (!consumerId) {
     return {

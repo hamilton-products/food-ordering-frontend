@@ -38,7 +38,7 @@ export async function getServerSideProps(context) {
     const addressId = context.req.cookies.address_id;
     const addressType = context.req.cookies.address_type;
     const consumerId = context.req.cookies.consumerId;
-    const tableId = context.req.cookies.tableId;
+    const tableId = context.req.cookies.tableId && context.req.cookies.tableId!=="undefined"?context.req.cookies.tableId:null;
     const restaurantId = context.req.cookies.restaurantId;
 
     // console.log(tableId, "tableId");

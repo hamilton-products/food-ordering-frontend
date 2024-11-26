@@ -194,7 +194,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
 
   const placeOrderHandler = () => {
     const addressId = Cookies.get("address_id");
-    const tableId = Cookies.get("tableId");
+    const tableId = Cookies.get("tableId") && Cookies.get("tableId")!=="undefined"?Cookies.get("tableId"):null;
     if (tableId) {
       router.push("/checkout");
     } else {
