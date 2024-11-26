@@ -249,7 +249,7 @@ export const placeOrder = async (order) => {
 
   const consumerId = Cookies.get("consumerId");
 
-  const tableId = Cookies.get("tableId");
+  const tableId = Cookies.get("tableId")?Cookies.get("tableId"):null;
 
   // console.log(tableId, "tableId++++++++++++++");
 
