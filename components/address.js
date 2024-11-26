@@ -100,7 +100,7 @@ function Product({ restaurantDetails }) {
   const checkWithinDeliveryArea = async (lat, lng, restaurantId) => {
     try {
       const response = await fetch(
-        "https://apitasweeq.hamiltonkw.com/api/order/check-location",
+        "https://api.hamilton-bites.online/api/order/check-location",
         {
           method: "POST",
           headers: {

@@ -112,7 +112,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(
-        `https://apitasweeq.hamiltonkw.com/api/cart/list-cart-items/${idToUse}/${consumerType}/${locale=="ar"?"AR":"EN"}`
+        `https://api.hamilton-bites.online/api/cart/list-cart-items/${idToUse}/${consumerType}/${locale=="ar"?"AR":"EN"}`
       );
       if (
         response.data &&

@@ -68,7 +68,7 @@ export default function LocationSelector() {
   const DeliveryArea = async () => {
     try {
       const response = await fetch(
-        "https://apitasweeq.hamiltonkw.com/api/locations",
+        "https://api.hamilton-bites.online/api/locations",
         {
           method: "GET",
           headers: {

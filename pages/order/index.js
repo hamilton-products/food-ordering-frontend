@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
     }
 
     const restaurantPromise = axios.post(
-      "https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend",
+      "https://api.hamilton-bites.online/backend/restaurant/get-restaurant-details-backend",
       {
         restaurant_id: restaurantId, // replace with your actual data
       },
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
     );
 
     const orderPromise = axios.get(
-      `https://apitasweeq.hamiltonkw.com/api/order/get-order-details?order_id=${orderId}&code=EN`
+      `https://api.hamilton-bites.online/api/order/get-order-details?order_id=${orderId}&code=EN`
     );
 
     // Use Promise.all to resolve all promises concurrently

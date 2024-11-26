@@ -74,7 +74,7 @@ function Phone() {
 
     try {
       const response = await axios.post(
-        "https://apitasweeq.hamiltonkw.com/api/auth/verify-mobile-otp",
+        "https://api.hamilton-bites.online/api/auth/verify-mobile-otp",
         {
           mobile: phoneNumber,
           mobile_country_code: "+" + countryCode,
@@ -102,12 +102,12 @@ function Phone() {
       ) {
         // // console.log(response.data.payload.consumer_id);
         await axios.put(
-          `https://apitasweeq.hamiltonkw.com/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
+          `https://api.hamilton-bites.online/api/cart/move-cart-from-guest/${device_id}/${response.data.payload.consumer_id}`
         );
 
         // Call remove-all-from-cart API
         await axios.delete(
-          `https://apitasweeq.hamiltonkw.com/api/cart/remove-all-from-cart/guest/${device_id}`
+          `https://api.hamilton-bites.online/api/cart/remove-all-from-cart/guest/${device_id}`
         );
 
         setLoading(false);

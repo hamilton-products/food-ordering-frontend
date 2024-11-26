@@ -7,7 +7,7 @@ import { useRouter } from "next/router"; // Import the useRouter hook
 export const sendOTP = async (phoneNumber, countryCode) => {
   try {
     const response = await axios.post(
-      "https://apitasweeq.hamiltonkw.com/api/auth/send-otp",
+      "https://api.hamilton-bites.online/api/auth/send-otp",
       {
         mobile: phoneNumber, // Assuming phoneNumber is passed in the request body
         request_type: "signUp",
@@ -34,7 +34,7 @@ export const verifyMobileOTP = async (countryCode, otp) => {
   const phoneNumber = Cookies.get("phoneNumber");
   try {
     const response = await axios.post(
-      "https://apitasweeq.hamiltonkw.com/api/auth/verify-mobile-otp",
+      "https://api.hamilton-bites.online/api/auth/verify-mobile-otp",
       {
         mobile: phoneNumber,
         mobile_country_code: "+" + countryCode,
@@ -83,7 +83,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
 
     if (consumerId) {
       response = await axios.post(
-        "https://apitasweeq.hamiltonkw.com/api/cart/add-to-cart/consumer",
+        "https://api.hamilton-bites.online/api/cart/add-to-cart/consumer",
         {
           item_id: productId,
           qty: quantity,
@@ -100,7 +100,7 @@ export const addToCart = async (productId, quantity, transformedData) => {
       );
     } else {
       response = await axios.post(
-        "https://apitasweeq.hamiltonkw.com/api/cart/add-to-cart/guest",
+        "https://api.hamilton-bites.online/api/cart/add-to-cart/guest",
         {
           item_id: productId,
           qty: quantity,
@@ -145,7 +145,7 @@ export const deleteCart = async (cartId) => {
 
   try {
     const response = await axios.delete(
-      `https://apitasweeq.hamiltonkw.com/api/cart/remove-from-cart/${consumerType}/${idToUse}/${cartId}`,
+      `https://api.hamilton-bites.online/api/cart/remove-from-cart/${consumerType}/${idToUse}/${cartId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -162,7 +162,7 @@ export const deleteCart = async (cartId) => {
 export const updateCart = async (cartId, quantity) => {
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/cart/update-cart/${cartId}`,
+      `https://api.hamilton-bites.online/api/cart/update-cart/${cartId}`,
       {
         qty: quantity,
         item_options: "[]", // send as a string
@@ -193,7 +193,7 @@ export const checkCart = async (itemId) => {
 
   try {
     const response = await axios.get(
-      `https://apitasweeq.hamiltonkw.com/api/cart/check-item-exists-in-cart/${idToUse}/${consumerType}/${itemId}`,
+      `https://api.hamilton-bites.online/api/cart/check-item-exists-in-cart/${idToUse}/${consumerType}/${itemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -216,7 +216,7 @@ export const addAddress = async (address) => {
   const area = address.area;
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/consumer/manage-delivery-address`,
+      `https://api.hamilton-bites.online/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "add",
@@ -255,7 +255,7 @@ export const placeOrder = async (order) => {
 
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/order/place-order`,
+      `https://api.hamilton-bites.online/api/order/place-order`,
       {
         place_order_json: JSON.stringify({
           // transaction_id: "",
@@ -321,7 +321,7 @@ export const getAddressDetails = async () => {
 
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/consumer/manage-delivery-address`,
+      `https://api.hamilton-bites.online/api/consumer/manage-delivery-address`,
       {
         consumer_id: consumerId,
         request_type: "get",
@@ -348,7 +348,7 @@ export const paymentMethod = async (data) => {
   const restaurantId = Cookies.get("restaurantId");
   try {
     const response = await axios.get(
-      `https://apitasweeq.hamiltonkw.com/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=${restaurantId}`,
+      `https://api.hamilton-bites.online/api/payment/payment-method-list?currency=kwd&amount=100&type_id=PYT1572613827KIC107364&code=EN&restaurant_id=${restaurantId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -365,7 +365,7 @@ export const paymentMethod = async (data) => {
 export const cancelOrder = async (orderId) => {
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/consumer/cancel-order-counsumer`,
+      `https://api.hamilton-bites.online/api/consumer/cancel-order-counsumer`,
       {
         order_id: orderId,
       },
@@ -398,7 +398,7 @@ export const executePayment = async (
 
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/payment/execute-payment`,
+      `https://api.hamilton-bites.online/api/payment/execute-payment`,
       {
         currency: 1,
         code: "EN",
@@ -440,7 +440,7 @@ export const checkPaymentStatus = async (paymentId) => {
 
     // Send the POST request to check the payment status
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/payment/payment-status`,
+      `https://api.hamilton-bites.online/api/payment/payment-status`,
       requestBody,
       {
         headers: {
@@ -469,7 +469,7 @@ export const applyCoupon = async (coupon_id, amount) => {
 
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/coupon/apply-coupon`,
+      `https://api.hamilton-bites.online/api/coupon/apply-coupon`,
       {
         code: "EN",
         user_id: consumerId,
@@ -494,7 +494,7 @@ export const verifyCoupon = async (coupon_code, amount) => {
   const consumerId = Cookies.get("consumerId");
   try {
     const response = await axios.post(
-      `https://apitasweeq.hamiltonkw.com/api/coupon/verify-coupon`,
+      `https://api.hamilton-bites.online/api/coupon/verify-coupon`,
       {
         code: "EN",
         user_id: consumerId,

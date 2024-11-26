@@ -38,7 +38,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           const subdomain = host.split(".")[0];
 
           const restaurantIdResponse = await axios.post(
-            `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+            `https://api.hamilton-bites.online/backend/restaurant/get-restaurant-id`,
             { restaurant_subdomain: subdomain },
             { headers: { "Content-Type": "application/json","lang":locale } }
           );
@@ -47,7 +47,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           Cookies.set("restaurantId", newRestaurantId);
 
           const restaurantDetailsResponse = await axios.post(
-            `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
+            `https://api.hamilton-bites.online/backend/restaurant/get-restaurant-details-backend`,
             { restaurant_id: newRestaurantId },
             { headers: { "Content-Type": "application/json","lang":locale } }
           );
@@ -226,7 +226,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       console.log(locale,"locale");
       
       const restaurantIdResponse = await axios.post(
-        `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-id`,
+        `https://api.hamilton-bites.online/backend/restaurant/get-restaurant-id`,
         { restaurant_subdomain: subdomain },
         { headers: { "Content-Type": "application/json","lang":locale } }
       );
@@ -234,7 +234,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       const restaurantId = restaurantIdResponse?.data?.payload?.restaurant_id;
 
       const restaurantDetailsResponse = await axios.post(
-        `https://apitasweeq.hamiltonkw.com/backend/restaurant/get-restaurant-details-backend`,
+        `https://api.hamilton-bites.online/backend/restaurant/get-restaurant-details-backend`,
         { restaurant_id: restaurantId },
         { headers: { "Content-Type": "application/json","lang":locale } }
       );

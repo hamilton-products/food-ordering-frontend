@@ -39,7 +39,7 @@ export async function getServerSideProps(context) {
     }
 
     const restaurantPromise = axios.post(
-      "https://apitasweeq.hamiltonkw.com/api/payment/payment-status",
+      "https://api.hamilton-bites.online/api/payment/payment-status",
       {
         paymentId: tap_id, // replace with your actual data
       },
