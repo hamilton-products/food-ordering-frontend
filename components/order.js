@@ -182,7 +182,8 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
         <div className="w-full py-5 px-5 mb-5 mt-5">
           <Stepper activeStep={activeStep}>
-            <Step>
+           <div>
+           <Step>
               {activeStep >= 0 ? (
                 <ExclamationCircleIcon className="h-8 w-8" />
               ) : (
@@ -212,7 +213,9 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
                 </Typography>
               </div>
             </Step>
-            <Step>
+           </div>
+           <div>
+           <Step>
               {activeStep >= 2 ? (
                 <CheckCircleIcon className="h-8 w-8" />
               ) : (
@@ -242,6 +245,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
                 </Typography>
               </div>
             </Step>
+           </div>
           </Stepper>
         </div>
         <React.Fragment>
