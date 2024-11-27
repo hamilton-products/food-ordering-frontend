@@ -181,7 +181,7 @@ function SidebarWithSearch({ orderDetails, restaurantDetails }) {
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
         <div className="w-full py-5 px-5 mb-5 mt-5">
-          <Stepper activeStep={activeStep} style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",placeItems:"center",rowGap:"55px"}}>
+          <Stepper activeStep={activeStep} class=" grid gap-y-10 lg:gap-y-5 grid-cols-2 lg:grid-cols-4 place-items-center" >
             <Step>
               {activeStep >= 0 ? (
                 <ExclamationCircleIcon className="h-8 w-8" />
