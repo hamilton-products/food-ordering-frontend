@@ -358,7 +358,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
       </div>
 
       {/* Checkout Button */}
-      <div className="p-4 bg-white shadow-md">
+      <div className="p-4 bg-white shadow-md grid grid-cols-2 gap-1">
         <Button
           variant="gradient"
           size="lg"
@@ -367,6 +367,16 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
           disabled={restStatus === "offline"}
         >
           {locale === "ar" ? "إتمام الشراء" : "Checkout"}
+        </Button>
+        <Button
+          variant="gradient"
+          size="lg"
+          className="w-full text-center"
+          onClick={addMoreItemHandler}
+          disabled={restStatus === "offline"}
+        >
+        {locale === "ar" ? "أضف المزيد" : "Add More"}
+ 
         </Button>
       </div>
     </>
