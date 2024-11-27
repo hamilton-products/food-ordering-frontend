@@ -43,7 +43,7 @@ function Product({ restaurantDetails }) {
   const location = Cookies.get("location");
   const router = useRouter();
   const {locale}=router
-
+  const savedLocation = localStorage.getItem("defaultLocation");
   const deliveryAreaCoordinates =
     restaurantDetails.restaraunt_delivery_areas &&
     restaurantDetails.restaraunt_delivery_areas.coordinates[0];
@@ -65,6 +65,15 @@ function Product({ restaurantDetails }) {
     lat: center.lat,
     lng: center.lng,
   });
+  useEffect(() => {
+    // Check if savedLocation exists in localStorage
+    if (savedLocation) {
+      setAddress((prevAddress) => ({
+        ...prevAddress,
+        area: savedLocation, // Directly use the saved location as the area
+      }));
+    }
+  }, [savedLocation]);
 
   useEffect(() => {
     const handleResizeXtraSmall = () => {

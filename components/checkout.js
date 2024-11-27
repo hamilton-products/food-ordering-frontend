@@ -266,25 +266,6 @@ function Product({
     lng: restaurantDetails.longitude,
   };
 
-  // useEffect(() => {
-  //   if (transactionId) {
-  //     const placeOrderAsync = async () => {
-  //       try {
-  //         if (transactionId && transactionStatus === "Succss") {
-  //           setLoading(true);
-  //           const response = await placeOrder(order);
-  //           const orderId = response.order_id;
-
-  //           router.push(`/order?orderId=${orderId}`);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error placing order:", error);
-  //       }
-  //     };
-
-  //     placeOrderAsync();
-  //   }
-  // }, [transactionId]);
 
   const [paymentMethodDetails, setPaymentMethodDetails] = useState(null);
 
@@ -322,10 +303,8 @@ function Product({
   const handleExecutePayment = async (paymentMethodId) => {
     try {
       setLoading(true);
-      // Place the order first
       const orderResponse = await placeOrder(order);
       if (!orderResponse || !orderResponse.order_id) {
-        // console.log("Failed to place order");
         setLoading(false);
         return;
       }
@@ -339,11 +318,9 @@ function Product({
         orderId
       );
       const paymentLink = response.url ? response.url : null;
-      // const paymentLink = response.Data ? response.Data.PaymentURL : null;
 
 
       window.location.href = paymentLink;
-      // console.log(response, "response");
     } catch (error) {
       console.error("Error executing payment:", error);
       setLoading(false);
@@ -367,13 +344,7 @@ function Product({
     coupon_id: "",
     coupon_code: "",
   });
-  // console.log(order, "order++++++++++++++");
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setTransactionStatus(null);
-  //   }, 5000);
-  //   return () => clearTimeout(timer);
-  // }, [transactionStatus]);
+ 
 
   const hanldeBackButton = () => {
     router.back();
@@ -403,70 +374,26 @@ function Product({
         </Button>
       </div>
 
-      {/* {transactionStatus === "Succss" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
-          <div className="flex items-center justify-center">
-            <Alert
-              variant="gradient"
-              icon={<Icon />}
-              className="text-[#2ec946] border-[#2ec946] top-72"
-            >
-              <Typography className="font-medium">
-                Your payment success!
-              </Typography>
-            </Alert>
-          </div>
-        </div>
-      )} */}
-
-      {/* {transactionStatus === "Failed" && (
-        <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
-          <div className="flex items-center justify-center">
-            <Alert
-              variant="gradient"
-              icon={<CrossIcon />}
-              className="text-[#ff4141] border-[#ff2222] top-72"
-            >
-              <Typography className="font-medium">
-                Your payment Failed!
-              </Typography>
-            </Alert>
-          </div>
-        </div>
-      )} */}
-
-      {/* <div className="fixed top-0 left-0 h-[calc(100vh)] w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem]z-20 flex items-center justify-center">
-        <div className="flex items-center justify-center">
-          <Alert
-            variant="gradient"
-            icon={<Icon />}
-            className="text-[#2ec946] border-[#2ec946] top-72"
-          >
-            <Typography className="font-medium">
-              Ensure that these requirements are met:
-            </Typography>
-          </Alert>
-        </div>
-      </div> */}
+     
 
       <div className="mb-2 flex items-center justify-center gap-4 p-4">
         <Typography variant="h5" color="blue-gray">
           Checkout
         </Typography>
       </div>
-      <div className="flex flex-wrap">
+      {/* <div className="flex flex-wrap">
         <div className="w-full mb-3">
           <div style={{ height: "300px" }}>
-            {/* <GoogleMap
+            <GoogleMap
               mapContainerStyle={{ height: "100%", width: "100%" }}
               center={center}
               zoom={8}
             >
               <Marker position={center} />
-            </GoogleMap> */}
+            </GoogleMap>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit}>
         <div className="container mx-auto grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-1 xl:grid-cols-1">
