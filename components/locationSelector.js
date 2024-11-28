@@ -165,9 +165,9 @@ export default function LocationSelector() {
           className="relative"
         >
           {locale === "en" ? "Pickup" : "استلام"}
-          <span className="absolute top-full mt-1 text-xs text-gray-500">
+          {/* <span className="absolute top-full mt-1 text-xs text-gray-500"> */}
             {locale === "en" ? "Coming Soon" : "قريباً"}
-          </span>
+          {/* </span> */}
         </Button>
       </div>
 
