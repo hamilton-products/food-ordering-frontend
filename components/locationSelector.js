@@ -136,7 +136,7 @@ export default function LocationSelector() {
   return (
     <div className={`px-6 py-2 ${locale === "ar" ? "rtl" : "ltr"}`}>
       {/* Delivery and Pickup Toggle */}
-      <div className="flex space-x-4 mb-4">
+      {/* <div className="flex space-x-4 mb-4">
         <Button
           color={mode === "Delivery" ? "orange" : "gray"}
           onClick={() => setMode("Delivery")}
@@ -148,6 +148,26 @@ export default function LocationSelector() {
           onClick={() => setMode("Pickup")}
         >
           {locale === "en" ? "Pickup" : "استلام"}
+        </Button>
+      </div> */}
+      <div className="flex space-x-4 mb-4">
+        <Button
+          color={mode === "Delivery" ? "orange" : "gray"}
+          onClick={() => setMode("Delivery")}
+        >
+          {locale === "en" ? "Delivery" : "توصيل"}
+        </Button>
+        <Button
+          variant="text"
+          color="gray"
+          disabled
+          onClick={() => setMode("Pickup")}
+          className="relative"
+        >
+          {locale === "en" ? "Pickup" : "استلام"}
+          <span className="absolute top-full mt-1 text-xs text-gray-500">
+            {locale === "en" ? "Coming Soon" : "قريباً"}
+          </span>
         </Button>
       </div>
 
