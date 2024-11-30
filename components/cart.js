@@ -44,6 +44,8 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
   const {locale}=router
   const [open, setOpen] = React.useState(0);
   const [openAlert, setOpenAlert] = React.useState(true);
+  // console.log(cartDetails,"cartDetails");
+  
   const [cartItems, setCartItems] = React.useState(cartDetails);
   // // console.log(cartItems, "cartItems");
 
@@ -259,7 +261,7 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
                 height={256}
                 src={item.item_cover_photo}
                 alt={item.item_name}
-                className="h-16 w-16 rounded object-cover"
+                className="h-full w-full rounded-lg object-cover"
               />
             </div>
 
@@ -267,6 +269,9 @@ function SidebarWithSearch({ cartDetails, restaurantDetails }) {
             <div className="w-2/4 px-3">
               <Typography variant="subtitle2" color="blue-gray" className="font-medium">
                 {item.item_name}
+              </Typography>
+              <Typography variant="small" color="blue-gray" className="font-small text-gray-700">
+                {item.item_ingredients}
               </Typography>
               <Typography variant="small" color="blue-gray" className="text-gray-500">
                 {locale === "ar" ? `${currency} ${item.price}` : `${currency} ${item.price}`}

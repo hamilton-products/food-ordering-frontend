@@ -240,42 +240,68 @@ function Product({ itemDetails, consumerId }) {
       {/* Back Button */}
       <div className="absolute z-10 p-1">
         <Button onClick={() => goToItems()} color="black" variant="text">
-          <ArrowLeftIcon className="h-7 w-7" />
+          <ArrowLeftIcon className="h-7 w-7" color="white" />
         </Button>
       </div>
 
       {/* Image Section */}
-      <div className="relative w-full p-5 rounded flex justify-center">
-        <Image
-          width={250}
-          height={250}
+      <div className="relative w-full rounded flex justify-center ">
+        <img
           src={img}
           alt={title}
-          className="h-full object-cover max-h-[250px] object-center flex rounded aspect-square"
+          className="object-cover w-full object-center max-h-[350px] h-full "
         />
       </div>
 
       {/* Scrollable Middle Section */}
       <div className="flex-1 mt-6 px-5 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 20rem)' }}>
-        <CardBody className="py-2 grid" style={{gridTemplateColumns:"70% 30%"}}>
-          <div>
-          <Typography variant="h6" className="mb-2">
-            {title}
-          </Typography>
-          <Typography className="mb-6 font-normal text-gray-500">
-            {description}
-          </Typography>
+      <CardBody className="py-2 grid grid-cols-2 items-center gap-4 bg-white rounded">
+          {/* Left Section: Title and Description */}
+          <div className="flex flex-col">
+            <Typography variant="h4" className="mb-2 font-bold">
+              {title}
+            </Typography>
+            
           </div>
-          <div className="flex justify-between items-center mb-5">
-            <Typography variant="h5" color="blue-gray">
+
+          {/* Right Section: Price and Quantity */}
+          <div className="flex flex-col items-end">
+            <Typography variant="h5" className="text-orange-500 font-bold mb-2">
               KD {price}
             </Typography>
-            {/* <Rating value={avg_rating} readonly /> */}
+            <div className="flex items-center">
+              <button
+                onClick={decrementQty}
+                className="bg-gray-200 text-gray-600 px-2 py-1 rounded-full"
+                disabled={qty === 1}
+              >
+                <MinusIcon className="h-4 w-4" />
+              </button>
+              <Typography className="mx-3 text-md font-semibold">{qty}</Typography>
+              <button
+                onClick={incrementQty}
+                className="bg-gray-200 text-gray-600 px-2 py-1 rounded-full"
+              >
+                <PlusIcon className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </CardBody>
+        <CardBody className="py-2 bg-white rounded">
+         
+          <div className="flex flex-col">
+            <Typography variant="h6" className="mb-2 font-bold">
+              Description
+            </Typography>
+            <Typography className="text-gray-500 text-sm">
+              {description}
+            </Typography>
           </div>
         </CardBody>
 
+
         {/* Options Section */}
-        <div className="mb-6 flex flex-col gap-6">
+        <div className="mb-6 flex flex-col gap-6 bg-white rounded">
           {itemOption.length > 0 &&
             itemOption.map((option, index) => (
               <div key={index}>
@@ -320,8 +346,8 @@ function Product({ itemDetails, consumerId }) {
         </div>
 
         {/* Special Instructions */}
-        <hr className="my-2 border-blue-gray-200" />
-        <div className="mb-6 mx-5 flex flex-col gap-6">
+        {/* <hr className="my-2 border-blue-gray-200" /> */}
+        <div className="mb-6 p-5 flex flex-col gap-6  bg-white rounded">
         <Typography variant="h6" color="blue-gray">
           {locale === 'ar' ? 'تعليمات خاصة' : 'Special instructions'}
         </Typography>
@@ -336,7 +362,7 @@ function Product({ itemDetails, consumerId }) {
 
       {/* Quantity Control Buttons */}
       <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-md flex flex-col items-center gap-4">
-        {!cartExits && (
+        {/* {!cartExits && (
           <div className="flex items-center gap-4">
             <Button
               variant="outlined"
@@ -357,7 +383,7 @@ function Product({ itemDetails, consumerId }) {
               <PlusIcon className="h-5 w-5" />
             </Button>
           </div>
-        )}
+        )} */}
 
         {/* Add to Cart or Go to Cart Button */}
         <Button

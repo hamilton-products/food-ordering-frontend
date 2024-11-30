@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import LocationSelector from "./locationSelector";
 import Cookies from "js-cookie";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
   // if(!restaurantDetails) return null;
@@ -194,7 +195,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
       ref={scrollContainerRef}
       className={`${
         cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
-      } w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
+      } relative w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
       style={{
         background: "#F4F5F5",
         scrollbarWidth: "none",
@@ -227,7 +228,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
           </Alert>
         </div>
       )}
-      { !tableId && <LocationSelector/> }
+      { (!tableId && !activeCategory) && <LocationSelector/> }
 
     
 
@@ -271,41 +272,30 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
         // </div>
       ) : (
         <div className="container mx-auto p-5 h-full overflow-y-auto">
-          <Button
-            onClick={resetCategory}
-            variant="gradient"
-            className="mb-4 px-4 py-2"
-          >
-            Back to Categories
-          </Button>
+          {/* <Button> */}
+            
+          {/* </Button> */}
           {filteredMenu
             .filter((category) => category.item_category_id === activeCategory)
             .map((category) => (
               <React.Fragment key={category.item_category_id}>
                 <div
-                  className="relative mx-1 my-2 p-2 rounded-lg shadow-lg"
-                  style={{
-                    background: "linear-gradient(270deg, #b28850, #7a5d2f)",
-                  }}
+                  className=" mx-1 my-2 p-2 rounded-lg shadow-lg absolute w-full bg-white left-0 z-10 top-[-10px] py-4"
                   ref={categoryRefs.current[category.item_category_id]}
                 >
-                  <div className="absolute inset-0 opacity-20 bg-[url('/pattern.svg')] bg-cover bg-center rounded-lg pointer-events-none"></div>
+                  <div className="absolute inset-0 rounded-lg pointer-events-none"></div>
                   <Typography
                     variant="h6"
-                    color="white"
-                    className="relative z-10 font-extrabold uppercase text-left tracking-wide drop-shadow-lg"
+                    color="black"
+                    className="relative z-10 font-extrabold uppercase text-center tracking-wide drop-shadow-lg"
                     style={{fontSize:"16px"}}
                   >
-                    {category.title}
+                   <ArrowLeftIcon width={"25px"} height={"25px"} onClick={resetCategory} className=" absolute left-4 top-0 "/> {category.title}
                   </Typography>
-                  <div className="relative z-10 mt-1 flex items-center">
-                    <div className="w-10 h-1 bg-amber-300 rounded-full"></div>
-                    <div className="w-4 h-1 bg-amber-100 rounded-full mx-1"></div>
-                    <div className="w-2 h-1 bg-amber-50 rounded-full"></div>
-                  </div>
+                 
                 </div>
 
-                <div className="grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2">
+                <div className="grid grid-cols-2 gap-x-1 gap-y-5 md:grid-cols-2 xl:grid-cols-2 mt-12">
                   {category.itemDetails.map((item) => (
                     <Link
                       key={item.item_id}
