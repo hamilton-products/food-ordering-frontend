@@ -11,6 +11,8 @@ import Cookies from "js-cookie";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import { Avatar, Typography } from "@material-tailwind/react";
+import Link from "next/link";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   // console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
@@ -163,7 +165,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   return (
     <>
       <Head>
-        <title>Tasweeq</title>
+        <title>Hamilton Bites</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
         <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} />
       </Head>
@@ -194,13 +196,23 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
                 style={{ background: "#F4F5F5" }}
               >
                 {showHero && router.pathname !== "/cart" && (
-                  <div className="flex border p-4 rounded-lg shadow-sm">
+                  <div className="flex border p-4 rounded-lg shadow-sm relative">
                     <Avatar src={restaurantData.logo} alt="avatar" size="xl" />
                     <div className="ml-4">
-                      <Typography variant="h6">{restaurantData.name}</Typography>
-                      <Typography className="text-gray-600">{restaurantData.description}</Typography>
+                      <Typography variant="h6" className="text-sm md:text-lg">{restaurantData.name}</Typography>
+                      <Typography className="text-gray-600 hidden md:flex">{restaurantData.description}</Typography>
                       <Typography className="text-gray-600">{restaurantData.address}</Typography>
                     </div>
+                    <Link href="/cart" className="flex md:hidden absolute right-4 top-5 my-auto" >
+                      <Typography
+                        as="li"
+                        variant="small"
+                        color="blue-gray"
+                        className="p-2 font-medium bg-white rounded-md"
+                      >
+                        <ShoppingBagIcon className="h-6 w-6 cursor-pointer" strokeWidth={2} />
+                      </Typography>
+                      </Link>
                   </div>
                 )}
 

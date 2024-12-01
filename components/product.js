@@ -258,7 +258,7 @@ function Product({ itemDetails, consumerId }) {
       <CardBody className="py-2 grid grid-cols-2 items-center gap-4 bg-white rounded">
           {/* Left Section: Title and Description */}
           <div className="flex flex-col">
-            <Typography variant="h4" className="mb-2 font-bold">
+            <Typography variant="h5" className="mb-2 font-bold" >
               {title}
             </Typography>
             
@@ -266,7 +266,7 @@ function Product({ itemDetails, consumerId }) {
 
           {/* Right Section: Price and Quantity */}
           <div className="flex flex-col items-end">
-            <Typography variant="h5" className="text-orange-500 font-bold mb-2">
+            <Typography variant="h5" className="text-orange-500 font-bold mb-2 text-sm md:text-lg">
               KD {price}
             </Typography>
             <div className="flex items-center">
@@ -287,7 +287,7 @@ function Product({ itemDetails, consumerId }) {
             </div>
           </div>
         </CardBody>
-        <CardBody className="py-2 bg-white rounded">
+        <CardBody className="py-2 bg-white rounded text-sm md:text-lg">
          
           <div className="flex flex-col">
             <Typography variant="h6" className="mb-2 font-bold">
@@ -301,7 +301,7 @@ function Product({ itemDetails, consumerId }) {
 
 
         {/* Options Section */}
-        <div className="mb-6 flex flex-col gap-6 bg-white rounded">
+        <div className="mb-6 flex flex-col gap-6 bg-white rounded text-sm md:text-lg">
           {itemOption.length > 0 &&
             itemOption.map((option, index) => (
               <div key={index}>
@@ -389,7 +389,7 @@ function Product({ itemDetails, consumerId }) {
         <Button
           size="lg"
           variant="gradient"
-          className="flex items-center justify-between rounded-full px-8 w-80"
+          className="flex items-center justify-between rounded-full px-8 w-80 text-sm md:text-lg"
           onClick={handleAddToCart}
         >
         {cartExits ? (
