@@ -106,7 +106,7 @@ export default function LocationSelector() {
     });
 
     data.forEach((item) => {
-      if (item.parent_id) {
+      if (item.parent_id && item.status=="active") {
         const parent = data.find((parent) => parent._id === item.parent_id);
         if (parent) {
           result[locale === "en" ? parent.name_en : parent.name_ar].push(
