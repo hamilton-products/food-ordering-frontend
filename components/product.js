@@ -261,14 +261,15 @@ function Product({ itemDetails, consumerId }) {
             <Typography variant="h5" className="mb-2 font-bold" >
               {title}
             </Typography>
+            <Typography variant="h5" className="text-orange-500 font-bold mb-2 text-sm md:text-lg">
+              KD {price}
+            </Typography>
             
           </div>
 
           {/* Right Section: Price and Quantity */}
           <div className="flex flex-col items-end">
-            <Typography variant="h5" className="text-orange-500 font-bold mb-2 text-sm md:text-lg">
-              KD {price}
-            </Typography>
+            
             <div className="flex items-center">
               <button
                 onClick={decrementQty}
@@ -287,17 +288,20 @@ function Product({ itemDetails, consumerId }) {
             </div>
           </div>
         </CardBody>
+        
+        <div className="mb-6 flex flex-col gap-6 bg-white rounded text-sm md:text-lg">
         <CardBody className="py-2 bg-white rounded text-sm md:text-lg">
          
-          <div className="flex flex-col">
-            <Typography variant="h6" className="mb-2 font-bold">
-              Description
-            </Typography>
-            <Typography className="text-gray-500 text-sm">
-              {description}
-            </Typography>
-          </div>
-        </CardBody>
+         <div className="flex flex-col">
+           <Typography variant="h6" className="mb-2 font-bold">
+             Description
+           </Typography>
+           <Typography className="text-gray-500 text-sm">
+             {description}
+           </Typography>
+         </div>
+       </CardBody>
+        </div>
 
 
         {/* Options Section */}
