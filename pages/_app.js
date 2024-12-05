@@ -235,7 +235,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
       const host = req.headers.host || "fuga";
       const subdomain = host.split(".")[0];
       const locale = req.headers.cookie.split(";").filter(val=>val.includes("locale")).length>0?(req.headers.cookie.split(";").filter(val=>val.includes("locale"))[0].split("=")[1]=="ar"?"ar":"en"): "en";
-      console.log(locale,"locale");
+      // console.log(locale,"locale");
       
       const restaurantIdResponse = await axios.post(
         `https://api.hamilton-bites.online/backend/restaurant/get-restaurant-id`,

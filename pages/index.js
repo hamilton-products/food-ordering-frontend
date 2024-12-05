@@ -20,7 +20,7 @@ export async function getServerSideProps(context) {
   // const restaurantId = context.req.cookies.restaurantId;
   // Get tableId from query parameters
   const { tableId } = context.query;
-  console.log(tableId, "tableId");
+  //console.log(tableId, "tableId");
 
   // console.log(context, "restaurantId+++++++");
   const host = context.req.headers.host || "fuga";
@@ -72,7 +72,7 @@ export async function getServerSideProps(context) {
       restaurantIdResponse.data.payload &&
       restaurantIdResponse.data.payload.restaurant_id;
 
-    console.log(restaurantId, "restaurantId");
+    //console.log(restaurantId, "restaurantId");
 
     if (restaurantId) {
       context.res.setHeader(
@@ -131,7 +131,7 @@ export async function getServerSideProps(context) {
       ),
     ]);
 
-    console.log(menuResponse, "menuResponse");
+    //console.log(menuResponse, "menuResponse");
 
     const restaurantDetails = restaurantResponse.data?.payload;
 

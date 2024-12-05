@@ -24,10 +24,11 @@ function NavList() {
   const { locale } = router;
 
   const handleLocaleChange = (locale) => {
-    // console.log("Current locale:", i18n.language);
-    i18n.changeLanguage("ar");
-    router.push(router.pathname, router.asPath, { locale }); 
-    // console.log("altamashsss", i18n.language);
+    console.log(router.pathname,"router.pathname")
+    window.location.href=locale+router.pathname
+  //   i18n.changeLanguage(locale); // Change the language in i18n
+  //   Cookies.set('NEXT_LOCALE', locale); // Optionally set a cookie for persistence
+  //   router.push(router.pathname, router.asPath, { locale: locale });
   };
 
   return (
@@ -86,8 +87,8 @@ function NavList() {
               fontFamily="Arial, sans-serif"
               textAnchor="middle"
               fill="black"
-            >
-              ع
+              >
+                           {locale!="ar"?"ع":"E"}
             </text>
           </svg>
         </div>
