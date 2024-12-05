@@ -226,12 +226,12 @@ function Product({ itemDetails, consumerId }) {
     <Card
       className={`${
         mobileResponse && cartExits
-          ? "h-[calc(100vh)]"
+          ? "h-[calc(100vh-3rem)]"
           : cartExits
-          ? "h-[calc(100vh)]"
+          ? "h-[calc(100vh-3rem)]"
           : mobileResponse
-          ? "h-[calc(100vh)]"
-          : "h-[calc(100vh)]"
+          ? "h-[calc(100vh-3rem)]"
+          : "h-[calc(100vh-3rem)]"
       } w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none`}
       style={{
         background: "#F4F5F5",

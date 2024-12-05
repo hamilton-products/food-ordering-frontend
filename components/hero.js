@@ -21,7 +21,7 @@ function Hero({ restaurantDetails }) {
 
   return (
     <div
-      className="relative h-screen w-full bg-cover bg-no-repeat overflow-hidden"
+      className="relative h-[calc(100vh-3rem)] w-full bg-cover bg-no-repeat overflow-hidden"
       style={{ backgroundImage: `url('${cover_photo}')` }}
     >
       {/* Ensure Navbar is above the overlay */}

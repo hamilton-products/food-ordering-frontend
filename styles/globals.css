@@ -28,3 +28,11 @@
   z-index: 1000; 
   background-color: #fff;
 }
+.custom-scroll::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+.custom-scroll {
+  -ms-overflow-style: none; /* Hides scrollbar in IE/Edge */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}

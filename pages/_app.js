@@ -13,6 +13,7 @@ import { appWithTranslation } from "next-i18next";
 import { Avatar, Typography } from "@material-tailwind/react";
 import Link from "next/link";
 import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import Footer from "@/components/footer";
 function App({ Component, pageProps, restaurantDetails, restaurantId }) {
   // console.log(restaurantId, "restaurantId123");
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,11 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
     cover_photo: "",
     name: "",
     address: "",
+    facebook:"",
+    twitter:"",
+    tiktok:"",
+    youtube:"",
+    instagram:""
   });
 
 
@@ -55,13 +61,19 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
           );
 
           const details = restaurantDetailsResponse?.data?.payload;
-
+          console.log(details,"details");
+          
           setRestaurantData({
             logo: details.logo || "",
             description:locale=="EN"? details.description?.EN:details.description?.AR || "",
             cover_photo: details.cover_photo || "",
             name: locale=="EN"?details.name?.EN:details.name?.AR || "",
             address: details.address || "",
+            facebook:details.facebook || "",
+            twitter:details.twitter || "",
+            tiktok:details.tiktok || "",
+            youtube:details.youtube || "",
+            instagram:details.instagram || "",
           });
 
         } else {
@@ -71,6 +83,11 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             cover_photo: restaurantDetails.cover_photo || "",
             name: locale=="EN"?restaurantDetails.name?.EN:restaurantDetails.name?.AR || "",
             address: restaurantDetails.address || "",
+            facebook:restaurantDetails.facebook || "",
+            twitter:restaurantDetails.twitter || "",
+            tiktok:restaurantDetails.tiktok || "",
+            youtube:restaurantDetails.youtube || "",
+            instagram:restaurantDetails.instagram || ""
           });
           Cookies.set("restaurantId", restaurantId);
         }
@@ -192,8 +209,8 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
               <Loader />
             ) : (
               <div
-                className="h-[calc(100vh)] w-full max-w-[40rem] flex flex-col"
-                style={{ background: "#F4F5F5" }}
+                className="h-[calc(100vh-3rem)] w-full max-w-[40rem] custom-scroll flex flex-col"
+                style={{ background: "#F4F5F5", overflowY: "scroll"}}
               >
                 {showHero && router.pathname !== "/cart" && (
                   <div className="flex border p-4 rounded-lg shadow-sm relative">
@@ -221,6 +238,13 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
             )}
             {showHero && !heroShown && <Hero restaurantDetails={restaurantDetails} />}
           </div>
+          <Footer
+          facebook={restaurantData.facebook}
+          twitter={restaurantData.twitter}
+          tiktok={restaurantData.tiktok}
+          youtube={restaurantData.youtube}
+          instagram={restaurantData.instagram}
+          />
         </div>
       </ThemeProvider>
     </>

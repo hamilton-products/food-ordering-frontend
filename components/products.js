@@ -194,7 +194,7 @@ function SidebarWithSearch({ menu, cartDetails, restaurantDetails }) {
     <Card
       ref={scrollContainerRef}
       className={`${
-        cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh)]"
+        cartItems.length > 0 ? "h-[calc(100vh-5rem)]" : "h-[calc(100vh-3rem)]"
       } relative w-full max-w-full sm:max-w-[30rem] sm:min-w-[30rem] md:max-w-[40rem] md:min-w-[40rem] lg:max-w-[40rem] lg:min-w-[40rem] shadow-xl shadow-blue-gray-900/5 rounded-none overflow-y-auto overflow-x-hidden`}
       style={{
         background: "#F4F5F5",

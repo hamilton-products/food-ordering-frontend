@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
   const { t } = useTranslation('privacy');
 
   return (
-    <div className="p-4 max-w-4xl mx-auto bg-gray-100 min-h-screen">
+    <div className="p-4 max-w-4xl mx-auto bg-gray-100 min-h-[calc(100vh-3rem)]">
       <div className="mb-6 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-blue-600">{t('title')}</h1>
         {/* Language Switcher can go here if needed */}
