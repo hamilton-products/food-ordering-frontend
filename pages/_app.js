@@ -236,7 +236,7 @@ function App({ Component, pageProps, restaurantDetails, restaurantId }) {
                 <Component {...pageProps} />
               </div>
             )}
-            {showHero && !heroShown && <Hero restaurantDetails={restaurantDetails} />}
+            {(showHero && !heroShown && restaurantDetails) && <Hero restaurantDetails={restaurantDetails} />}
           </div>
           <Footer
           facebook={restaurantData.facebook}
