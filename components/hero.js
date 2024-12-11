@@ -3,14 +3,15 @@ import Navbar from "@/components/navbar";
 import { Avatar, Typography } from "@material-tailwind/react";
 
 function Hero({ restaurantDetails }) {
+  if (!restaurantDetails) return <div>Loading...</div>;
   const cover_photo = restaurantDetails?.cover_photo || "";
-  const logo = restaurantDetails.logo || "";
+  const logo = restaurantDetails?.logo || "";
   const description =
     restaurantDetails.description && restaurantDetails.description.EN;
 
   const name = restaurantDetails.name && restaurantDetails.name.EN;
 
-  const address = restaurantDetails.address;
+  const address = restaurantDetails?.address;
 
   const contactInfo = restaurantDetails.mobile;
 
