@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = ({ facebook, twitter, tiktok, youtube, instagram }) => {
   return (
-    <footer style={footerStyle}>
+    <footer style={footerStyle} className='hidden md:block'>
       <p style={textStyle}>© Hamilton. All rights reserved.</p>
       <div style={iconContainerStyle}>
         {facebook && (
@@ -77,7 +77,7 @@ const iconStyle = {
 };
 
 const iconHoverStyle = {
-  color: '#fff', // White on hover
+  color: '#fff', 
 };
 
 export default Footer;
