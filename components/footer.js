@@ -2,9 +2,9 @@ import React from 'react';
 
 const Footer = ({ facebook, twitter, tiktok, youtube, instagram }) => {
   return (
-    <footer style={footerStyle} className='hidden md:block'>
+    <footer style={footerStyle} >
       <p style={textStyle}>© Hamilton. All rights reserved.</p>
-      <div style={iconContainerStyle}>
+      <div style={iconContainerStyle} className='hidden md:block'>
         {facebook && (
           <a href={facebook} target="_blank" rel="noopener noreferrer" style={iconStyle}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
